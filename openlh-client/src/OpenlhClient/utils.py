@@ -4,7 +4,7 @@
 #  
 # Copyright (C) 2003-2006 Yann Le Boulanger <asterix@lagaule.org>
 # Copyright (C) 2005-2006 Nikos Kouremenos <kourem@gmail.com>
-#  Copyright (c) 2007-2008 Wilson Pinto Júnior (N3RD3X) <n3rd3x@guake-terminal.org>
+#  Copyright (c) 2007-2008 Wilson Pinto Júnior <wilson@openlanhouse.org>
 
 # Copyright (C) 2005
 #      Dimitur Kirov <dkirov@gmail.com>
@@ -27,32 +27,12 @@
 
 import os
 import sys
-import re
-import shutil
-import stat
-import bz2
-import gzip
-
-try:
-    import dl
-except:
-    dl = None
-
-import base64
-from md5 import md5
-import threading
 import time
-import traceback
-import logging
-import socket
-import subprocess
-import errno
-from gtk import gdk
-
+from hashlib import sha
 from OpenlhClient.globals import *
 
 def generate_id_bytime():
-    from sha import sha
+    
     
     cur_time = time.time()
     hash = sha(str(cur_time))

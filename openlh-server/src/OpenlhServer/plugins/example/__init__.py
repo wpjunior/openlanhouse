@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  Copyright (C) 2008 Wilson Pinto J�nior (N3RD3X) <n3rd3x@guake-terminal.org>
+#  Copyright (C) 2008 Wilson Pinto Júnior <wilson@openlanhouse.org>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
 
 PLUGIN_NAME = "Example"
 PLUGIN_DESCRIPTION = "Plugin Example"
-PLUGIN_AUTHOR = "Wilson Pinto Júnior <wilson@openlanhouse.org>"
-PLUGIN_COPYRIGHT = "Copyright 2008 Wilson Pinto Júnior"
+PLUGIN_AUTHOR = "Wilson Pinto JÃºnior <wilson@openlanhouse.org>"
+PLUGIN_COPYRIGHT = "Copyright 2008 Wilson Pinto JÃºnior"
 PLUGIN_SITE = "http://openlanhouse.org"
 
 def enable(daemon, main_window):
