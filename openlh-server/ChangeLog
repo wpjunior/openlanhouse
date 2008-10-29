@@ -1,0 +1,47 @@
+2008-07-9	Wilson Pinto Júnior <n3rd3x@guake-terminal.org>
+	* src/OpenlhServer/utils.py: humanize_time function added for humanize time seconds.
+	* src/OpenlhServer/daemon.py, src/OpenlhServer/ui/treeview.py, src/OpenlhServer/ui/main.py, src/OpenlhServer/g_timer.py: Improvments into timer functions and treeviews.
+
+2008-06-25	Wilson Pinto Júnior <n3rd3x@guake-terminal.org>
+
+	* src/OpenlhServer/globals.py, src/OpenlhServer/ui/dialogs.py,
+	src/OpenlhServer/main.py, data/glade/unblock_machine.glade: Added 
+	state initial for unblocking machines.
+
+2008-06-24	Wilson Pinto Júnior <n3rd3x@guake-terminal.org>
+	
+	* src/OpenlhServer/sql/sqlite.py, src/OpenlhServer/sql/mysql.py,
+	src/OpenlhServer/sql/postgres.py: Removed get_db signals, Added return
+	dict suport for queries, 
+	
+	* src/OpenlhServer/sql/install.py,
+	src/OpenlhServer/ui/dialogs.py: Email column can be null.
+	
+	* src/OpenlhServer/utils.py, src/OpenlhServer/ui/dialogs.py: Removed
+	check_email function.
+
+	* src/OpenlhServer/db.py: Removed nick_index_true and nick_index_false
+	lists.
+
+	* src/OpenlhServer/ui/dialogs.py, src/OpenlhServer/ui/main.py,
+	data/glade/userinfo.glade: Users Properties dialog improvements.
+
+
+2008-06-21	Wilson Pinto Júnior	<n3rd3x@guake-terminal.org>
+
+	* src/OpenlhServer/ui/main.py: removed parse_credit_color function
+
+	* src/OpenlhServer/ui/dialogs.py: gtk.about_dialog_set_url_hook and gtk.about_dialog_set_email_hook added
+	into gtk.AboutDialog, using 'gnome-open' to open sites and emails.
+	
+	* src/OpenlhServer/ui/dialogs.py: Interface fixes in ChangePassword dialog
+	for more gnome standards
+	
+	* src/OpenlhServer/ui/main.py, data/glade/main.glade: replaced gtk.HBox to gtk.StatusBar
+	
+	* data/glade/users.glade: title for this window changed, set width_chars
+	to 20 into nick widget.
+
+2008-01-10  Gabriel Falcão <gabriel@nacaolivre.org>
+
+	* Restructuring all project path to fit into GNU Coding Standards

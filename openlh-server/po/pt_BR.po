@@ -1,0 +1,1420 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-08-07 14:21-0300\n"
+"PO-Revision-Date: 2008-08-06 12:49-0300\n"
+"Last-Translator: Wilson Pinto Júnior <n3rd3x@guake-terminal.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. #End internacionalize
+#. #APP Proprerties
+#: ../data/openlh-server.desktop.in.in.h:1 ../src/OpenlhServer/globals.py:94
+msgid "LAN House Manager for Gnome Desktop"
+msgstr "Gerenciador de LAN House para o Ambiente Gnome"
+
+#: ../data/openlh-server.desktop.in.in.h:2
+#: ../src/OpenlhServer/ui/dialogs.py:71
+msgid "OpenLanhouse Server"
+msgstr "OpenLanhouse Servidor"
+
+#: ../data/openlh-server.schemas.in.h:1
+msgid "Abbreviation of currency"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:2
+msgid "Allow login with ticket code into clients."
+msgstr "Permite entrada com ingresso nos clientes."
+
+#: ../data/openlh-server.schemas.in.h:3
+msgid "Allow login with user and password into clients."
+msgstr "Permite entrada com usuário e senha nos clientes."
+
+#: ../data/openlh-server.schemas.in.h:4
+msgid "Allow use notifications popups"
+msgstr "Permite usar popups de notificação"
+
+#: ../data/openlh-server.schemas.in.h:5
+msgid "Allow use notifications to show alerts and informations."
+msgstr "Permite usar notificações para exibir alertas e informações."
+
+#: ../data/openlh-server.schemas.in.h:6
+msgid "Columns visible in Cash flow treeview"
+msgstr "Colunas Visíveis no Movimento do Caixa"
+
+#: ../data/openlh-server.schemas.in.h:7
+msgid "Columns visible in Cash flow treeview."
+msgstr "Colunas Visíveis no Movimento do Caixa."
+
+#: ../data/openlh-server.schemas.in.h:8
+msgid "Columns visible in Open Debts Machine treeview"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:9
+msgid "Columns visible in Open Debts Machine treeview."
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:10
+msgid "Columns visible in Open Debts Other treeview"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:11
+msgid "Columns visible in Open Debts Other treeview."
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:12
+msgid "Columns visible in machines treeview"
+msgstr "Colunas visíveis das Máquinas"
+
+#: ../data/openlh-server.schemas.in.h:13
+msgid "Columns visible in machines treeview."
+msgstr "Colunas visíveis das Máquinas."
+
+#: ../data/openlh-server.schemas.in.h:14
+msgid "Columns visible in users treeview"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:15
+msgid "Columns visible in users treeview."
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:16
+msgid "Current on: sqlite, mysql and postgres."
+msgstr "No momento: sqlite, mysql e postgres."
+
+#: ../data/openlh-server.schemas.in.h:17
+msgid "Custom file path to sqlite database"
+msgstr "Local personalizado para o arquivo de banco de dados"
+
+#: ../data/openlh-server.schemas.in.h:18
+msgid "Custom welcome message"
+msgstr "Mensagem personalizada de Boas Vindas"
+
+#: ../data/openlh-server.schemas.in.h:19
+msgid ""
+"Custom welcome message, to show this message 'default_welcome_msg' needs be "
+"false."
+msgstr ""
+"Mensagem personalizada de Boas Vindas, para exibir essa mensagem "
+"'default_welcome_msg' precisa ser falso."
+
+#: ../data/openlh-server.schemas.in.h:20
+msgid "Database engine"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:21
+msgid "Database hostname"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:22
+msgid "Database name"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:23
+msgid "If case true, Side Bar will be show"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:24
+msgid "If case true, Status Bar will be show"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:25
+msgid "If case true, Toolbar will be show"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:26
+msgid ""
+"If true, show background image into screen, 'background_path' must be "
+"specified."
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:27
+msgid "If true, show default welcome message"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:28
+msgid ""
+"If true, show default welcome message, if false, show custom welcome message."
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:29
+msgid "If true, show logo image into screen, 'logo_path' must be specified."
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:30
+msgid "If true, the main window is maximized."
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:31
+msgid "Kind of money used in the Cyber Cafe"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:32
+msgid "Login suport into clients."
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:33
+msgid "Main window X position"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:34
+msgid "Main window X position."
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:35
+msgid "Main window Y position"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:36
+msgid "Main window Y position."
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:37
+msgid "Main window height"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:38
+msgid "Main window height."
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:39
+msgid "Main window maximization state"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:40
+msgid "Main window width"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:41
+msgid "Main window width."
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:42
+msgid "Page selected number"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:43
+msgid "Page selected number."
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:44
+msgid "Password used to auth in the database server"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:45
+msgid "Path to background image file"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:46
+msgid "Path to background image file."
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:47
+msgid "Path to logo image file"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:48
+msgid "Path to logo image file."
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:49
+msgid "Port to Listen in the network"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:50
+msgid "Port used to connect into database server"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:51
+msgid "Price per hour"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:52
+msgid "Show Side Bar"
+msgstr "Mostrar Barra de Lateral"
+
+#: ../data/openlh-server.schemas.in.h:53
+msgid "Show Status Bar"
+msgstr "Mostrar Barra de Status"
+
+#: ../data/openlh-server.schemas.in.h:54
+msgid "Show Toolbar"
+msgstr "Mostrar Barra de Ferramentas"
+
+#: ../data/openlh-server.schemas.in.h:55
+msgid "Show background image into screen"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:56
+msgid "Show logo image into screen"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:57
+msgid "Size of ticket code"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:58
+msgid "The email of Administrator"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:59
+msgid "The name for Cyber Cafe"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:60
+msgid "The name used to identify the Cyber Cafe."
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:61
+msgid "Ticket suport into clients."
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:62
+msgid "Use psyco to python speed up."
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:63
+msgid "Username used to auth in the database server"
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:64
+msgid ""
+"When set to false, causes start only as a tray icon with the window hidden."
+msgstr ""
+
+#: ../data/openlh-server.schemas.in.h:65
+msgid "Whether the window is visible"
+msgstr ""
+
+#: ../data/glade/add_credit.glade.h:1
+msgid "<b><big>Add Credit</big></b>"
+msgstr "<b><big>Adicionar Crédito</big></b>"
+
+#: ../data/glade/add_credit.glade.h:2
+msgid "Add Credit"
+msgstr "Adicionar Crédito"
+
+#: ../data/glade/add_credit.glade.h:3 ../data/glade/remove_credit.glade.h:4
+msgid "Notes (optional):"
+msgstr "Notas (opcional):"
+
+#: ../data/glade/add_credit.glade.h:4 ../data/glade/add_user.glade.h:11
+msgid "_Credit:"
+msgstr "_Crédito:"
+
+#: ../data/glade/add_credit.glade.h:5 ../data/glade/add_user.glade.h:13
+msgid "_Estimated time:"
+msgstr "_Tempo Estimado:"
+
+#: ../data/glade/add_credit.glade.h:6
+msgid "gtk-add"
+msgstr ""
+
+#: ../data/glade/add_credit.glade.h:7 ../data/glade/add_machine.glade.h:9
+#: ../data/glade/block_machine.glade.h:6 ../data/glade/edit_user.glade.h:16
+#: ../data/glade/main.glade.h:63 ../data/glade/remove_credit.glade.h:6
+#: ../data/glade/unblock_machine.glade.h:14
+#: ../data/glade/cash_flow_new_item.glade.h:9
+msgid "gtk-cancel"
+msgstr ""
+
+#: ../data/glade/add_machine.glade.h:1
+msgid ""
+"<big><b>The Machines are automatically added</b></big>\n"
+"\n"
+"The machines are automatically added, so it is unnecessary to add them "
+"manually."
+msgstr ""
+"<big><b>As máquinas são automaticamente adicionadas</b></big>\n"
+"\n"
+"As máquinas são automaticamente adicionadas, então é desnecessário adiciona-"
+"las manualmente."
+
+#: ../data/glade/add_machine.glade.h:4
+msgid "Add Machine - OpenLanhouse"
+msgstr "Adicionar Máquina - OpenLanhouse"
+
+#: ../data/glade/add_machine.glade.h:5
+msgid "_Add Manualy"
+msgstr "_Adicionar Manualmente"
+
+#: ../data/glade/add_machine.glade.h:6
+msgid "_Description:"
+msgstr "_Descrição:"
+
+#: ../data/glade/add_machine.glade.h:7
+msgid "_Hash id:"
+msgstr ""
+
+#: ../data/glade/add_machine.glade.h:8 ../data/glade/prefs.glade.h:16
+msgid "_Name:"
+msgstr "_Nome:"
+
+#: ../data/glade/add_machine.glade.h:10 ../data/glade/main.glade.h:64
+#: ../data/glade/prefs.glade.h:19 ../data/glade/userinfo.glade.h:21
+msgid "gtk-close"
+msgstr ""
+
+#: ../data/glade/add_machine.glade.h:11 ../data/glade/edit_user.glade.h:17
+#: ../data/glade/cash_flow_new_item.glade.h:10
+msgid "gtk-ok"
+msgstr ""
+
+#: ../data/glade/add_user.glade.h:1 ../data/glade/edit_user.glade.h:1
+msgid "<b><span color='red'>Nick already exists</span></b>"
+msgstr "<b><span color='red'>O apelido já existe</span></b>"
+
+#: ../data/glade/add_user.glade.h:2
+msgid "<b>Initial Credit</b>"
+msgstr "<b>Crédito Inicial</b>"
+
+#: ../data/glade/add_user.glade.h:3 ../data/glade/edit_user.glade.h:2
+msgid "<b>Locale</b>"
+msgstr "<b>Local</b>"
+
+#: ../data/glade/add_user.glade.h:4 ../data/glade/edit_user.glade.h:3
+msgid "<b>Miscellaneus</b>"
+msgstr "<b>Diversos</b>"
+
+#: ../data/glade/add_user.glade.h:5
+msgid "<b>Password</b>"
+msgstr "<b>Senha</b>"
+
+#: ../data/glade/add_user.glade.h:6
+msgid "C_onfirm password:"
+msgstr "C_onfirmar senha:"
+
+#: ../data/glade/add_user.glade.h:7
+msgid "New User - OpenLanhouse"
+msgstr "Novo Usuário - OpenLanhouse"
+
+#: ../data/glade/add_user.glade.h:8 ../data/glade/edit_user.glade.h:5
+msgid "_Address:"
+msgstr "_Endereço:"
+
+#: ../data/glade/add_user.glade.h:9 ../data/glade/edit_user.glade.h:6
+msgid "_Birth:"
+msgstr "_Data de nascimento:"
+
+#: ../data/glade/add_user.glade.h:10 ../data/glade/edit_user.glade.h:7
+msgid "_City:"
+msgstr "_Cidade:"
+
+#: ../data/glade/add_user.glade.h:12 ../data/glade/edit_user.glade.h:8
+msgid "_Email:"
+msgstr "_E-mail:"
+
+#: ../data/glade/add_user.glade.h:14 ../data/glade/edit_user.glade.h:9
+msgid "_Full Name:"
+msgstr "_Nome Completo:"
+
+#: ../data/glade/add_user.glade.h:15 ../data/glade/edit_user.glade.h:10
+msgid "_Identity:"
+msgstr "_Identidade:"
+
+#: ../data/glade/add_user.glade.h:16 ../data/glade/edit_user.glade.h:11
+#: ../data/glade/unblock_machine.glade.h:9
+msgid "_Nick:"
+msgstr "_Apelido:"
+
+#: ../data/glade/add_user.glade.h:17 ../data/glade/edit_user.glade.h:12
+msgid "_Observation:"
+msgstr "_Observação:"
+
+#: ../data/glade/add_user.glade.h:18
+msgid "_Password:"
+msgstr "_Senha:"
+
+#: ../data/glade/add_user.glade.h:19 ../data/glade/edit_user.glade.h:13
+msgid "_Responsible:"
+msgstr "_Responsável"
+
+#: ../data/glade/add_user.glade.h:20 ../src/OpenlhServer/ui/dialogs.py:764
+msgid "_Show password"
+msgstr "_Mostrar senha"
+
+#: ../data/glade/add_user.glade.h:21 ../data/glade/edit_user.glade.h:14
+msgid "_State/Province:"
+msgstr "_Estado:"
+
+#: ../data/glade/add_user.glade.h:22 ../data/glade/edit_user.glade.h:15
+msgid "_Telephone:"
+msgstr "_Telefone:"
+
+#: ../data/glade/block_machine.glade.h:1
+msgid "A_fter:"
+msgstr "_Depois:"
+
+#: ../data/glade/block_machine.glade.h:2
+msgid "Block machine"
+msgstr "Bloquear máquina"
+
+#: ../data/glade/block_machine.glade.h:3
+msgid ""
+"Shutdown\n"
+"Reboot"
+msgstr ""
+"Desligar\n"
+"Reiniciar"
+
+#: ../data/glade/block_machine.glade.h:5
+#: ../data/glade/unblock_machine.glade.h:13
+msgid "gtk-apply"
+msgstr ""
+
+#: ../data/glade/edit_user.glade.h:4
+msgid "User Editor - OpenLanhouse"
+msgstr "Editor de usuários - OpenLanhouse"
+
+#: ../data/glade/main.glade.h:1
+msgid "<b>C_ategories</b>"
+msgstr "<b>C_ategorias</b>"
+
+#: ../data/glade/main.glade.h:2
+msgid "<b>Mode</b>"
+msgstr "<b>Modo</b>"
+
+#: ../data/glade/main.glade.h:3
+msgid "<b>_Filter</b>"
+msgstr "<b>_Filtro</b>"
+
+#: ../data/glade/main.glade.h:4
+msgid "<big><b>New machines were found</b></big>"
+msgstr "<big><b>Novas máquinas foram encontradas</b></big>"
+
+#: ../data/glade/main.glade.h:5
+msgid "Add New User Into Database"
+msgstr ""
+
+#: ../data/glade/main.glade.h:6
+msgid "C_ategories:"
+msgstr "C_ategorias:"
+
+#: ../data/glade/main.glade.h:7
+msgid "Change Password"
+msgstr "Mudar senha"
+
+#: ../data/glade/main.glade.h:8 ../src/OpenlhServer/ui/dialogs.py:681
+msgid "Change password"
+msgstr "Mudar senha"
+
+#: ../data/glade/main.glade.h:9
+msgid "Columns"
+msgstr "Colunas"
+
+#: ../data/glade/main.glade.h:10
+msgid "Create a new machine"
+msgstr "Criar uma nova máquina"
+
+#: ../data/glade/main.glade.h:11
+msgid "Create a new user"
+msgstr "Criar um novo usuário"
+
+#: ../data/glade/main.glade.h:12
+msgid "D_ay:"
+msgstr "D_ia:"
+
+#: ../data/glade/main.glade.h:13
+msgid ""
+"January\n"
+"February\n"
+"March\n"
+"April\n"
+"May\n"
+"June\n"
+"July\n"
+"August\n"
+"September\n"
+"October\n"
+"November\n"
+"December"
+msgstr ""
+"Janeiro\n"
+"Fevereiro\n"
+"Março\n"
+"Abril\n"
+"Maio\n"
+"Junho\n"
+"Julho\n"
+"Agosto\n"
+"Setembro\n"
+"Outubro\n"
+"Novembro\n"
+"Dezembro"
+
+#: ../data/glade/main.glade.h:25
+msgid "M_onth:"
+msgstr "M_ês:"
+
+#: ../data/glade/main.glade.h:26 ../src/OpenlhServer/ui/treeview.py:302
+msgid "Machine"
+msgstr "Máquina"
+
+#: ../data/glade/main.glade.h:27
+msgid ""
+"Machine usage\n"
+"Other"
+msgstr ""
+
+#: ../data/glade/main.glade.h:29
+msgid "New machines were found"
+msgstr "Novas máquinas foram encontradas"
+
+#: ../data/glade/main.glade.h:30 ../src/OpenlhServer/ui/main.py:175
+msgid "OpenLanhouse - Server"
+msgstr "OpenLanhouse - Servidor"
+
+#: ../data/glade/main.glade.h:31
+msgid "Show _Status Bar"
+msgstr "Mostrar Barra de Status"
+
+#: ../data/glade/main.glade.h:32
+msgid "Show _Toolbar"
+msgstr "Mostrar Barra de Ferramentas"
+
+#: ../data/glade/main.glade.h:33
+msgid "Show manager"
+msgstr ""
+
+#: ../data/glade/main.glade.h:34
+msgid ""
+"Some non-registered machines have been found. Please register them so they "
+"can be used."
+msgstr ""
+
+#: ../data/glade/main.glade.h:35
+msgid "Window"
+msgstr "Janela"
+
+#: ../data/glade/main.glade.h:36 ../src/OpenlhServer/ui/main.py:946
+msgid "_Add Credit"
+msgstr "_Adicionar Crédito"
+
+#: ../data/glade/main.glade.h:37 ../src/OpenlhServer/ui/main.py:918
+msgid "_Add Time"
+msgstr "_Adicionar Tempo"
+
+#: ../data/glade/main.glade.h:38 ../src/OpenlhServer/ui/main.py:915
+msgid "_Block"
+msgstr "_Bloquear"
+
+#: ../data/glade/main.glade.h:39
+msgid "_Cash Flow"
+msgstr "_Movimento do Caixa"
+
+#: ../data/glade/main.glade.h:40
+msgid "_Classic View"
+msgstr "_Visualização Clássica"
+
+#: ../data/glade/main.glade.h:41
+msgid "_Daily"
+msgstr "_Diário"
+
+#: ../data/glade/main.glade.h:42
+msgid "_Day:"
+msgstr "_Dia:"
+
+#: ../data/glade/main.glade.h:43
+msgid "_Edit"
+msgstr "_Editar"
+
+#: ../data/glade/main.glade.h:44
+#, fuzzy
+msgid "_File"
+msgstr "Arquivo"
+
+#: ../data/glade/main.glade.h:45
+msgid "_Filter:"
+msgstr "_Filtro:"
+
+#: ../data/glade/main.glade.h:46
+msgid "_Help"
+msgstr "_Ajuda"
+
+#: ../data/glade/main.glade.h:47
+msgid "_Insert Credit"
+msgstr "_Inserir Crédito"
+
+#: ../data/glade/main.glade.h:48
+msgid "_Layout"
+msgstr "_Visualização"
+
+#: ../data/glade/main.glade.h:49 ../data/glade/prefs.glade.h:15
+msgid "_Machines"
+msgstr "_Máquinas"
+
+#: ../data/glade/main.glade.h:50
+msgid "_Monthly"
+msgstr "_Mensalmente"
+
+#: ../data/glade/main.glade.h:51
+msgid "_Open Debts"
+msgstr "_Dívidas Abertas"
+
+#: ../data/glade/main.glade.h:52 ../src/OpenlhServer/ui/main.py:1009
+msgid "_Paid"
+msgstr "_Pago"
+
+#: ../data/glade/main.glade.h:53
+msgid "_Register"
+msgstr "_Registrar"
+
+#: ../data/glade/main.glade.h:54 ../src/OpenlhServer/ui/main.py:949
+msgid "_Remove Credit"
+msgstr "_Remover Crédito"
+
+#: ../data/glade/main.glade.h:55 ../src/OpenlhServer/ui/main.py:921
+msgid "_Remove Time"
+msgstr "_Remover Tempo"
+
+#: ../data/glade/main.glade.h:56
+msgid "_Side Bar View"
+msgstr "_Visualização com Barra Lateral"
+
+#: ../data/glade/main.glade.h:57
+msgid "_Ticket"
+msgstr "_Ingresso"
+
+#: ../data/glade/main.glade.h:58 ../src/OpenlhServer/ui/main.py:912
+msgid "_Unblock"
+msgstr "_Desbloquear"
+
+#: ../data/glade/main.glade.h:59
+msgid "_User"
+msgstr "_Usuário"
+
+#: ../data/glade/main.glade.h:60
+msgid "_Users"
+msgstr "_Usuários"
+
+#: ../data/glade/main.glade.h:61
+msgid "_View"
+msgstr "_Ver"
+
+#: ../data/glade/main.glade.h:62
+msgid "_Year:"
+msgstr "_Ano:"
+
+#: ../data/glade/main.glade.h:65
+msgid "gtk-delete"
+msgstr ""
+
+#: ../data/glade/main.glade.h:66
+msgid "gtk-edit"
+msgstr ""
+
+#: ../data/glade/main.glade.h:67
+msgid "gtk-properties"
+msgstr ""
+
+#: ../data/glade/main.glade.h:68
+msgid "of"
+msgstr "de"
+
+#: ../data/glade/prefs.glade.h:1
+msgid "<b>Authentication</b>"
+msgstr "<b>Autenticação</b>"
+
+#: ../data/glade/prefs.glade.h:2
+msgid "<b>Lock Screen</b>"
+msgstr "<b>Tela de Bloqueio</b>"
+
+#: ../data/glade/prefs.glade.h:3
+msgid "<b>Welcome Message</b>"
+msgstr "<b>Mensagem de Boas Vindas</b>"
+
+#: ../data/glade/prefs.glade.h:5
+#, no-c-format
+msgid "<small><i>%n will be replaced by hostname</i></small>"
+msgstr "<small><i>%n será trocado pelo nome da máquina</i></small>"
+
+#: ../data/glade/prefs.glade.h:6
+msgid "C_ustom:"
+msgstr "_Personalizado:"
+
+#: ../data/glade/prefs.glade.h:7
+msgid "OpenLanhouse - Server Preferences"
+msgstr "OpenLanhouse - Preferências do Servidor"
+
+#: ../data/glade/prefs.glade.h:8
+msgid "_Administrator email:"
+msgstr "_E-Mail do Administrador:"
+
+#: ../data/glade/prefs.glade.h:9
+msgid "_Background:"
+msgstr "_Fundo:"
+
+#: ../data/glade/prefs.glade.h:10
+msgid "_Currency:"
+msgstr "_Moeda:"
+
+#: ../data/glade/prefs.glade.h:11
+msgid "_Default: \"Welcome\""
+msgstr "_Padrão: \"Bem Vindo\""
+
+#: ../data/glade/prefs.glade.h:12
+msgid "_General"
+msgstr "_Geral"
+
+#: ../data/glade/prefs.glade.h:13
+msgid "_Login support"
+msgstr "_Suporte à logins"
+
+#: ../data/glade/prefs.glade.h:14
+msgid "_Logo:"
+msgstr ""
+
+#: ../data/glade/prefs.glade.h:17
+msgid "_Price hour:"
+msgstr "_Preço por hora:"
+
+#: ../data/glade/prefs.glade.h:18
+msgid "_Ticket support"
+msgstr "_Suporte à ingressos"
+
+#: ../data/glade/prefs.glade.h:20
+msgid "name for lanhouse network"
+msgstr ""
+
+#: ../data/glade/remove_credit.glade.h:1
+msgid "<b><big>Remove Credit</big></b>"
+msgstr "<b><big>Remover crédito</big></b>"
+
+#: ../data/glade/remove_credit.glade.h:2
+msgid "Credit to _remove:"
+msgstr "Crédito à _remover:"
+
+#: ../data/glade/remove_credit.glade.h:3
+msgid "Current _Credit:"
+msgstr "_Crédito atual:"
+
+#: ../data/glade/remove_credit.glade.h:5
+msgid "Remove Credit"
+msgstr "Remover Crédito"
+
+#: ../data/glade/remove_credit.glade.h:7
+msgid "gtk-remove"
+msgstr ""
+
+#: ../data/glade/unblock_machine.glade.h:1
+msgid "(hh/mm)"
+msgstr ""
+
+#: ../data/glade/unblock_machine.glade.h:2
+msgid ":"
+msgstr ""
+
+#: ../data/glade/unblock_machine.glade.h:3
+msgid "<b>Time</b>"
+msgstr "<b>Tempo</b>"
+
+#: ../data/glade/unblock_machine.glade.h:4
+msgid "<b>User</b>"
+msgstr "<b>Usuário</b>"
+
+#: ../data/glade/unblock_machine.glade.h:5
+msgid "Total to _Pay:"
+msgstr "Total à Pagar:"
+
+#: ../data/glade/unblock_machine.glade.h:6
+msgid "U_nlimited"
+msgstr "N_ão limitado"
+
+#: ../data/glade/unblock_machine.glade.h:7
+msgid "Unblock machine"
+msgstr "Desbloquear máquina"
+
+#: ../data/glade/unblock_machine.glade.h:8
+msgid "_Limited"
+msgstr "_Limitado"
+
+#: ../data/glade/unblock_machine.glade.h:10
+msgid "_Registered"
+msgstr "_Registrado"
+
+#: ../data/glade/unblock_machine.glade.h:11
+msgid "_Time:"
+msgstr "_Tempo:"
+
+#: ../data/glade/unblock_machine.glade.h:12
+msgid "_Unregistered"
+msgstr "_Não Registrado"
+
+#: ../data/glade/userinfo.glade.h:1
+msgid "<b>Active:</b>"
+msgstr "<b>Ativo:</b>"
+
+#: ../data/glade/userinfo.glade.h:2
+msgid "<b>Address:</b>"
+msgstr "<b>Endereço:</b>"
+
+#: ../data/glade/userinfo.glade.h:3
+msgid "<b>Birth:</b>"
+msgstr "<b>Data de nascimento:</b>"
+
+#: ../data/glade/userinfo.glade.h:4
+msgid "<b>City:</b>"
+msgstr "<b>Cidade:</b>"
+
+#: ../data/glade/userinfo.glade.h:5
+msgid "<b>Credit:</b>"
+msgstr "<b>Crédito:</b>"
+
+#: ../data/glade/userinfo.glade.h:6
+msgid "<b>Email:</b>"
+msgstr "<b>E-mail:</b>"
+
+#: ../data/glade/userinfo.glade.h:7
+msgid "<b>Full Name:</b>"
+msgstr "<b>Nome Completo:</b>"
+
+#: ../data/glade/userinfo.glade.h:8
+msgid "<b>Identity:</b>"
+msgstr "<b>Identidade:</b>"
+
+#: ../data/glade/userinfo.glade.h:9
+msgid "<b>Last login at:</b>"
+msgstr "<b>Último login em:</b>"
+
+#: ../data/glade/userinfo.glade.h:10
+msgid "<b>Last login:</b>"
+msgstr "<b>Último login:</b>"
+
+#: ../data/glade/userinfo.glade.h:11
+msgid "<b>Login Count:</b>"
+msgstr "<b>Número de logins:</b>"
+
+#: ../data/glade/userinfo.glade.h:12
+msgid "<b>Nick:</b>"
+msgstr "<b>Apelido:</b>"
+
+#: ../data/glade/userinfo.glade.h:13
+msgid "<b>Observation:</b>"
+msgstr "<b>Observação:</b>"
+
+#: ../data/glade/userinfo.glade.h:14
+msgid "<b>Registred:</b>"
+msgstr "<b>Registrado:</b>"
+
+#: ../data/glade/userinfo.glade.h:15
+msgid "<b>Responsible:</b>"
+msgstr "<b>Responsável:</b>"
+
+#: ../data/glade/userinfo.glade.h:16
+msgid "<b>State/Province:</b>"
+msgstr "<b>Estado:</b>"
+
+#: ../data/glade/userinfo.glade.h:17
+msgid "<b>Telephone:</b>"
+msgstr "<b>Telefone:</b>"
+
+#: ../data/glade/userinfo.glade.h:18
+msgid "General"
+msgstr "Geral"
+
+#: ../data/glade/userinfo.glade.h:19
+msgid "Locale"
+msgstr "Local"
+
+#: ../data/glade/userinfo.glade.h:20
+msgid "Miscellaneus"
+msgstr ""
+
+#: ../data/glade/cash_flow_new_item.glade.h:1
+msgid "<b>Warning:</b> User not found"
+msgstr "<b>Atenção:</b> Usuário não encontrado"
+
+#: ../data/glade/cash_flow_new_item.glade.h:2
+msgid ""
+"In\n"
+"Out"
+msgstr ""
+
+#: ../data/glade/cash_flow_new_item.glade.h:4
+msgid "New Cash Flow Item"
+msgstr ""
+
+#: ../data/glade/cash_flow_new_item.glade.h:5
+msgid "_Notes:"
+msgstr "_Notas:"
+
+#: ../data/glade/cash_flow_new_item.glade.h:6
+msgid "_Type:"
+msgstr "_Tipo:"
+
+#: ../data/glade/cash_flow_new_item.glade.h:7
+msgid "_User:"
+msgstr "_Usuário"
+
+#: ../data/glade/cash_flow_new_item.glade.h:8
+msgid "_Value:"
+msgstr "_Valor:"
+
+#: ../src/OpenlhServer/daemon.py:181 ../src/OpenlhServer/daemon.py:182
+msgid "%H:%M:%S"
+msgstr ""
+
+#: ../src/OpenlhServer/daemon.py:594
+msgid "<big><b>Cannot listen OpenLanHouse Server</b></big>"
+msgstr ""
+
+#: ../src/OpenlhServer/daemon.py:672
+msgid "<big><b>Cannot connect into database</b></big>"
+msgstr "<big><b>Não foi possível conectar no banco de dados</b></big>"
+
+#: ../src/OpenlhServer/globals.py:95
+msgid "OpenLanHouse - Client"
+msgstr ""
+
+#: ../src/OpenlhServer/globals.py:96
+msgid "OpenLanHouse - Administration"
+msgstr ""
+
+#: ../src/OpenlhServer/globals.py:128
+msgid ""
+"OpenLanhouse is free software: you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation, either version 3 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+
+#: ../src/OpenlhServer/ui/dialogs.py:63
+msgid "Developers:"
+msgstr "Desenvolvedores:"
+
+#: ../src/OpenlhServer/ui/dialogs.py:66
+msgid "Contributors:"
+msgstr "Contribuidores:"
+
+#: ../src/OpenlhServer/ui/dialogs.py:75
+msgid "OpenLanhouse Website"
+msgstr "Site do OpenLanhouse"
+
+#. Buttons
+#: ../src/OpenlhServer/ui/dialogs.py:151
+msgid "Miminize to _Tray"
+msgstr "Minimizar para a bandeja"
+
+#: ../src/OpenlhServer/ui/dialogs.py:199
+msgid "All files"
+msgstr "Todos arquivos"
+
+#: ../src/OpenlhServer/ui/dialogs.py:204
+msgid "Images"
+msgstr "Imagens"
+
+#: ../src/OpenlhServer/ui/dialogs.py:693
+msgid "C_hange password"
+msgstr "M_udar senha"
+
+#: ../src/OpenlhServer/ui/dialogs.py:715
+msgid ""
+"<b><big>Change password</big></b>\n"
+"\n"
+"To Change the password, enter the new password, retype it for verification "
+"and click <b>Change password</b>."
+msgstr ""
+"<b><big>Mudar senha</big></b>\n"
+"\n"
+"Para mudar a senha, digite a nova senha, depois digite-a novamente para "
+"verificação e clique em <b>Mudar Senha</b>."
+
+#: ../src/OpenlhServer/ui/dialogs.py:746
+msgid "_New password:"
+msgstr "_Nova senha:"
+
+#: ../src/OpenlhServer/ui/dialogs.py:755
+msgid "_Retype new password:"
+msgstr "_Digite a nova senha novamente:"
+
+#: ../src/OpenlhServer/ui/dialogs.py:963
+#: ../src/OpenlhServer/ui/dialogs.py:1501
+#, python-format
+msgid "%s Properties"
+msgstr "%s Propriedades"
+
+#: ../src/OpenlhServer/ui/dialogs.py:999
+msgid "True"
+msgstr "Verdadeiro"
+
+#: ../src/OpenlhServer/ui/dialogs.py:1001
+msgid "False"
+msgstr "Falso"
+
+#: ../src/OpenlhServer/ui/dialogs.py:1116
+#, python-format
+msgid ""
+"<b><big>Are you sure you want to block \"%s\" Machine?</big></b>\n"
+"\n"
+"This machine is in use and if you block it, unsaved work will be lost."
+msgstr ""
+"<b><big>Você deseja mesmo bloquear a máquina \"%s\" ?</big></b>\n"
+"\n"
+"Essa máquina está em uso e se você bloquea-la, o trabalho não salvo será "
+"perdido."
+
+#: ../src/OpenlhServer/ui/dialogs.py:1254
+msgid "The user does not have sufficient credits"
+msgstr "O usuário não possui créditos suficientes"
+
+#: ../src/OpenlhServer/ui/dialogs.py:1310
+#, python-format
+msgid "%s %0.2f of credit"
+msgstr "%s %0.2f de crédito"
+
+#: ../src/OpenlhServer/ui/dialogs.py:1322
+msgid "User not found"
+msgstr "Usuário não encontrado"
+
+#. Populate Machines treeview
+#: ../src/OpenlhServer/ui/main.py:243
+msgid "Loading machines"
+msgstr "Carregando máquinas"
+
+#. Start Loop to update times
+#. Populate Users treeview
+#: ../src/OpenlhServer/ui/main.py:256
+msgid "Loading users"
+msgstr "Carregando usuários"
+
+#. Populate OpenDebts Machine
+#: ../src/OpenlhServer/ui/main.py:299
+msgid "Loading OpenDebts"
+msgstr "Carregando Dividas abertas"
+
+#: ../src/OpenlhServer/ui/main.py:312 ../src/OpenlhServer/ui/main.py:1357
+#: ../src/OpenlhServer/ui/main.py:1624
+msgid "Unknown user"
+msgstr "Usuário desconhecido"
+
+#: ../src/OpenlhServer/ui/main.py:317 ../src/OpenlhServer/ui/main.py:1362
+msgid "Unknown machine"
+msgstr "Máquina desconhecida"
+
+#: ../src/OpenlhServer/ui/main.py:358
+msgid "All Machines"
+msgstr "Todas máquinas"
+
+#: ../src/OpenlhServer/ui/main.py:376
+msgid "<b>Machine usage</b>"
+msgstr "<b>Uso de Máquinas</b>"
+
+#: ../src/OpenlhServer/ui/main.py:376 ../src/OpenlhServer/ui/main.py:377
+msgid "fill me"
+msgstr ""
+
+#: ../src/OpenlhServer/ui/main.py:377
+msgid "<b>Other</b>"
+msgstr ""
+
+#: ../src/OpenlhServer/ui/main.py:485
+msgid "Edit Machine - OpenLanhouse"
+msgstr "Editar Máquina - OpenLanhouse"
+
+#: ../src/OpenlhServer/ui/main.py:541
+msgid ""
+"<b><big>Cannot delete machine</big></b>\n"
+"\n"
+"This machine is in use"
+msgstr ""
+"<b><big>Não é possível deletar máquina</big></b>\n"
+"\n"
+"Essa máquina está em uso"
+
+#: ../src/OpenlhServer/ui/main.py:547
+#, python-format
+msgid ""
+"<b><big>Are you sure you want to permanently delete '%s'?</big></b>\n"
+"\n"
+"if you delete this machine, it will be permanently lost"
+msgstr ""
+"<b><big>Você deseja mesmo excluir permanentemente '%s'?</big></b>\n"
+"\n"
+"if you delete this machine, it will be permanently lost"
+
+#. TODO: assert credit == 0
+#: ../src/OpenlhServer/ui/main.py:561
+#, python-format
+msgid ""
+"<b><big>Are you sure you want to permanently delete '%s'?</big></b>\n"
+"\n"
+"if you delete this user, it will be permanently lost"
+msgstr ""
+"<b><big>Você deseja mesmo deletar permanentemente '%s'?</big></b>\n"
+"\n"
+"Se você deletar esse usuário, ele será permanentemente perdido"
+
+#: ../src/OpenlhServer/ui/main.py:581
+msgid ""
+"<b><big>Cannot block machine</big></b>\n"
+"\n"
+"This machine is not available"
+msgstr ""
+"<b><big>Impossível bloquear máquina</big></b>\n"
+"\n"
+"Essa máquina não está disponível"
+
+#: ../src/OpenlhServer/ui/main.py:588
+msgid ""
+"<b><big>Cannot block machine</big></b>\n"
+"\n"
+"This machine already blocked"
+msgstr ""
+"<b><big>Impossível bloquear máquina</big></b>\n"
+"\n"
+"Essa máquina já está bloqueada"
+
+#: ../src/OpenlhServer/ui/main.py:615
+msgid ""
+"<b><big>Cannot unblock machine</big></b>\n"
+"\n"
+"This machine is not available"
+msgstr ""
+"<b><big>Impossível desbloquear máquina</big></b>\n"
+"\n"
+"Essa máquina não está disponível"
+
+#: ../src/OpenlhServer/ui/main.py:621
+msgid ""
+"<b><big>Cannot unblock machine</big></b>\n"
+"\n"
+"This machine already in use"
+msgstr ""
+"<b><big>Impossível desbloquear máquina</big></b>\n"
+"\n"
+"Essa máquina já está em uso"
+
+#: ../src/OpenlhServer/ui/main.py:1233
+msgid "Available"
+msgstr "Disponível"
+
+#: ../src/OpenlhServer/ui/main.py:1234
+msgid "Available machines"
+msgstr "Máquinas disponíveis"
+
+#: ../src/OpenlhServer/ui/main.py:1239
+msgid "Busy"
+msgstr "Ocupada"
+
+#: ../src/OpenlhServer/ui/main.py:1240
+msgid "Busy machines"
+msgstr "Máquinas ocupadas"
+
+#: ../src/OpenlhServer/ui/main.py:1245
+msgid "Unavailable"
+msgstr "Indisponível"
+
+#: ../src/OpenlhServer/ui/main.py:1246
+msgid "Unavailable machines"
+msgstr "Máquinas indisponíveis"
+
+#: ../src/OpenlhServer/ui/main.py:1284 ../src/OpenlhServer/ui/main.py:1288
+msgid "<big><b>Are you sure you want to quit?</b></big>"
+msgstr ""
+
+#: ../src/OpenlhServer/ui/main.py:1483
+#, python-format
+msgid "%s Disconnected"
+msgstr "%s Desconectada"
+
+#: ../src/OpenlhServer/ui/main.py:1484
+#, python-format
+msgid "%s is now Offline"
+msgstr "%s está agora desconectada"
+
+#: ../src/OpenlhServer/ui/main.py:1487
+#, python-format
+msgid "%s Connected"
+msgstr "% Connectada"
+
+#: ../src/OpenlhServer/ui/main.py:1488 ../src/OpenlhServer/ui/main.py:1517
+#, python-format
+msgid "%s is now Available"
+msgstr "%s está agora disponível"
+
+#: ../src/OpenlhServer/ui/main.py:1513
+#, python-format
+msgid "%s Unavailable"
+msgstr "%s Indisponível"
+
+#: ../src/OpenlhServer/ui/main.py:1514
+#, python-format
+msgid "%s is now Unavailable"
+msgstr "%s está agora Indisponível"
+
+#: ../src/OpenlhServer/ui/main.py:1516
+#, python-format
+msgid "%s Available"
+msgstr "%s Disponível"
+
+#: ../src/OpenlhServer/ui/main.py:1519
+#, python-format
+msgid "%s Busy"
+msgstr "%s Ocupada"
+
+#: ../src/OpenlhServer/ui/main.py:1520
+#, python-format
+msgid "%s is now Busy"
+msgstr "%s agora está Ocupada"
+
+#: ../src/OpenlhServer/ui/main.py:1607
+msgid "Credit In"
+msgstr "Entrada de Crédito"
+
+#: ../src/OpenlhServer/ui/main.py:1609
+msgid "Credit Out"
+msgstr "Saída de Crédito"
+
+#: ../src/OpenlhServer/ui/main.py:1611
+msgid "Machine Usage"
+msgstr ""
+
+#: ../src/OpenlhServer/ui/main.py:1613
+msgid "Custom In"
+msgstr ""
+
+#: ../src/OpenlhServer/ui/main.py:1615
+msgid "Custom Out"
+msgstr ""
+
+#: ../src/OpenlhServer/ui/main.py:1647
+#, python-format
+msgid "Cash in: %0.2f, Cash out: %0.2f"
+msgstr "Entrada: %0.2f, Saída: %0.2f"
+
+#: ../src/OpenlhServer/ui/main.py:1870
+msgid "Unlimited"
+msgstr "Não limitado"
+
+#: ../src/OpenlhServer/ui/main.py:1882
+msgid "None"
+msgstr "Nenhum"
+
+#: ../src/OpenlhServer/ui/treeview.py:229
+#: ../src/OpenlhServer/ui/treeview.py:255
+#: ../src/OpenlhServer/ui/treeview.py:298
+#: ../src/OpenlhServer/ui/treeview.py:325
+msgid "ID"
+msgstr ""
+
+#: ../src/OpenlhServer/ui/treeview.py:233
+msgid "Source"
+msgstr ""
+
+#: ../src/OpenlhServer/ui/treeview.py:235
+msgid "Host"
+msgstr ""
+
+#: ../src/OpenlhServer/ui/treeview.py:237
+#: ../src/OpenlhServer/ui/treeview.py:281
+#: ../src/OpenlhServer/ui/treeview.py:308
+#: ../src/OpenlhServer/ui/treeview.py:331
+msgid "User"
+msgstr "Usuário"
+
+#: ../src/OpenlhServer/ui/treeview.py:239
+#: ../src/OpenlhServer/ui/treeview.py:329
+msgid "Time"
+msgstr "Tempo"
+
+#: ../src/OpenlhServer/ui/treeview.py:241
+msgid "Time elapsed"
+msgstr "Tempo decorrido"
+
+#: ../src/OpenlhServer/ui/treeview.py:243
+msgid "Time left"
+msgstr "Tempo restante"
+
+#: ../src/OpenlhServer/ui/treeview.py:245
+msgid "Total to pay"
+msgstr "Total à pagar"
+
+#: ../src/OpenlhServer/ui/treeview.py:257
+msgid "Nick"
+msgstr "Apelido"
+
+#: ../src/OpenlhServer/ui/treeview.py:259
+msgid "Name"
+msgstr "Nome"
+
+#: ../src/OpenlhServer/ui/treeview.py:261
+msgid "Email"
+msgstr "E-mail"
+
+#: ../src/OpenlhServer/ui/treeview.py:264
+msgid "Credit"
+msgstr "Crédito"
+
+#: ../src/OpenlhServer/ui/treeview.py:275
+#: ../src/OpenlhServer/ui/treeview.py:300
+#: ../src/OpenlhServer/ui/treeview.py:327
+msgid "Day"
+msgstr "Dia"
+
+#: ../src/OpenlhServer/ui/treeview.py:277
+msgid "Hour"
+msgstr "Hora"
+
+#: ../src/OpenlhServer/ui/treeview.py:279
+msgid "Type"
+msgstr "Tipo"
+
+#: ../src/OpenlhServer/ui/treeview.py:284
+#: ../src/OpenlhServer/ui/treeview.py:311
+#: ../src/OpenlhServer/ui/treeview.py:334
+msgid "Notes"
+msgstr "Notas"
+
+#: ../src/OpenlhServer/ui/treeview.py:287
+#: ../src/OpenlhServer/ui/treeview.py:314
+#: ../src/OpenlhServer/ui/treeview.py:337
+msgid "Value"
+msgstr "Valor"
+
+#: ../src/OpenlhServer/ui/treeview.py:304
+msgid "Start time"
+msgstr "Tempo inicial"
+
+#: ../src/OpenlhServer/ui/treeview.py:306
+msgid "End time"
+msgstr "Tempo final"
+
+#~ msgid "<b>New machines were found</b>"
+#~ msgstr "<b>Novas máquinas foram encontradas</b>"
+
+#~ msgid "<b>_Find Machines</b>"
+#~ msgstr "<b>_Procurar Máquinas</b>"
+
+#~ msgid "<b>_Search</b>"
+#~ msgstr "<b>_Procurar</b>"
+
+#~ msgid "_Find machines:"
+#~ msgstr "_Procurar máquinas:"
+
+#~ msgid "_Find users:"
+#~ msgstr "_Procurar usuário:"
+
+#~ msgid "_Search:"
+#~ msgstr "_Procurar:"
+
+#~ msgid "Unblock"
+#~ msgstr "Desbloquear"
+
+#~ msgid "Block"
+#~ msgstr "Bloquear"

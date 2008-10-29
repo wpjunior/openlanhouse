@@ -1,0 +1,1 @@
+SUBDIRS = OpenlhCore certtool

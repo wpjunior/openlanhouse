@@ -1,0 +1,12 @@
+Source: openlh-client
+Section: gnome
+Priority: extra
+Maintainer: Wilson Pinto Júnior <wilson@openlanhouse.org>
+Build-Depends: debhelper (>= 6), autotools-dev, libpanel-applet2-dev, libdbus-glib-1-dev, 
+Standards-Version: 3.7.3
+Homepage: http://openlanhouse.org
+
+Package: openlh-client
+Architecture: i386
+Depends: ${shlibs:Depends}, ${misc:Depends}, python-gnome2, python-gtk2, python-certtool, python-gnutls, python-dbus
+Description: a LAN House and Cyber Caffe Client for GNOME Desktop.

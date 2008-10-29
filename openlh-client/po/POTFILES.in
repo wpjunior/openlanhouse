@@ -1,0 +1,18 @@
+[encoding: UTF-8]
+# List of source files containing translatable strings.
+# Please keep this file sorted alphabetically.
+gnomeapplet/GNOME_OpenlhClientApplet.server.in.in
+gnomeapplet/applet.c
+data/openlh-client.desktop.in.in
+data/openlh-client.schemas.in
+data/glade/connect_server.glade
+data/glade/login.glade
+data/glade/main.glade
+data/glade/prefs.glade
+data/glade/serverinfo.glade
+src/openlh-client
+src/OpenlhClient/globals.py
+src/OpenlhClient/login.py
+src/OpenlhClient/main.py
+src/OpenlhClient/prefs.py
+src/OpenlhClient/ui/dialogs.py

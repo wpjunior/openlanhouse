@@ -1,0 +1,219 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+#  Copyright (C) 2008 Wilson Pinto Júnior (N3RD3X) <n3rd3x@guake-terminal.org>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+import sys
+import os
+import logging
+import getopt
+
+from OpenlhClient.globals import *
+from OpenlhCore.utils import mkdir
+_ = gettext.gettext
+
+disable_autodebug = False
+verbose = False
+
+try:
+    opts, args = getopt.getopt(sys.argv[1:], 'hvp:', ['help', 'verbose',
+        'disable-autoverbose', 'version'])
+
+except getopt.error, msg:
+    print msg
+    print _('for help use --help')
+    sys.exit(2)
+
+for o, a in opts:
+    
+    if o in ('-h', '--help'):
+        print sys.argv[0], '[--help] [--verbose] [--disable-autoverbose] [--version]'
+        sys.exit()
+        
+    elif o == '--verbose':
+        verbose = False
+    
+    elif o == '--disable_autoverbose':
+        disable_autodebug = True
+    
+    elif o == '--version':
+        print APP_NAME, APP_VERSION
+        sys.exit()
+
+try:
+    import pygtk
+    pygtk.require('2.0')
+    
+    import gtk
+except ImportError:
+    print >> sys.stderr, _('OpenLanhouse needs PyGTK to run. Please install '+
+                           'the latest stable version from ' +
+                           'http://www.pygtk.org')
+    sys.exit(3)
+
+try:
+    import gconf
+except ImportError:
+    from OpenlhClient.ui import dialogs
+    
+    dialogs.ok_only(_('<big><b>Required Module not found</b></big>\n\n'+
+                      'OpenLanhouse needs \'python-gconf\' to run. Please install '+
+                      'the lastest stable version this package.'),
+                    ICON=dialogs.gtk.MESSAGE_ERROR)
+    sys.exit(3)
+
+from time import strftime
+from OpenlhClient import main
+from OpenlhCore.utils import rename_process
+from OpenlhClient.utils import generate_id_bytime
+from OpenlhClient.ui import dialogs
+from OpenlhCore.net import certgen
+
+if os.name == 'posix':
+    log_normal_format = ('\033[0;33m%(name)-17s ' +
+                         '\033[0;31m%(levelname)-8s '+
+                         '\033[0;37m%(message)s') #Debug colored by ANSI colors
+    
+    log_debug_format = ('\033[0;32m%(asctime)s ' +
+                        '\033[0;31m%(levelname)-6s ' +
+                        '\033[0;33m%(name)-17s ' +
+                        '\033[0;37m%(message)s') #Debug colored by ANSI colors
+else:
+    log_normal_format = '%(name)-14s %(levelname)-8s %(message)s'
+    log_debug_format = '%(asctime)s (levelname)-6s (name)-17s (message)s'
+
+log_format = log_normal_format
+log_level = logging.CRITICAL
+
+if '.svn' in os.listdir(os.getcwd()) and not(disable_autodebug) or verbose:
+    log_format = log_debug_format
+    log_level = logging.DEBUG
+
+logging.basicConfig(level=log_level,
+                    format=log_format,
+                    datefmt='%H:%M:%S',
+                    )
+
+class OpenlhClient:
+    
+    def __init__(self):
+        
+        rename_process('openlh-client')
+        mkdir(CACHE_PATH)
+        logging.info('Starting OpenLanhouse Client')
+        self.gconf_client = gconf.client_get_default()
+        
+        if not self.gconf_client.get_string('/apps/openlh-client/hash_id'):
+            self.gconf_client.set_string('/apps/openlh-client/hash_id',
+                                         generate_id_bytime()) #Generate Hash_ID
+        
+        if not self.gconf_client.get_string('/apps/openlh-client/server'):
+            dlg = dialogs.ConnectServer()
+            host = dlg.run()
+            
+            if host:
+                self.gconf_client.set_string('/apps/openlh-client/server',
+                                             host)
+            else:
+                sys.exit(0)
+    
+    def generate_keys(self):
+        """
+            Generate all keys and certificates required for execution
+        """
+        
+        try:
+            os.remove(CLIENT_TLS_KEY)
+        except:
+            pass
+        
+        try:
+            os.remove(CLIENT_TLS_CERT)
+        except:
+            pass
+        
+        mkdir(CERTS_PATH)
+
+        try:
+            logging.debug("Generating Privkey")
+        
+            privkey = certgen.generate_private_key()
+            open(CLIENT_TLS_KEY, 'w').write(privkey.export())
+            
+            logging.debug("Generating Template")
+            
+            template = certgen.Template(CLIENT_TLS_TEMPLATE)
+            template.organization = _("OpenLanhouse Client")
+            template.expiration_days = 1825
+            
+            template.common_name = APP_NAME
+            
+            logging.debug("Generating SelfSigned Certificate")
+            
+            certificate = certgen.generate_self_signed(privkey=privkey,
+                                                       template=template)
+            
+            open(CLIENT_TLS_CERT, 'w').write(certificate.export())
+            
+        except Exception, error:
+            dialogs.ok_only(_('<big><b>Cannot Generate Private Key</b></big>' +
+                              '\n\n%s') % str(error),
+                            ICON=gtk.MESSAGE_ERROR)
+            
+            try:
+                os.remove(CLIENT_TLS_KEY)
+            except:
+                pass
+        
+            try:
+                os.remove(CLIENT_TLS_CERT)
+            except:
+                pass
+            
+            sys.exit(0)
+    
+    def stop_gnome_screensaver(self):
+        try:
+            import dbus
+            s = dbus.SessionBus()
+            services = s.get_object('org.freedesktop.DBus',
+                                    '/org/freedesktop/DBus').ListNames()
+    
+            if not "org.gnome.ScreenSaver" in services:
+                return
+        
+            s.get_object("org.gnome.ScreenSaver", "/org/gnome/ScreenSaver").Quit()
+        except dbus.exceptions.DBusException:
+            pass
+    
+    def run(self):
+        
+        if not(os.path.exists(CLIENT_TLS_KEY)) or not(os.path.exists(CLIENT_TLS_CERT)):
+            self.generate_keys()
+        
+        app = main.Client()
+        self.stop_gnome_screensaver()
+        
+        try:
+            gtk.gdk.threads_init()
+            gtk.main()
+        except:
+            pass
+        
+
+if __name__ == "__main__":
+    app = OpenlhClient()
+    app.run()

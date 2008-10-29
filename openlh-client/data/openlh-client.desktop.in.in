@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+_Name=OpenLanhouse Client
+_Comment=LAN House Client for Gnome Desktop
+TryExec=openlh-client
+Exec=openlh-client
+Icon=openlh-client
+Type=Application
+Categories=GNOME;GTK;Network;
+StartupNotify=true

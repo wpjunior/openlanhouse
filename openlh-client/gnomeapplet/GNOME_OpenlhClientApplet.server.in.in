@@ -1,0 +1,30 @@
+<oaf_info>
+
+<oaf_server iid="OAFIID:GNOME_OpenlhClientApplet_Factory"
+	    type="exe"
+	    location="@LIBEXECDIR@/openlh-client-applet">
+
+	<oaf_attribute name="repo_ids" type="stringv">
+		<item value="IDL:Bonobo/GenericFactory:1.0"/>
+		<item value="IDL:Bonobo/Unknown:1.0"/>
+	</oaf_attribute>
+	<oaf_attribute name="name" type="string" _value="OpenLanhouse Client Factory"/>
+	<oaf_attribute name="description" type="string" _value="Applet to show OpenLanhouse Client status."/>
+
+</oaf_server>
+
+<oaf_server iid="OAFIID:GNOME_OpenlhClientApplet"
+	    type="factory" 
+	    location="OAFIID:GNOME_OpenlhClientApplet_Factory">
+
+	<oaf_attribute name="repo_ids" type="stringv">
+		<item value="IDL:GNOME/Vertigo/PanelAppletShell:1.0"/>
+		<item value="IDL:Bonobo/Control:1.0"/>
+		<item value="IDL:Bonobo/Unknown:1.0"/>
+	</oaf_attribute>
+	<oaf_attribute name="name" type="string" _value="OpenLanhouse Client Applet"/>
+	<oaf_attribute name="description" type="string" _value="Get informations from OpenLanhouse Client"/>
+	<oaf_attribute name="panel:icon" type="string" value="openlh-client"/>
+</oaf_server>
+
+</oaf_info>

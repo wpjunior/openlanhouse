@@ -1,0 +1,30 @@
+OpenLanhouse Todo
+=================
+===== For 0.2 release ======
+
+ - Code cleanup
+ - Rewrite the network system, using gnutls and glib
+ - Add post-paid and before-paid system
+ - Write a very well documentation
+ - Shutdown and reboot remotely (call gdm or kdm)
+ - Write a ticket system
+ - Other OpenDebts works!
+ - Add a new bugtracker (done)
+ - maybe migrate to git
+ - maybe works in windows
+ - Add price per machine category
+ - Improvements in translations
+ - Add a system of plugins
+ - System configuration per machine category
+ - More compatibility with gnome hig!
+ - Remove python-certtool dependency and use certtool binary.
+
+ ==== * Starting project * ====
+
+ * Create a full structure of files to follow the gnu coding standards:
+
+    - http://www.gnu.org/prep/standards/standards.html#Making releases
+
+ * Will code pretty to hack the world!
+
+ * Write a right README file!

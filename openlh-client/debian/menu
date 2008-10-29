@@ -1,0 +1,6 @@
+?package(openlh-client): \
+   needs="wm" \
+   section="Applications/Network" \
+   title="OpenLanhouse Client" \
+   icon="openlh-client.png" \
+   command="/usr/bin/openlh-client"

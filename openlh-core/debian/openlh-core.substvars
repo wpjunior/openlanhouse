@@ -1,0 +1,2 @@
+python:Depends=python (<< 2.6), python (>= 2.5)
+misc:Depends=python-gnome2, python-gtk2, python-certtool, python-gnutls, python-sqlalchemy

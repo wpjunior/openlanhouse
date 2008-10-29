@@ -1,0 +1,524 @@
+<?xml version="1.0"?>
+<gconfschemafile><schemalist>
+
+    <schema>
+      <key>/schemas/apps/openlh-server/name</key>
+      <applyto>/apps/openlh-server/name</applyto>
+      <owner>openlh-server</owner>
+      <type>string</type>
+      <default>OpenLanhouse</default>
+      
+      <locale name="C">
+        <short>The name for Cyber Cafe</short>
+        <long>The name used to identify the Cyber Cafe.</long>
+      </locale>
+      
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/admin_email</key>
+      <applyto>/apps/openlh-server/admin_email</applyto>
+      <owner>openlh-server</owner>
+      <type>string</type>
+      
+      <locale name="C">
+        <short>The email of Administrator</short>
+      </locale>
+      
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/openlh-server/currency</key>
+      <applyto>/apps/openlh-server/currency</applyto>
+      <owner>openlh-server</owner>
+      <type>string</type>
+      <default>US$</default>
+      
+      <locale name="C">
+        <short>Abbreviation of currency</short>
+        <long>Kind of money used in the Cyber Cafe</long>
+      </locale>
+      
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/price_per_hour</key>
+      <applyto>/apps/openlh-server/price_per_hour</applyto>
+      <owner>openlh-server</owner>
+      <type>float</type>
+      <locale name="C">
+        <short>Price per hour</short>
+      </locale>
+      
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/listen_port</key>
+      <applyto>/apps/openlh-server/listen_port</applyto>
+      <owner>openlh-server</owner>
+      <type>int</type>
+      <default>4558</default>
+      <locale name="C">
+        <short>Port to Listen in the network</short>
+      </locale>
+      
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/use_psyco</key>
+      <applyto>/apps/openlh-server/use_psyco</applyto>
+      <owner>openlh-server</owner>
+      <type>bool</type>
+      <default>false</default>
+      
+      <locale name="C">
+        <short>Use psyco to python speed up.</short>
+      </locale>
+      
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/db/engine</key>
+      <applyto>/apps/openlh-server/db/engine</applyto>
+      <owner>openlh-server</owner>
+      <type>string</type>
+      <default>sqlite</default>
+      
+      <locale name="C">
+        <short>Database engine</short>
+        <long>Current on: sqlite, mysql and postgres.</long>
+      </locale>
+      
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/db/port</key>
+      <applyto>/apps/openlh-server/db/port</applyto>
+      <owner>openlh-server</owner>
+      <type>int</type>
+      
+      <locale name="C">
+        <short>Port used to connect into database server</short>
+      </locale>
+      
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/db/host</key>
+      <applyto>/apps/openlh-server/db/host</applyto>
+      <owner>openlh-server</owner>
+      <type>string</type>
+      
+      <locale name="C">
+        <short>Database hostname</short>
+      </locale>
+      
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/db/database</key>
+      <applyto>/apps/openlh-server/db/database</applyto>
+      <owner>openlh-server</owner>
+      <type>string</type>
+      
+      <locale name="C">
+        <short>Database name</short>
+      </locale>
+      
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/db/custom_sqlite_file</key>
+      <applyto>/apps/openlh-server/db/custom_sqlite_file</applyto>
+      <owner>openlh-server</owner>
+      <type>string</type>
+      
+      <locale name="C">
+        <short>Custom file path to sqlite database</short>
+      </locale>
+      
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/db/user</key>
+      <applyto>/apps/openlh-server/db/user</applyto>
+      <owner>openlh-server</owner>
+      <type>string</type>
+      
+      <locale name="C">
+        <short>Username used to auth in the database server</short>
+      </locale>
+      
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/db/password</key>
+      <applyto>/apps/openlh-server/db/password</applyto>
+      <owner>openlh-server</owner>
+      <type>string</type>
+      
+      <locale name="C">
+        <short>Password used to auth in the database server</short>
+      </locale>
+      
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/ui/show_notifications</key>
+      <applyto>/apps/openlh-server/ui/show_notifications</applyto>
+      <owner>openlh-server</owner>
+      <type>bool</type>
+      <default>true</default>
+      
+      <locale name="C">
+        <short>Allow use notifications popups</short>
+        <long>Allow use notifications to show alerts and informations.</long>
+      </locale>
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/ui/maximized</key>
+      <applyto>/apps/openlh-server/ui/maximized</applyto>
+      <owner>openlh-server</owner>
+      <type>bool</type>
+      <default>true</default>
+      
+      <locale name="C">
+        <short>Main window maximization state</short>
+        <long>If true, the main window is maximized.</long>
+      </locale>
+      
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/ui/height</key>
+      <applyto>/apps/openlh-server/ui/height</applyto>
+      <owner>openlh-server</owner>
+      <type>int</type>
+      <default>550</default>
+      
+      <locale name="C">
+        <short>Main window height</short>
+        <long>Main window height.</long>
+      </locale>
+      
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/ui/width</key>
+      <applyto>/apps/openlh-server/ui/width</applyto>
+      <owner>openlh-server</owner>
+      <type>int</type>
+      <default>800</default>
+      
+      <locale name="C">
+        <short>Main window width</short>
+        <long>Main window width.</long>
+      </locale>
+      
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/ui/visible</key>
+      <applyto>/apps/openlh-server/ui/visible</applyto>
+      <owner>openlh-server</owner>
+      <type>bool</type>
+      <default>true</default>
+      
+      <locale name="C">
+        <short>Whether the window is visible</short>
+        <long>When set to false, causes start only as a tray icon with the window hidden.</long>
+      </locale>
+      
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/ui/position_x</key>
+      <applyto>/apps/openlh-server/ui/position_x</applyto>
+      <owner>openlh-server</owner>
+      <type>int</type>
+      <default>0</default>
+      
+      <locale name="C">
+        <short>Main window X position</short>
+        <long>Main window X position.</long>
+      </locale>
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/ui/position_y</key>
+      <applyto>/apps/openlh-server/ui/position_y</applyto>
+      <owner>openlh-server</owner>
+      <type>int</type>
+      <default>0</default>
+      
+      <locale name="C">
+        <short>Main window Y position</short>
+        <long>Main window Y position.</long>
+      </locale>
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/ui/machines_columns</key>
+      <applyto>/apps/openlh-server/ui/machines_columns</applyto>
+      <owner>openlh-server</owner>
+      <type>list</type>
+      <list_type>string</list_type>
+      <default>[host,user,time,time_last,total_to_pay]</default>
+      
+      <locale name="C">
+        <short>Columns visible in machines treeview</short>
+        <long>Columns visible in machines treeview.</long>
+      </locale>
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/ui/users_columns</key>
+      <applyto>/apps/openlh-server/ui/users_columns</applyto>
+      <owner>openlh-server</owner>
+      <type>list</type>
+      <list_type>string</list_type>
+      <default>[nick,name,email,credit]</default>
+      
+      <locale name="C">
+        <short>Columns visible in users treeview</short>
+        <long>Columns visible in users treeview.</long>
+      </locale>
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/ui/cash_flow_columns</key>
+      <applyto>/apps/openlh-server/ui/cash_flow_columns</applyto>
+      <owner>openlh-server</owner>
+      <type>list</type>
+      <list_type>string</list_type>
+      <default>[day,hour,type,user,description,value]</default>
+      
+      <locale name="C">
+        <short>Columns visible in Cash flow treeview</short>
+        <long>Columns visible in Cash flow treeview.</long>
+      </locale>
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/ui/open_debts_machine_columns</key>
+      <applyto>/apps/openlh-server/ui/open_debts_machine_columns</applyto>
+      <owner>openlh-server</owner>
+      <type>list</type>
+      <list_type>string</list_type>
+      <default>[day,hour,machine,start_time,end_time,user,value]</default>
+      
+      <locale name="C">
+        <short>Columns visible in Open Debts Machine treeview</short>
+        <long>Columns visible in Open Debts Machine treeview.</long>
+      </locale>
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/ui/open_debts_other_columns</key>
+      <applyto>/apps/openlh-server/ui/open_debts_other_columns</applyto>
+      <owner>openlh-server</owner>
+      <type>list</type>
+      <list_type>string</list_type>
+      <default>[day,hour,time,user,value]</default>
+      
+      <locale name="C">
+        <short>Columns visible in Open Debts Other treeview</short>
+        <long>Columns visible in Open Debts Other treeview.</long>
+      </locale>
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/ui/page_selected</key>
+      <applyto>/apps/openlh-server/ui/page_selected</applyto>
+      <owner>openlh-server</owner>
+      <type>int</type>
+      <default>0</default>
+      
+      <locale name="C">
+        <short>Page selected number</short>
+        <long>Page selected number.</long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/openlh-server/ui/show_toolbar</key>
+      <applyto>/apps/openlh-server/ui/show_toolbar</applyto>
+      <owner>openlh-server</owner>
+      <type>bool</type>
+      <default>true</default>
+      
+      <locale name="C">
+        <short>Show Toolbar</short>
+        <long>If case true, Toolbar will be show</long>
+      </locale>
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/ui/show_status_bar</key>
+      <applyto>/apps/openlh-server/ui/show_status_bar</applyto>
+      <owner>openlh-server</owner>
+      <type>bool</type>
+      <default>true</default>
+      
+      <locale name="C">
+        <short>Show Status Bar</short>
+        <long>If case true, Status Bar will be show</long>
+      </locale>
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/ui/show_side_bar</key>
+      <applyto>/apps/openlh-server/ui/show_side_bar</applyto>
+      <owner>openlh-server</owner>
+      <type>bool</type>
+      <default>true</default>
+      
+      <locale name="C">
+        <short>Show Side Bar</short>
+        <long>If case true, Side Bar will be show</long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/openlh-server/default_welcome_msg</key>
+      <applyto>/apps/openlh-server/default_welcome_msg</applyto>
+      <owner>openlh-server</owner>
+      <type>bool</type>
+      <default>true</default>
+      
+      <locale name="C">
+        <short>If true, show default welcome message</short>
+        <long>If true, show default welcome message, if false, show custom welcome message.</long>
+      </locale>
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/welcome_msg</key>
+      <applyto>/apps/openlh-server/welcome_msg</applyto>
+      <owner>openlh-server</owner>
+      <type>string</type>
+      
+      <locale name="C">
+        <short>Custom welcome message</short>
+        <long>Custom welcome message, to show this message 'default_welcome_msg' needs be false.</long>
+      </locale>
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/login_suport</key>
+      <applyto>/apps/openlh-server/login_suport</applyto>
+      <owner>openlh-server</owner>
+      <type>bool</type>
+      <default>true</default>
+      
+      <locale name="C">
+        <short>Login suport into clients.</short>
+        <long>Allow login with user and password into clients.</long>
+      </locale>
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/ticket_suport</key>
+      <applyto>/apps/openlh-server/ticket_suport</applyto>
+      <owner>openlh-server</owner>
+      <type>bool</type>
+      <default>false</default>
+      
+      <locale name="C">
+        <short>Ticket suport into clients.</short>
+        <long>Allow login with ticket code into clients.</long>
+      </locale>
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/ticket_size</key>
+      <applyto>/apps/openlh-server/ticket_size</applyto>
+      <owner>openlh-server</owner>
+      <type>int</type>
+      <default>8</default>
+      
+      <locale name="C">
+        <short>Size of ticket code</short>
+      </locale>
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/background</key>
+      <applyto>/apps/openlh-server/background</applyto>
+      <owner>openlh-server</owner>
+      <type>bool</type>
+      <default>false</default>
+      
+      <locale name="C">
+        <short>Show background image into screen</short>
+        <long>If true, show background image into screen, 'background_path' must be specified.</long>
+      </locale>
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/logo</key>
+      <applyto>/apps/openlh-server/logo</applyto>
+      <owner>openlh-server</owner>
+      <type>bool</type>
+      <default>false</default>
+      
+      <locale name="C">
+        <short>Show logo image into screen</short>
+        <long>If true, show logo image into screen, 'logo_path' must be specified.</long>
+      </locale>
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/background_path</key>
+      <applyto>/apps/openlh-server/background_path</applyto>
+      <owner>openlh-server</owner>
+      <type>string</type>
+      
+      <locale name="C">
+        <short>Path to background image file</short>
+        <long>Path to background image file.</long>
+      </locale>
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/logo_path</key>
+      <applyto>/apps/openlh-server/logo_path</applyto>
+      <owner>openlh-server</owner>
+      <type>string</type>
+      
+      <locale name="C">
+        <short>Path to logo image file</short>
+        <long>Path to logo image file.</long>
+      </locale>
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/close_apps</key>
+      <applyto>/apps/openlh-server/close_apps</applyto>
+      <owner>openlh-server</owner>
+      <type>bool</type>
+      <default>false</default>
+      
+      <locale name="C">
+        <short>If true, applications will closed after finishing the session</short>
+        <long>If true, applications will closed after finishing the session.</long>
+      </locale>
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-server/close_apps_list</key>
+      <applyto>/apps/openlh-server/close_apps_list</applyto>
+      <owner>openlh-server</owner>
+      <type>list</type>
+      <list_type>string</list_type>
+      
+      <locale name="C">
+        <short>Applications to be closed after finishing the session</short>
+        <long>Applications to be closed after finishing the session.</long>
+      </locale>
+    </schema>
+    
+    
+    
+</schemalist></gconfschemafile>

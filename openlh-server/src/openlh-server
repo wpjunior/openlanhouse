@@ -1,0 +1,249 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+#  Copyright (C) 2008 Wilson Pinto Júnior (N3RD3X) <n3rd3x@guake-terminal.org>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+import sys
+import os
+import logging
+import getopt
+
+from OpenlhServer.globals import *
+_ = gettext.gettext
+
+disable_autodebug = False
+verbose = False
+debug_color = "auto"
+
+try:
+    opts, args = getopt.getopt(sys.argv[1:], 'hvp:', ['help', 'verbose=',
+        'version', 'debugcolor='])
+
+except getopt.error, msg:
+    print msg
+    print _('for help use --help')
+    sys.exit(2)
+
+for o, a in opts:
+    
+    if o in ('-h', '--help'):
+        print sys.argv[0], '[--help] [--verbose] [--debugcolor] [--version]'
+        
+        sys.exit()
+        
+    elif o == '--verbose':
+        
+        verbose = False
+        
+        if a == "on":
+            verbose = True
+            disable_autodebug = False
+        elif a == "off":
+            verbose = False
+            disable_autodebug = True
+        else:
+            disable_autodebug = False
+    
+    elif o == '--version':
+        print APP_NAME, APP_VERSION
+        sys.exit()
+    
+    if o == '--debugcolor':
+        debug_color = a
+    else:
+        debug_color = "auto"
+
+try:
+    import pygtk
+    pygtk.require('2.0')
+    
+    import gtk
+except ImportError:
+    print >> sys.stderr, _('OpenLanhouse needs PyGTK to run. Please install '
+                           'the latest stable version from '
+                           'http://www.pygtk.org')
+    sys.exit(3)
+
+try:
+    import gconf
+except ImportError:
+    from OpenlhServer.ui import dialogs
+    
+    dialogs.ok_only(_('<big><b>Required Module not found</b></big>\n\n'
+                      'OpenLanhouse needs \'python-gconf\' to run. Please install '
+                      'the lastest stable version this package.'),
+                    ICON=dialogs.gtk.MESSAGE_ERROR)
+    sys.exit(3)
+
+from time import strftime
+from OpenlhServer import daemon
+from OpenlhCore.utils import rename_process, mkdir, md5_cripto, pid_alive
+from OpenlhServer.ui import dialogs, main
+from OpenlhCore.net import certgen
+
+# Check ANSI colors, only available in POSIX
+if (debug_color == "auto" and os.name == 'posix') or debug_color=="on":
+    log_normal_format = ('\033[0;33m%(name)-17s '
+                         '\033[0;31m%(levelname)-8s '
+                         '\033[0;37m%(message)s\033[0m')
+    
+    log_debug_format = ('\033[0;32m%(asctime)s '
+                        '\033[0;31m%(levelname)-6s '
+                        '\033[0;33m%(name)-17s '
+                        '\033[40;1;37m%(message)s\033[0m')
+else:
+    log_normal_format = ('%(name)-17s %(levelname)-8s %(message)s')
+    log_debug_format = ('%(asctime)s %(levelname)-6s %(name)-17s %(message)s')
+
+log_format = log_normal_format
+log_level = logging.CRITICAL
+
+#If svn is available set debug on
+if '.svn' in os.listdir(os.getcwd()) and not(disable_autodebug) or verbose:
+    log_format = log_debug_format
+    log_level = logging.DEBUG
+
+logging.basicConfig(level=log_level,
+                    format=log_format,
+                    datefmt='%H:%M:%S',
+                    )
+
+#Check OpenlhServer is already running
+if pid_alive('openlh-server', SERVER_PID_FILE):
+    dialogs.ok_only(_('OpenLanhouse-Server is already running'),
+                    ICON=dialogs.gtk.MESSAGE_ERROR)
+    sys.exit(3)
+
+CONFIG_PATH_EXISTS = os.path.exists(CONFIG_PATH)
+
+#Check Avatars Path
+if not os.path.exists(AVATARS_PATH):
+    mkdir(AVATARS_PATH)
+
+pid_dir =  os.path.dirname(SERVER_PID_FILE)
+if not os.path.exists(pid_dir):
+    mkdir(pid_dir)
+
+f = open(SERVER_PID_FILE, 'w')
+f.write(str(os.getpid()))
+f.close()
+del pid_dir
+del f
+
+class OpenlhServer:
+    def __init__(self):
+        
+        #rename python process to openlh-server process
+        rename_process('openlh-server')
+        
+        logging.info('Starting OpenLanhouse Server')
+        
+        self.gconf_client = gconf.client_get_default()
+        self.name = self.gconf_client.get_string("/apps/openlh-server/name")
+        
+        self.admin_email = self.gconf_client.get_string(
+                                          "/apps/openlh-server/admin_email")
+        
+        self.price_per_hour = self.gconf_client.get_float(
+                                          "/apps/openlh-server/price_per_hour")
+        
+        #setup price per hour
+        if not self.price_per_hour:
+            dlg = dialogs.set_price_per_hour()
+            self.price_per_hour = dlg.run()
+            if self.price_per_hour == None:
+                sys.exit(0)
+            
+            self.gconf_client.set_float("/apps/openlh-server/price_per_hour", 
+                                        self.price_per_hour)
+        
+    def generate_keys(self):
+        """
+            Generate all keys and certificates required for execution
+        """
+        
+        try:
+            os.remove(SERVER_TLS_KEY)
+        except:
+            pass
+        
+        try:
+            os.remove(SERVER_TLS_CERT)
+        except:
+            pass
+        
+        mkdir(CERTS_PATH)
+
+        try:
+            logging.debug("Generating Privkey")
+        
+            privkey = certgen.generate_private_key()
+            open(SERVER_TLS_KEY, 'w').write(privkey.export())
+            
+            logging.debug("Generating Template")
+            
+            template = certgen.Template(SERVER_TLS_TEMPLATE)
+            template.organization = self.name
+            template.expiration_days = 1825
+            
+            if self.admin_email:
+                template.email = self.admin_email
+            
+            template.common_name = APP_NAME
+            
+            logging.debug("Generating SelfSigned Certificate")
+            
+            certificate = certgen.generate_self_signed(privkey=privkey,
+                                                       template=template)
+            
+            open(SERVER_TLS_CERT, 'w').write(certificate.export())
+            
+        except Exception, error:
+            dialogs.ok_only(_('<big><b>Cannot Generate Private Key</b></big>' +
+                              '\n\n%s') % str(error),
+                            ICON=gtk.MESSAGE_ERROR)
+            
+            try:
+                os.remove(SERVER_TLS_KEY)
+            except:
+                pass
+        
+            try:
+                os.remove(SERVER_TLS_CERT)
+            except:
+                pass
+            
+            sys.exit(0)
+    
+    def run(self):
+    
+        if not(os.path.exists(SERVER_TLS_KEY)) or not(os.path.exists(SERVER_TLS_CERT)):
+            self.generate_keys()
+    
+        appdaemon = daemon.Server()
+        appgui = main.Manager(appdaemon)
+        
+        try:
+            appdaemon.netserver.serve_forever()
+            gtk.gdk.threads_init()
+            gtk.main()
+            
+        except:
+            appdaemon.netserver.serve_stop()
+        
+if __name__ == "__main__":
+    app = OpenlhServer()
+    app.run()

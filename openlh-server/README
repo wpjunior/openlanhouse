@@ -1,0 +1,44 @@
+OpenLH README file
+=================
+
+INTRO
+~~~~~
+OpenLH code is placed in the src directory.
+
+
+DEPENDENCIES
+~~~~~~~~~~~~
+ * Python2.5+
+ * pygtk2.10 (gtk.StatusIcon)
+ * python-gnutls
+
+OPTIONAL DEPENDENCIES
+ * pynotify
+ * python-mysql
+ * python-postgres
+ * python-gnome-desktop
+
+INSTALLATION
+~~~~~~~~~~~~
+TODO: fill this topic
+For more install details, please read the `INSTALL` file.
+
+
+PACKAGERS
+~~~~~~~~~
+TODO: fill this topic
+
+
+TRANSLATION
+~~~~~~~~~~~
+If you want to translate OpenLH to your locale, please run po-extract. That
+script will generate a file called `messages.pot`. Please edit this file with
+your prefered po editor (like poedit, gtranslator, etc) and please send us
+your work. And do not forget to rename messages.pot to your language.po, for
+example `pt_BR.po`
+
+NOTE: To compile the .po file to .mo, type::
+
+    $ msgfmt pt_BR.po -o po/pt/LC_MESSAGES/OpenLH.mo
+
+# vim:set ft=rst:

@@ -1,0 +1,176 @@
+<?xml version="1.0"?>
+<gconfschemafile><schemalist>
+    
+    <schema>
+      <key>/schemas/apps/openlh-client/ui/visible</key>
+      <applyto>/apps/openlh-client/ui/visible</applyto>
+      <owner>openlh-client</owner>
+      <type>bool</type>
+      <default>true</default>
+      
+      <locale name="C">
+        <short>Whether the window is visible</short>
+        <long>When set to false, causes start only as a tray icon with the window hidden.</long>
+      </locale>
+      
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-client/ui/show_informations</key>
+      <applyto>/apps/openlh-client/ui/show_informations</applyto>
+      <owner>openlh-client</owner>
+      <type>bool</type>
+      <default>true</default>
+      
+      <locale name="C">
+        <short>Show Informations</short>
+        <long>Show Informations.</long>
+      </locale>
+      
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-client/ui/show_time_elapsed</key>
+      <applyto>/apps/openlh-client/ui/show_time_elapsed</applyto>
+      <owner>openlh-client</owner>
+      <type>bool</type>
+      <default>true</default>
+      
+      <locale name="C">
+        <short>Show Informations</short>
+        <long>Show Informations.</long>
+      </locale>
+      
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-client/ui/show_time_remaining</key>
+      <applyto>/apps/openlh-client/ui/show_time_remaining</applyto>
+      <owner>openlh-client</owner>
+      <type>bool</type>
+      <default>true</default>
+      
+      <locale name="C">
+        <short>Show Time Remaining</short>
+        <long>Show Time Remaining.</long>
+      </locale>
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-client/port</key>
+      <applyto>/apps/openlh-client/port</applyto>
+      <owner>openlh-client</owner>
+      <type>int</type>
+      <default>4558</default>
+      
+      <locale name="C">
+        <short>Port number</short>
+        <long>Port number used to connect into server.</long>
+      </locale>
+      
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-client/server</key>
+      <applyto>/apps/openlh-client/server</applyto>
+      <owner>openlh-client</owner>
+      <type>string</type>
+      
+      <locale name="C">
+        <short>>Server host name</short>
+        <long>Server host name.</long>
+      </locale>
+      
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-client/hash_id</key>
+      <applyto>/apps/openlh-client/hash_id</applyto>
+      <owner>openlh-client</owner>
+      <type>string</type>
+      
+      <locale name="C">
+        <short>Hash code used for identification machine in server</short>
+        <long>Hash code used for identification machine in server.</long>
+      </locale>
+      
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-client-applet/per-applet/show_username</key>
+      <owner>openlh-client-applet</owner>
+      <type>bool</type>
+      <default>False</default>
+      <locale name="C">
+        <short>Show Username</short>
+        <long>Show Username.</long>
+      </locale>
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-client-applet/per-applet/show_credit</key>
+      <owner>openlh-client-applet</owner>
+      <type>bool</type>
+      <default>True</default>
+      <locale name="C">
+        <short>Show User credit</short>
+        <long>Show User credit.</long>
+      </locale>
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-client-applet/per-applet/show_time</key>
+      <owner>openlh-client-applet</owner>
+      <type>bool</type>
+      <default>False</default>
+      <locale name="C">
+        <short>Show Time</short>
+        <long>Show Time.</long>
+      </locale>
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-client-applet/per-applet/show_time_elapsed</key>
+      <owner>openlh-client-applet</owner>
+      <type>bool</type>
+      <default>False</default>
+      <locale name="C">
+        <short>Show Time Elapsed</short>
+        <long>Show Time Elapsed.</long>
+      </locale>
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-client-applet/per-applet/show_time_left</key>
+      <owner>openlh-client-applet</owner>
+      <type>bool</type>
+      <default>True</default>
+      <locale name="C">
+        <short>Show Time Left</short>
+        <long>Show Time Left.</long>
+      </locale>
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-client-applet/per-applet/show_total_to_pay</key>
+      <owner>openlh-client-applet</owner>
+      <type>bool</type>
+      <default>True</default>
+      <locale name="C">
+        <short>Show Total to pay</short>
+        <long>Show Total to pay.</long>
+      </locale>
+    </schema>
+    
+    <schema>
+      <key>/schemas/apps/openlh-client-applet/per-applet/show_titles</key>
+      <owner>openlh-client-applet</owner>
+      <type>bool</type>
+      <default>True</default>
+      <locale name="C">
+        <short>Show Titles</short>
+        <long>Show Titles.</long>
+      </locale>
+    </schema>
+    
+</schemalist></gconfschemafile>

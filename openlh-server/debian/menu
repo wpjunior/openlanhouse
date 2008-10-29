@@ -1,0 +1,6 @@
+?package(openlh-server): \
+   needs="wm" \
+   section="Applications/Network" \
+   title="OpenLanhouse Server" \
+   icon="openlh-server.png" \
+   command="/usr/bin/openlh-server"

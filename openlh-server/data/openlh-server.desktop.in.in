@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+_Name=OpenLanhouse Server
+_Comment=LAN House Manager for Gnome Desktop
+TryExec=openlh-server
+Exec=openlh-server
+Icon=openlh-server
+Type=Application
+Categories=GNOME;GTK;Network;
+StartupNotify=true
