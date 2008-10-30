@@ -2194,4 +2194,5 @@ class Manager:
             return False
     
     def add_new_category_clicked(self, obj):
-        print "add_new_category_clicked"
+        dlg = dialogs.MachineCategory(Parent=self.mainwindow)
+        dlg.run()

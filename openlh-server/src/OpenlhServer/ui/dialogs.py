@@ -2151,3 +2151,35 @@ class new_ticket:
             pass
         
         self.dialog.destroy()
+
+class MachineCategory:
+    def __init__(self, Parent=None):
+        self.xml = get_gtk_builder('add_machine_category')
+        
+        self.dialog = self.xml.get_object('add_machine_category')
+        
+        self.background_chooser = image_chooser_button()
+        self.logo_chooser = image_chooser_button()
+        
+        background_chooser_btn = self.background_chooser.get_children()[0]
+        logo_chooser_btn = self.logo_chooser.get_children()[0]
+        
+        self.xml.get_object('lock_box').attach(self.background_chooser, 1, 2, 0, 1,
+                    xoptions=gtk.FILL|gtk.EXPAND, xpadding=0, ypadding=0)
+        
+        self.xml.get_object('lock_box').attach(self.logo_chooser, 1, 2, 1, 2,
+                    xoptions=gtk.FILL|gtk.EXPAND, xpadding=0, ypadding=0)
+        
+        self.background_chooser.show()
+        self.logo_chooser.show()
+        
+        self.xml.connect_signals(self)
+        
+        if Parent:
+            self.dialog.set_transient_for(Parent)
+    
+    def run(self):
+        if self.dialog.run():
+            pass
+        
+        self.dialog.destroy()

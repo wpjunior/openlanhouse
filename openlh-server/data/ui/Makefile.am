@@ -6,6 +6,7 @@ ui_DATA = \
 	edit_user.ui \
 	block_machine.ui \
 	add_machine.ui \
+	add_machine_category.ui \
 	main.ui \
 	prefs.ui \
 	remove_credit.ui \
