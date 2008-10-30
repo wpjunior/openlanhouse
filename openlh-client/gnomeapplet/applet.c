@@ -930,7 +930,7 @@ cb_verb (BonoboUIComponent *uic,
                                "copyright", N_("OpenLanhouse - Copyright (c) 2007-2008"),
                                "version", VERSION,
                                "authors", authors,
-                               "website", "http://openlanhouse.sf.net",
+                               "website", "http://openlanhouse.org",
                                "logo-icon-name", "openlh-client",
                                NULL);
     }

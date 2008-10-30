@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([OpenLanhouse Client],[0.1],[http://openlanhouse.sf.net],[openlh-client])
+AC_INIT([OpenLanhouse Client],[0.2],[http://trac.openlanhouse.org],[openlh-client])
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE([1.7])
 AM_MAINTAINER_MODE

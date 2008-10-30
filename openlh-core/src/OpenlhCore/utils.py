@@ -222,7 +222,7 @@ def check_nick(text):
         return 1
     elif " " in text:
         return 3
-    elif MIN_NICK <= len(text):
+    elif 4 <= len(text):
         return 0
     else:
         return 2

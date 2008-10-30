@@ -74,7 +74,7 @@ CASH_FLOW_TYPE_IN = (CASH_FLOW_TYPE_CREDIT_IN, CASH_FLOW_TYPE_MACHINE_USAGE_IN, 
 
 ##APP
 APP_NAME = 'OpenLanhouse'
-APP_SITE = 'http://openlanhouse.sf.net/'
+APP_SITE = 'http://openlanhouse.org'
 APP_COPYRIGHT = 'OpenLanhouse - Copyright (c) 2007-2008'
 
 I18N_APP = 'openlh-server'

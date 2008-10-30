@@ -70,7 +70,7 @@ CLIENT_ICON_NAME = 'openlh-client'
 
 ##APP
 APP_NAME = 'OpenLanhouse'
-APP_SITE = 'http://openlanhouse.sf.net/'
+APP_SITE = 'http://openlanhouse.org'
 APP_COPYRIGHT = 'OpenLanhouse - Copyright (c) 2007-2008'
 
 I18N_APP = 'OpenLH'
