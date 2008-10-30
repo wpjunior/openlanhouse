@@ -2154,6 +2154,12 @@ class Manager:
         if event.button == 3 and event.type == gtk.gdk.BUTTON_PRESS:
             
             path = obj.get_path_at_pos(int(event.x), int(event.y))
+            
+            if not path:
+                menu = self.xml.get_object("category_menu2")
+                menu.popup(None, None, None, event.button, event.get_time())
+                return
+            
             value = self.get_machine_category_selected(obj, path)
             
             if not value:
@@ -2186,3 +2192,6 @@ class Manager:
             return True
         else:
             return False
+    
+    def add_new_category_clicked(self, obj):
+        print "add_new_category_clicked"

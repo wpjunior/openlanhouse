@@ -665,6 +665,29 @@
       </popup>
     </ui>
   </object>
+  
+  
+  <object class="GtkUIManager" id="category_menu2_uimanager">
+    <child>
+      <object class="GtkActionGroup" id="category_menu2_actiongroup">
+        <child>
+          <object class="GtkAction" id="add_new_category_menu">
+            <property name="stock_id">gtk-add</property>
+            <property name="name">add_new_category_menu</property>
+            <property name="label" translatable="yes">_Add a new Category</property>
+            <signal handler="add_new_category_clicked" name="activate"/>
+          </object>
+        </child>
+      </object>
+    </child>
+    <ui>
+      <popup name="category_menu2">
+        <menuitem action="add_new_category_menu"/>
+      </popup>
+    </ui>
+  </object>
+  
+  
   <object class="GtkWindow" id="mainwindow">
     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
     <property name="title" translatable="yes">OpenLanhouse - Server</property>
@@ -2016,6 +2039,10 @@
     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
   </object>
   <object class="GtkMenu" constructor="uimanager3" id="new_menu">
+    <property name="visible">True</property>
+    <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+  </object>
+  <object class="GtkMenu" constructor="category_menu2_uimanager" id="category_menu2">
     <property name="visible">True</property>
     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
   </object>

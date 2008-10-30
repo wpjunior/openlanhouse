@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from OpenlhServer.db.models import Machine, User, CashFlowItem, HistoryItem
+from OpenlhServer.db.models import Machine, User, CashFlowItem, HistoryItem, MachineCategory
 from OpenlhServer.db.models import OpenDebtMachineItem, OpenDebtOtherItem, Version
 from OpenlhServer.db.basemanager import BaseManager, BaseFlow
 
@@ -41,6 +41,26 @@ class VersionManager(BaseManager):
         
         self.mapper = mapper(Version, self.table)
 
+class MachineCategoryManager(BaseManager):
+    __table_name__ = "openlh_machine_category"
+    
+    def __init__(self, db_session):
+        
+        BaseManager.__init__(self, db_session, MachineCategory)
+        
+        self.table = Table(self.__table_name__,
+                      self.db_session.metadata,
+                      Column('id', Integer, primary_key=True),
+                      Column('name', String(25), nullable=False, unique=True),
+                      Column('custom_logo', Boolean, default=False),
+                      Column('custom_background', Boolean, default=False),
+                      Column('logo_path', String(100), nullable=True),
+                      Column('background_path', String(100), nullable=True),
+                      Column('price_hour', Float, default=0)
+                      )
+        
+        self.mapper = mapper(MachineCategory, self.table)
+
 class MachineManager(BaseManager):
 
     __table_name__ = "openlh_machines"
@@ -56,11 +76,13 @@ class MachineManager(BaseManager):
                       Column('hash_id', String(40), nullable=False),
                       Column('description', Text),
                       Column('last_user_id', Integer, ForeignKey('openlh_users.id')),
+                      Column('category_id', Integer, ForeignKey('openlh_machine_category.id')),
                       )
         
         self.mapper = mapper(Machine, self.table,
-                      properties={'last_user':relation(User)
-                      })
+                      properties={'last_user':relation(User),
+                                  'category':relation(MachineCategory),
+                                 })
     
     def delete_by_id(self, id):
         s = delete(self.table, Machine.id==id)

@@ -38,7 +38,7 @@ from OpenlhServer.db.models import Machine, User, OpenDebtMachineItem, HistoryIt
 from OpenlhServer.db.session import DBSession
 from OpenlhServer.db.managers import MachineManager, UserManager, CashFlowManager
 from OpenlhServer.db.managers import OpenDebtsMachineManager, OpenDebtsOtherManager
-from OpenlhServer.db.managers import HistoryManager, VersionManager
+from OpenlhServer.db.managers import HistoryManager, VersionManager, MachineCategoryManager
 from OpenlhServer.db.globals import DB_NAMES
 
 _ = gettext.gettext
@@ -893,6 +893,7 @@ class Server(gobject.GObject):
         #Tables managers
         self.version_manager = VersionManager(self.db_session)
         self.machine_manager = MachineManager(self.db_session)
+        self.machine_category_manager = MachineCategoryManager(self.db_session)
         self.users_manager = UserManager(self.db_session)
         self.cash_flow_manager = CashFlowManager(self.db_session)
         self.open_debts_machine_manager = OpenDebtsMachineManager(

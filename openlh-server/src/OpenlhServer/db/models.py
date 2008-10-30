@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  Copyright (C) 2008 Wilson Pinto Júnior <wilson@openlanhouse.org>
+#  Copyright (C) 2008 Wilson Pinto JÃºnior <wilson@openlanhouse.org>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,6 +21,11 @@ class Machine(object):
     def __repr__(self):
         return ("<Machine(name=%s hash_id=%s)>" % \
                         (self.name, self.hash_id))
+
+class MachineCategory(object):
+    __name__ = "CategoryMachine"
+    def __repr__(self):
+        return ("<CategoryMachine(%s)>" % self.name, self.hash_id)
 
 class CashFlowItem(object):
     __name__ = "CashFlowItem"
