@@ -18,7 +18,7 @@
 
 import gtk
 import re
-from gtk.gdk import pixbuf_new_from_file
+from gtk.gdk import pixbuf_new_from_file, pixbuf_new_from_file_at_size
 from os import path, listdir
 from OpenlhServer.globals import *
 
@@ -30,12 +30,15 @@ class Icons:
         self.icon_path = icon_path
         self.icons = self.get_icons()
         
-    def construct_icon(self, icon):
+    def construct_icon(self, icon, width=None, height=None):
         """
             Construct gtk.gdk.Pixbuf Icon
         """
         if path.exists(icon):
-            return pixbuf_new_from_file(icon)
+            if width and height:
+                return pixbuf_new_from_file_at_size(icon, width, height)
+            else:
+                return pixbuf_new_from_file(icon)
         #else:
             #print ERR_001 % icon #USE LOGGING
     
@@ -54,13 +57,13 @@ class Icons:
         
         return icons
         
-    def get_icon(self, name):
+    def get_icon(self, name, width=None, height=None):
         """
             Construct gtk.gdk.Pixbuf from name
         """
         fname = name + '.png'
         if name in self.icons:
-            return self.construct_icon(path.join(self.icon_path, fname))
+            return self.construct_icon(path.join(self.icon_path, fname), width, height)
         #else:
             #print ERR_001 % name #USE LOGGING
     

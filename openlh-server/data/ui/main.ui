@@ -713,7 +713,7 @@
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="homogeneous">False</property>
+                <property name="homogeneous">True</property>
               </packing>
             </child>
             <child>
@@ -725,7 +725,7 @@
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="homogeneous">False</property>
+                <property name="homogeneous">True</property>
               </packing>
             </child>
             <child>
@@ -852,7 +852,7 @@
                         </child>
                         <child>
                           <object class="GtkVBox" id="vbox9">
-                            <property name="no_show_all">True</property>
+                            <property name="visible">True</property>
                             <property name="spacing">6</property>
                             <child>
                               <object class="GtkLabel" id="label16">
@@ -886,6 +886,9 @@
                                         <property name="enable_search">False</property>
                                         <property name="search_column">0</property>
                                         <property name="tooltip_column">3</property>
+                                        <signal handler="on_machines_categories_press_event" name="button_press_event"/>
+                                        <signal handler="on_machines_categories_tree_activate" name="row_activated"/>
+                                        <signal handler="on_machines_categories_cursor_changed" name="cursor_changed"/>
                                       </object>
                                     </child>
                                   </object>

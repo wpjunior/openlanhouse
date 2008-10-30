@@ -43,11 +43,6 @@ from OpenlhServer.db.globals import DB_NAMES
 
 _ = gettext.gettext
 
-MACHINE_STATUS_OFFLINE = 0
-MACHINE_STATUS_AVAIL = 1
-MACHINE_STATUS_BUSY = 2
-MACHINE_STATUS_AWAY = 3
-
 class MachineInst(gobject.GObject):
     """
         Class used for each machine registred

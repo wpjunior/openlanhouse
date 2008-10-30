@@ -59,6 +59,9 @@ class Manager:
     user_search_text = ""
     cash_flow_search_text = ""
     
+    machine_filter_category = 0
+    machine_filter_status = None
+    
     def __init__(self, daemon):
         
         self.gconf_client = gconf.client_get_default()
@@ -787,6 +790,12 @@ class Manager:
         print obj, text
     
     def on_machine_visible_cb(self, model, iter):
+        
+        machine_id = model.get_value(iter, treeview.MACHINE_CEL_ID)
+        
+        if machine_id and not(self.check_machine_filter(int(machine_id))):
+            return False
+        
         if self.machine_search_text == "":
             return True
         
@@ -1333,20 +1342,20 @@ class Manager:
                             "<b>%s</b>" % name,
                             None, False))
         
-        model.append(iter, ((id, 1),
-                            self.status_icons.get_icon("available"),
+        model.append(iter, ((id, MACHINE_STATUS_AVAIL),
+                            self.status_icons.get_icon("available", 16, 16),
                             _("Available"),
                             _("Available machines"),
                             True))
         
-        model.append(iter, ((id, 2),
-                            self.status_icons.get_icon("busy"),
+        model.append(iter, ((id, MACHINE_STATUS_BUSY),
+                            self.status_icons.get_icon("busy", 16, 16),
                             _("Busy"),
                             _("Busy machines"),
                             True))
         
-        model.append(iter, ((id, 3),
-                            self.status_icons.get_icon("halt"),
+        model.append(iter, ((id, MACHINE_STATUS_OFFLINE),
+                            self.status_icons.get_icon("halt", 16, 16),
                             _("Unavailable"),
                             _("Unavailable machines"),
                             True))
@@ -2118,3 +2127,62 @@ class Manager:
             widget.show()
         else:
             widget.hide()
+    
+    #Machine Categories
+    def get_machine_category_selected(self, obj, path):
+        selection = obj.get_selection()
+        
+        rows = selection.get_selected_rows()
+        
+        if path[0] not in rows[0]:
+            selection.unselect_all()
+            selection.select_path(path[0])
+        
+        model, iteration = self.get_selects(obj)
+        value = model.get_value(iteration, 0)
+        
+        return value
+    
+    def on_machines_categories_tree_activate(self, obj, path, column):
+        value = self.get_machine_category_selected(obj, obj.get_cursor())
+        if not value:
+            return
+        
+        print "tree_activate"
+    
+    def on_machines_categories_press_event(self, obj, event):
+        if event.button == 3 and event.type == gtk.gdk.BUTTON_PRESS:
+            
+            path = obj.get_path_at_pos(int(event.x), int(event.y))
+            value = self.get_machine_category_selected(obj, path)
+            
+            if not value:
+                return
+            
+            id, mode = value
+            print "press_event", id, mode
+            
+    def on_machines_categories_cursor_changed(self, obj):
+        
+        value = self.get_machine_category_selected(obj, obj.get_cursor())
+        if not value:
+            return
+        
+        self.machine_filter_category, self.machine_filter_status = value
+        
+        gobject.idle_add(self.machine_filtered.refilter)
+    
+    def check_machine_filter(self, machine_id):
+        
+        if self.machine_filter_status == None:
+            return True
+        
+        if not machine_id in self.instmachine_manager.machines_by_id:
+            return False
+        
+        machine = self.instmachine_manager.machines_by_id[machine_id]
+        
+        if (machine.status == self.machine_filter_status):
+            return True
+        else:
+            return False
