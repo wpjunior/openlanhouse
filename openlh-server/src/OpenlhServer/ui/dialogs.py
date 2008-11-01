@@ -2161,9 +2161,13 @@ class MachineCategory:
         self.background_chooser = image_chooser_button()
         self.logo_chooser = image_chooser_button()
         
+        self.background_chooser.set_sensitive(False)
+        self.logo_chooser.set_sensitive(False)
+        
         background_chooser_btn = self.background_chooser.get_children()[0]
         logo_chooser_btn = self.logo_chooser.get_children()[0]
         
+        #pack start
         self.xml.get_object('lock_box').attach(self.background_chooser, 1, 2, 0, 1,
                     xoptions=gtk.FILL|gtk.EXPAND, xpadding=0, ypadding=0)
         
@@ -2178,8 +2182,56 @@ class MachineCategory:
         if Parent:
             self.dialog.set_transient_for(Parent)
     
-    def run(self):
-        if self.dialog.run():
-            pass
+    def on_name_entry_changed(self, obj):
+        self.xml.get_object('okbnt').set_sensitive(bool(obj.get_text()))
+    
+    def background_bnt_toggled_cb(self, obj):
+        self.background_chooser.set_sensitive(obj.get_active())
+    
+    def on_logo_bnt_toggled(self, obj):
+        self.logo_chooser.set_sensitive(obj.get_active())
+    
+    def set_category(self, category):
+        if category.name:
+            self.xml.get_object('name_entry').set_text(category.name)
         
-        self.dialog.destroy()
+        if category.custom_logo:
+            self.xml.get_object('logo_bnt').set_active(True)
+        
+        if category.custom_background:
+            self.xml.get_object('background_bnt').set_active(True)
+        
+        if category.price_hour:
+            self.xml.get_object('price_hour').set_value(category.price_hour)
+        
+        if category.logo_path:
+            self.logo_chooser.set_filename(category.logo_path)
+        
+        if category.background_path:
+            self.background_chooser.set_filename(category.background_path)
+
+    
+    def run(self, category=None):
+        
+        if category:
+            self.set_category(category)
+            self.dialog.set_title("Machine Category Editor")
+        
+        if self.dialog.run():
+            data = {}
+            data['name'] = self.xml.get_object('name_entry').get_text()
+            data['custom_logo'] = self.xml.get_object('logo_bnt').get_active()
+            data['custom_background'] = self.xml.get_object('background_bnt').get_active()
+            data['price_hour'] = self.xml.get_object('price_hour').get_value()
+            
+            if ('custom_logo' in data) and data['custom_logo']:
+                data['logo_path'] = self.logo_chooser.get_filename()
+            
+            if ('custom_background' in data) and data['custom_background']:
+                data['background_path'] = self.background_chooser.get_filename()
+        
+            self.dialog.destroy()
+            
+            return data
+        else:
+            self.dialog.destroy()

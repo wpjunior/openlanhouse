@@ -485,6 +485,15 @@
           </object>
         </child>
         <child>
+          <object class="GtkAction" id="newcategorymachinemnu">
+            <property name="stock_id">gtk-network</property>
+            <property name="name">newcategorymachinemnu</property>
+            <property name="tooltip" translatable="yes">Create a new machine category</property>
+            <property name="label" translatable="yes">Machine Category</property>
+            <signal handler="add_new_category_clicked" name="activate"/>
+          </object>
+        </child>
+        <child>
           <object class="GtkAction" id="new_user_menuitem">
             <property name="name">new_user_menuitem</property>
             <property name="tooltip" translatable="yes">Create a new user</property>
@@ -506,6 +515,7 @@
     <ui>
       <popup name="new_menu">
         <menuitem action="newmachinemnu"/>
+        <menuitem action="newcategorymachinemnu"/>
         <menuitem action="new_user_menuitem"/>
         <menuitem action="ticket_menuitem"/>
       </popup>
@@ -683,6 +693,33 @@
     <ui>
       <popup name="category_menu2">
         <menuitem action="add_new_category_menu"/>
+      </popup>
+    </ui>
+  </object>
+  
+  <object class="GtkUIManager" id="category_menu_uimanager">
+    <child>
+      <object class="GtkActionGroup" id="category_menu_actiongroup">
+        <child>
+          <object class="GtkAction" id="edit_category">
+            <property name="stock_id">gtk-edit</property>
+            <property name="name">edit_category</property>
+            <signal handler="edit_category_clicked" name="activate"/>
+          </object>
+        </child>
+        <child>
+          <object class="GtkAction" id="delete_category">
+            <property name="stock_id">gtk-delete</property>
+            <property name="name">delete_category</property>
+            <signal handler="delete_category_clicked" name="activate"/>
+          </object>
+        </child>
+      </object>
+    </child>
+    <ui>
+      <popup name="category_menu">
+        <menuitem action="edit_category"/>
+        <menuitem action="delete_category"/>
       </popup>
     </ui>
   </object>
@@ -2039,6 +2076,10 @@
     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
   </object>
   <object class="GtkMenu" constructor="uimanager3" id="new_menu">
+    <property name="visible">True</property>
+    <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+  </object>
+  <object class="GtkMenu" constructor="category_menu_uimanager" id="category_menu">
     <property name="visible">True</property>
     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
   </object>

@@ -23,9 +23,9 @@ class Machine(object):
                         (self.name, self.hash_id))
 
 class MachineCategory(object):
-    __name__ = "CategoryMachine"
+    __name__ = "MachineCategory"
     def __repr__(self):
-        return ("<CategoryMachine(%s)>" % self.name, self.hash_id)
+        return ("<CategoryMachine(%s)>" % self.name)
 
 class CashFlowItem(object):
     __name__ = "CashFlowItem"

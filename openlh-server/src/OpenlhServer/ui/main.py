@@ -33,7 +33,7 @@ from OpenlhServer.ui.SearchEntry import SearchEntry
 from OpenlhCore.utils import md5_cripto
 from OpenlhServer.ui.utils import get_gtk_builder
 from OpenlhServer.utils import user_has_avatar, get_user_avatar_path
-from OpenlhServer.db.models import CashFlowItem, User
+from OpenlhServer.db.models import CashFlowItem, User, MachineCategory
 from OpenlhServer.globals import *
 _ = gettext.gettext
 
@@ -47,6 +47,7 @@ class Manager:
     notebook_interative = True
     
     machines_iters = {}
+    category_machines_iters = {}
     detect_machine_iters = {}
     users_iters = {}
     open_debts_machine_iters = {}
@@ -80,6 +81,7 @@ class Manager:
         self.daemon = daemon
         
         self.machine_manager = self.daemon.machine_manager
+        self.machine_category_manager = self.daemon.machine_category_manager
         self.users_manager = self.daemon.users_manager
         self.cash_flow_manager = self.daemon.cash_flow_manager
         self.open_debts_machine_manager = self.daemon.open_debts_machine_manager
@@ -346,15 +348,24 @@ class Manager:
         self.statusbar.remove(0, message_id)
         
         #Populate Categories machine
+        message_id = self.statusbar.push(0, _('Loading Machine Categories'))
+        
+        self.machine_category_manager.connect('insert', 
+                                            self.on_insert_category_machine)
+        self.machine_category_manager.connect('delete', 
+                                            self.on_delete_category_machine)
+        self.machine_category_manager.connect('update', 
+                                            self.on_update_category_machine)
+        
         tree = self.xml.get_object('machines_types_tree')
         
-        model = gtk.TreeStore(gobject.TYPE_PYOBJECT,
-                              gtk.gdk.Pixbuf,
-                              gobject.TYPE_STRING,
-                              gobject.TYPE_STRING,
-                              gobject.TYPE_BOOLEAN)
+        self.machines_category_model = gtk.TreeStore(gobject.TYPE_PYOBJECT,
+                                                     gtk.gdk.Pixbuf,
+                                                     gobject.TYPE_STRING,
+                                                     gobject.TYPE_STRING,
+                                                     gobject.TYPE_BOOLEAN)
         
-        tree.set_model(model)
+        tree.set_model(self.machines_category_model)
         
         column = gtk.TreeViewColumn()
         image_cell = gtk.CellRendererPixbuf()
@@ -370,6 +381,12 @@ class Manager:
         tree.append_column(column)
         
         self.populate_category_machine(0, _("All Machines"))
+        
+        #populate
+        for i in self.machine_category_manager.get_all():
+            self.populate_category_machine(i.id, i.name)
+        
+        self.statusbar.remove(0, message_id)
         
         #Populate Categories Open Debts
         tree = self.xml.get_object('open_debts_types_tree')
@@ -1342,6 +1359,8 @@ class Manager:
                             "<b>%s</b>" % name,
                             None, False))
         
+        self.category_machines_iters[id] = iter
+        
         model.append(iter, ((id, MACHINE_STATUS_AVAIL),
                             self.status_icons.get_icon("available", 16, 16),
                             _("Available"),
@@ -2148,7 +2167,7 @@ class Manager:
         if not value:
             return
         
-        print "tree_activate"
+        self.edit_category_clicked(None)
     
     def on_machines_categories_press_event(self, obj, event):
         if event.button == 3 and event.type == gtk.gdk.BUTTON_PRESS:
@@ -2166,7 +2185,9 @@ class Manager:
                 return
             
             id, mode = value
-            print "press_event", id, mode
+            if (id != 0) and (mode == None):
+                widget = self.xml.get_object('category_menu')
+                widget.popup(None, None, None, event.button, event.get_time())
             
     def on_machines_categories_cursor_changed(self, obj):
         
@@ -2195,4 +2216,67 @@ class Manager:
     
     def add_new_category_clicked(self, obj):
         dlg = dialogs.MachineCategory(Parent=self.mainwindow)
-        dlg.run()
+        data = dlg.run()
+        
+        if data:
+            c = MachineCategory()
+            
+            for key, value in data.items():
+                setattr(c, key, value)
+            
+            try:
+                self.machine_category_manager.insert(c)
+            except IntegrityError:
+                pass #TODO: show dialog
+    
+    def on_insert_category_machine(self, manager, category):
+        self.populate_category_machine(category.id, category.name)
+    
+    def on_delete_category_machine(self, manager, category_id):
+        if category_id in self.category_machines_iters:
+            iter = self.category_machines_iters[category_id]
+            self.machines_category_model.remove(iter)
+    
+    def on_update_category_machine(self, manager, category):
+        if category.id in self.category_machines_iters:
+            iter = self.category_machines_iters[category.id]
+            self.machines_category_model.set(iter,
+                                            2, "<b>%s</b>" % category.name)
+    
+    def delete_category_clicked(self, obj):
+        treeview = self.xml.get_object("machines_types_tree")
+        value = self.get_machine_category_selected(treeview, treeview.get_cursor())
+        if not value:
+            return
+        
+        id, mode = value
+        
+        c = self.machine_category_manager.get_all().filter_by(id=id).one()
+        
+        self.machine_category_manager.delete(c)
+        
+    def edit_category_clicked(self, obj):
+        treeview = self.xml.get_object("machines_types_tree")
+        value = self.get_machine_category_selected(treeview, treeview.get_cursor())
+        
+        if not value:
+            return
+        
+        id, mode = value
+        
+        if id == 0:
+            return
+        
+        c = self.machine_category_manager.get_all().filter_by(id=id).one()
+        
+        dlg = dialogs.MachineCategory(Parent=self.mainwindow)
+        data = dlg.run(category=c)
+        
+        if data:
+            for key, value in data.items():
+                setattr(c, key, value)
+            
+            try:
+                self.machine_category_manager.update(c)
+            except IntegrityError:
+                pass #TODO: show dialog

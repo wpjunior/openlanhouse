@@ -48,8 +48,9 @@ class BaseManager(gobject.GObject):
         return self.db_session.session.query(self.object_type)
     
     def insert(self, object):
-        if not(isinstance(object, self.object_type)):
-            raise TypeError, "must be %s object" % self.object_type.__name__
+        
+        #if not(isinstance(object, self.object_type)):
+        #    raise TypeError, "must be %s object" % self.object_type.__name__
 
         self.db_session.save(object)
         self.commit()
