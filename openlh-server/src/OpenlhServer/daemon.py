@@ -52,6 +52,7 @@ class MachineInst(gobject.GObject):
     name = None
     hash_id = None
     description = None
+    category_id = 0
     session = None
     manager = None
     user_id = None
@@ -69,7 +70,7 @@ class MachineInst(gobject.GObject):
     start_time = None
     mstart_time = None
     
-    def __init__(self, manager, id, name, hash_id, description):
+    def __init__(self, manager, id, name, hash_id, description, category_id):
         self.__gobject_init__()
         
         self.manager = manager
@@ -82,6 +83,7 @@ class MachineInst(gobject.GObject):
         self.name = name
         self.hash_id = hash_id
         self.description = description
+        self.category_id = category_id
     
     def set_connected(self, session):
         """
@@ -386,7 +388,8 @@ class InstManager(gobject.GObject):
                                       id=machine.id,
                                       name=machine.name,
                                       hash_id=machine.hash_id,
-                                      description=machine.description)
+                                      description=machine.description,
+                                      category_id=machine.category_id)
             
             self.machines_by_id[machine.id] = machineinst
             self.machines_by_hash_id[machine.hash_id] = machineinst
@@ -454,6 +457,7 @@ class InstManager(gobject.GObject):
         m.name = data['name']
         m.hash_id = hash_id
         m.description = data['description']
+        m.category_id = data['category']
         
         self.machine_manager.insert(m)
         
@@ -461,7 +465,8 @@ class InstManager(gobject.GObject):
                                   id=m.id,
                                   name=m.name,
                                   hash_id=m.hash_id,
-                                  description=m.description)
+                                  description=m.description,
+                                  category_id=m.category_id)
         
         self.machines_by_id[m.id] = machineinst
         self.machines_by_hash_id[m.hash_id] = machineinst

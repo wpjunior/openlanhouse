@@ -418,7 +418,7 @@ class Manager:
         dlg = dialogs.AlertAddMachine(Parent=self.mainwindow)
         
         if dlg.run():
-            dlg = dialogs.AddMachine(Parent=self.mainwindow)
+            dlg = dialogs.AddMachine(Parent=self.mainwindow, Manager=self)
             data = dlg.run(set_hash_sensitive=True)
             if data:
                 self.instmachine_manager.allow_machine(data['hash_id'],
@@ -448,7 +448,7 @@ class Manager:
         if self.selpage == 0:
             dlg = dialogs.AlertAddMachine(Parent=self.mainwindow)
             if dlg.run():
-                dlg = dialogs.AddMachine(Parent=self.mainwindow)
+                dlg = dialogs.AddMachine(Parent=self.mainwindow, Manager=self)
                 data = dlg.run(set_hash_sensitive=True)
                 if data:
                     self.instmachine_manager.allow_machine(data['hash_id'],
@@ -519,7 +519,7 @@ class Manager:
             assert self.instmachine_manager.machines_by_id[machine_id]
             machine_inst = self.instmachine_manager.machines_by_id[machine_id]
             
-            dlg = dialogs.AddMachine(Parent=self.mainwindow)
+            dlg = dialogs.AddMachine(Parent=self.mainwindow, Manager=self)
             dlg.dialog.set_title(_("Edit Machine - OpenLanhouse"))
             data = dlg.run({'hash_id': machine_inst.hash_id,
                             'name': machine_inst.name,
@@ -1559,7 +1559,7 @@ class Manager:
         self.new_machines_detect_list_store.remove(iter)
         
         self.xml.get_object("new_machine_alert_button").set_active(False)
-        dlg = dialogs.AddMachine(Parent=self.mainwindow)
+        dlg = dialogs.AddMachine(Parent=self.mainwindow, Manager=self)
         data = dlg.run({'hash_id': hash_id})
         
         if data:
@@ -2201,16 +2201,32 @@ class Manager:
     
     def check_machine_filter(self, machine_id):
         
-        if self.machine_filter_status == None:
+        #if All Machines is selected
+        if ((self.machine_filter_category == 0) 
+                and (self.machine_filter_status == None)):
             return True
         
+        #if machine is not found in InstManager
         if not machine_id in self.instmachine_manager.machines_by_id:
             return False
         
         machine = self.instmachine_manager.machines_by_id[machine_id]
         
-        if (machine.status == self.machine_filter_status):
+        #if machine.category is filter_category and not seletect a status
+        if ((machine.category_id == self.machine_filter_category) 
+                and (self.machine_filter_status == None)):
             return True
+        
+        #if all machines is seletect with a status
+        if ((self.machine_filter_category == 0) 
+                and (machine.status == self.machine_filter_status)):
+            return True
+        
+        #if machine.category is filter_category and seletect with a status
+        elif ((machine.category_id == self.machine_filter_category) 
+                and (machine.status == self.machine_filter_status)):
+            return True
+        
         else:
             return False
     

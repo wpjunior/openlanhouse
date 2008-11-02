@@ -1243,8 +1243,17 @@ class AddMachine:
     
     response = None
     faults = ['name', 'hash_id']
+    accept_first_new = False
+    insert_connect_id = 0
+    category_iters = {}
     
-    def __init__(self, Parent=None):
+    def __init__(self, Parent=None, Manager=None):
+        
+        self.manager = Manager
+        
+        self.insert_connect_id = self.manager.machine_category_manager.connect(
+                                            'insert', 
+                                            self.on_insert_category_machine)
         
         self.xml = get_gtk_builder('add_machine')
         
@@ -1255,6 +1264,39 @@ class AddMachine:
         self.description_buffer = self.description.get_buffer()
         self.name_entry = self.xml.get_object('name_entry')
         self.cancelbnt = self.xml.get_object('cancelbnt')
+        
+        self.CategoryListStore = gtk.ListStore(gobject.TYPE_INT,
+                                               gobject.TYPE_STRING)
+        
+        self.CategoryComboBox = gtk.ComboBox(model=self.CategoryListStore)
+        
+        cell = gtk.CellRendererText()
+        self.CategoryComboBox.pack_start(cell, True)
+        self.CategoryComboBox.add_attribute(cell, 'text', 1)
+        self.CategoryComboBox.set_row_separator_func(self.row_separator_func)
+        
+        table = self.xml.get_object("table")
+        table.attach(child=self.CategoryComboBox,
+                     left_attach=1,
+                     right_attach=2,
+                     top_attach=2,
+                     bottom_attach=3,
+                     xoptions=gtk.FILL,
+                     yoptions=gtk.EXPAND|gtk.FILL)
+        
+        self.CategoryComboBox.show()
+        
+        #Populate categories
+        iter = self.CategoryListStore.append((0, _("None")))
+        self.category_iters[0] = iter
+        self.CategoryComboBox.set_active_iter(iter)
+        
+        self.CategoryListStore.append((-1, ""))
+        
+        if self.manager:
+            for i in self.manager.machine_category_manager.get_all():
+                iter = self.CategoryListStore.append((i.id, i.name))
+                self.category_iters[i.id] = iter
         
         self.xml.connect_signals(self)
         
@@ -1283,6 +1325,26 @@ class AddMachine:
                 self.faults.append('name')
         
         self.okbnt.set_sensitive(not(bool(self.faults)))
+    
+    def on_new_category_clicked(self, obj):
+        if self.manager:
+            self.accept_first_new = True
+            self.manager.add_new_category_clicked(None)
+            self.accept_first_new = False
+    
+    def row_separator_func(self, model, iter):
+        
+        if model.get_value(iter, 0) == -1:
+            return True
+        else:
+            return False
+    
+    def on_insert_category_machine(self, manager, category):
+        iter = self.CategoryListStore.append((category.id, category.name))
+        self.category_iters[category.id] = iter
+        
+        if self.accept_first_new:
+            self.CategoryComboBox.set_active_iter(iter)
 
     def run(self, data=None, set_hash_sensitive=False):
         if data:
@@ -1295,6 +1357,9 @@ class AddMachine:
             if 'description' in data:
                 self.description_buffer.set_text(data['description'])
             
+            if 'category' in data:
+                print data['category']
+            
             if 'hash_id' in data:
                 if 'hash_id' in self.faults:
                     self.faults.remove('hash_id')
@@ -1305,15 +1370,23 @@ class AddMachine:
         
         if self.dialog.run():
             bf = self.description_buffer
-        
+            iter = self.CategoryComboBox.get_active_iter()
+            
             response = {'name': self.name_entry.get_text(),
                         'description': bf.get_text(bf.get_start_iter(),
                               bf.get_end_iter()),
                         'hash_id': self.hash_id.get_text(),
+                        'category': self.CategoryListStore.get_value(iter, 0)
                        }
+            
+            if self.insert_connect_id:
+                gobject.source_remove(self.insert_connect_id)
             
             self.dialog.destroy()
             return response
+        
+        if self.insert_connect_id:
+            gobject.source_remove(self.insert_connect_id)
         
         self.dialog.destroy()
 
