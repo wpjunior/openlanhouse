@@ -204,12 +204,7 @@ class Manager:
             self.xml.get_object("show_status_bar_menu").set_active(True)
         else:
             self.statusbar.hide()
-
-        if self.gconf_client.get_bool('/apps/openlh-server/ui/show_side_bar'):
-            self.set_view_mode(True)
-        else:
-            self.set_view_mode(False)
- 
+        
         if self.gconf_client.get_bool('/apps/openlh-server/ui/maximized'):
             self.mainwindow.maximize()
         
@@ -227,6 +222,12 @@ class Manager:
             self.show_menu.set_active(True)
 
         self.populate_trees()
+        
+        if self.gconf_client.get_bool('/apps/openlh-server/ui/show_side_bar'):
+            self.set_view_mode(True)
+        else:
+            self.set_view_mode(False)
+        
         self.xml.connect_signals(self)
         
         #Load Plugins
@@ -523,7 +524,9 @@ class Manager:
             dlg.dialog.set_title(_("Edit Machine - OpenLanhouse"))
             data = dlg.run({'hash_id': machine_inst.hash_id,
                             'name': machine_inst.name,
-                            'description': machine_inst.description}
+                            'description': machine_inst.description,
+                            'category_id': machine_inst.category_id
+                            }
                           )
             
             if data:
@@ -1940,6 +1943,7 @@ class Manager:
             self.xml.get_object("sidebar_opendebts_align").add(
                                                 self.open_debts_search_entry)
         else:
+            self.xml.get_object("machines_types_tree").set_cursor((0,))
             self.xml.get_object("classic_mode_radio").set_active(True)
             self.xml.get_object("sidebar_vbox").hide()
             self.xml.get_object("classic_hbox").show()
@@ -2252,6 +2256,9 @@ class Manager:
         if category_id in self.category_machines_iters:
             iter = self.category_machines_iters[category_id]
             self.machines_category_model.remove(iter)
+            
+            treeview = self.xml.get_object("machines_types_tree")
+            treeview.set_cursor((0,))
     
     def on_update_category_machine(self, manager, category):
         if category.id in self.category_machines_iters:
@@ -2268,6 +2275,14 @@ class Manager:
         id, mode = value
         
         c = self.machine_category_manager.get_all().filter_by(id=id).one()
+        
+        #remove associed machines
+        for i in self.machine_manager.get_all().filter_by(category_id=c.id):
+            if not i in self.instmachine_manager.machines_by_id:
+                pass
+            
+            machine_inst = self.instmachine_manager.machines_by_id[i.id]
+            self.instmachine_manager.update(machine_inst, {'category_id': 0})
         
         self.machine_category_manager.delete(c)
         

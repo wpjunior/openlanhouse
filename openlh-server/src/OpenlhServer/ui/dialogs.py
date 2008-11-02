@@ -1357,8 +1357,10 @@ class AddMachine:
             if 'description' in data:
                 self.description_buffer.set_text(data['description'])
             
-            if 'category' in data:
-                print data['category']
+            if 'category_id' in data:
+                if data['category_id'] in self.category_iters:
+                    iter = self.category_iters[data['category_id']]
+                    self.CategoryComboBox.set_active_iter(iter)
             
             if 'hash_id' in data:
                 if 'hash_id' in self.faults:
@@ -1375,9 +1377,11 @@ class AddMachine:
             response = {'name': self.name_entry.get_text(),
                         'description': bf.get_text(bf.get_start_iter(),
                               bf.get_end_iter()),
-                        'hash_id': self.hash_id.get_text(),
-                        'category': self.CategoryListStore.get_value(iter, 0)
-                       }
+                        'hash_id': self.hash_id.get_text()
+                        }
+            
+            if iter:
+                response['category_id'] = self.CategoryListStore.get_value(iter, 0)
             
             if self.insert_connect_id:
                 gobject.source_remove(self.insert_connect_id)

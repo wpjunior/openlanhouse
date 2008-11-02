@@ -457,7 +457,7 @@ class InstManager(gobject.GObject):
         m.name = data['name']
         m.hash_id = hash_id
         m.description = data['description']
-        m.category_id = data['category']
+        m.category_id = data['category_id']
         
         self.machine_manager.insert(m)
         
@@ -516,8 +516,15 @@ class InstManager(gobject.GObject):
         
         self.machine_manager.update(machine_db_obj)
         
-        machine_inst.name = data['name']
-        machine_inst.description = data['description']
+        if 'name' in data:
+            machine_inst.name = data['name']
+        
+        if 'description' in data:
+            machine_inst.description = data['description']
+        
+        if 'category_id' in data:
+            machine_inst.category_id = data['category_id']
+        
         machine_inst.send_myinfo()
         
         self.emit("update", machine_inst)
