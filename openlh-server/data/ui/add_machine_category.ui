@@ -146,7 +146,7 @@
             
             <child>
               <object class="GtkVBox" id="custom_logo_vbox">
-                <property name="visible">True</property>
+                <property name="visible">False</property>
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkLabel" id="custom_logo_label">
