@@ -370,13 +370,17 @@ class InstManager(gobject.GObject):
     common_logo = None
     common_logo_buffer = None
     
-    def __init__(self, server, netserver, machine_manager, users_manager):
+    def __init__(self, server, netserver, machine_manager,
+                 machine_category_manager, users_manager):
+        
         self.__gobject_init__()
         
         self.server = server
         self.netserver = netserver
         self.machine_manager = machine_manager
+        self.machine_category_manager = machine_category_manager
         self.users_manager = users_manager
+        
         self.logger = logging.getLogger('InstManager')
         self.gconf_client = self.server.gconf_client
         self.timer_manager = TimerManager()
@@ -605,7 +609,8 @@ class InstManager(gobject.GObject):
             self.timer_manager.add_timerd_obj(machine_inst.timer_obj)
         
             
-        price_per_hour = self.get_price_per_hour()
+        price_per_hour = self.get_price_per_hour(machine_inst)
+        
         machine_inst.unblock(registred, limited, user_id, time, price_per_hour)
     
     def block(self, machine_inst, after, action):
@@ -621,8 +626,18 @@ class InstManager(gobject.GObject):
         """
         machine_inst.block(after, action)
     
-    def get_price_per_hour(self):
-        return self.gconf_client.get_float('/apps/openlh-server/price_per_hour')
+    def get_price_per_hour(self, machine_inst):
+        if machine_inst.category_id:
+            c = self.machine_category_manager.get_all().filter_by(
+                                        id=machine_inst.category_id).one()
+                
+            price_per_hour = c.price_hour
+            
+        else:
+            price_per_hour = self.gconf_client.get_float(
+                    '/apps/openlh-server/price_per_hour')
+        
+        return price_per_hour
     
     def discount_credit(self, machine_inst, value):
         """
@@ -694,7 +709,7 @@ class InstManager(gobject.GObject):
         if not credit:
             return 2
         
-        price_per_hour = self.get_price_per_hour()
+        price_per_hour = self.get_price_per_hour(machine_inst)
         users_manager = self.server.users_manager
         user = users_manager.get_all().filter_by(id=user_id).one()
         user.login_count += 1
@@ -937,6 +952,7 @@ class Server(gobject.GObject):
         self.instmachine_manager = InstManager(self,
                                                self.netserver,
                                                self.machine_manager,
+                                               self.machine_category_manager,
                                                self.users_manager)
         
         #Timer Manager!

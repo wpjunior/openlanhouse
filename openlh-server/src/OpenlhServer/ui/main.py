@@ -672,8 +672,8 @@ class Manager:
                             ICON=gtk.MESSAGE_ERROR)
             return
         
-        price_per_hour = self.gconf_client.get_float(
-                    '/apps/openlh-server/price_per_hour')
+        #Get Price per hour :-)
+        price_per_hour = self.instmachine_manager.get_price_per_hour(machine_inst)
         
         currency = self.gconf_client.get_string(
                     '/apps/openlh-server/currency')
@@ -683,8 +683,6 @@ class Manager:
                                       users_manager = self.users_manager,
                                       Parent=self.mainwindow)
         data = dlg.run()
-        
-        del dlg
         
         if data:
             self.instmachine_manager.unblock(machine_inst,
@@ -748,8 +746,7 @@ class Manager:
                             ICON=gtk.MESSAGE_ERROR)
             return
         
-        price_per_hour = self.gconf_client.get_float(
-                        '/apps/openlh-server/price_per_hour')
+        price_per_hour = self.instmachine_manager.get_price_per_hour(machine_inst)
         
         dlg = dialogs.add_time(price_per_hour, Parent=self.mainwindow)
         a_time = dlg.run()
@@ -783,8 +780,7 @@ class Manager:
                             ICON=gtk.MESSAGE_ERROR)
             return
         
-        price_per_hour = self.gconf_client.get_float(
-                        '/apps/openlh-server/price_per_hour')
+        price_per_hour = self.instmachine_manager.get_price_per_hour(machine_inst)
         
         dlg = dialogs.remove_time(price_per_hour, Parent=self.mainwindow)
         a_time = dlg.run()
