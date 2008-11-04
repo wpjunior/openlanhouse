@@ -113,6 +113,8 @@ class Manager:
         self.users_tree = self.xml.get_object('userstree')
         self.cash_flow_tree = self.xml.get_object('cash_flow_tree')
         self.open_debts_treeview = self.xml.get_object('open_debts_treeview')
+        self.machines_types_tree = self.xml.get_object('machines_types_tree')
+        self.user_category_tree = self.xml.get_object('user_category_tree')
         
         self.ui_manager1 = self.xml.get_object("uimanager1")
         
@@ -358,13 +360,14 @@ class Manager:
         self.machine_category_manager.connect('update', 
                                             self.on_update_category_machine)
         
-        tree = self.xml.get_object('machines_types_tree')
+        tree = self.machines_types_tree
         
         self.machines_category_model = gtk.TreeStore(gobject.TYPE_PYOBJECT,
                                                      gtk.gdk.Pixbuf,
                                                      gobject.TYPE_STRING,
                                                      gobject.TYPE_STRING,
-                                                     gobject.TYPE_BOOLEAN)
+                                                     gobject.TYPE_BOOLEAN,
+                                                     gobject.TYPE_STRING)
         
         tree.set_model(self.machines_category_model)
         
@@ -386,6 +389,27 @@ class Manager:
         #populate
         for i in self.machine_category_manager.get_all():
             self.populate_category_machine(i.id, i.name)
+        
+        self.statusbar.remove(0, message_id)
+        
+        #Populate Users Categories
+        message_id = self.statusbar.push(0, _('Loading User Categories'))
+        tree = self.user_category_tree
+        
+        self.users_category_model = gtk.ListStore(gobject.TYPE_INT,
+                                                  gobject.TYPE_STRING,
+                                                  gobject.TYPE_STRING)
+        
+        tree.set_model(self.users_category_model)
+        
+        column = gtk.TreeViewColumn()
+        text_cell = gtk.CellRendererText()
+        column.pack_start(text_cell, expand=True)
+        
+        column.add_attribute(text_cell, 'markup', 1)
+        tree.append_column(column)
+        
+        self.populate_user_category(0, _("All Users"))
         
         self.statusbar.remove(0, message_id)
         
@@ -1351,34 +1375,45 @@ class Manager:
             return self.busy_icon
     
     def populate_category_machine(self, id, name):
-        tree = self.xml.get_object('machines_types_tree')
+        tree = self.machines_types_tree
         model = tree.get_model()
         
         iter = model.append(None, ((id, None), None,
                             "<b>%s</b>" % name,
-                            None, False))
+                            None, False, name))
         
         self.category_machines_iters[id] = iter
+        
+        #Six Column is added to search column
         
         model.append(iter, ((id, MACHINE_STATUS_AVAIL),
                             self.status_icons.get_icon("available", 16, 16),
                             _("Available"),
                             _("Available machines"),
-                            True))
+                            True,
+                            _("Available")))
         
         model.append(iter, ((id, MACHINE_STATUS_BUSY),
                             self.status_icons.get_icon("busy", 16, 16),
                             _("Busy"),
                             _("Busy machines"),
-                            True))
+                            True, _("Busy")))
         
         model.append(iter, ((id, MACHINE_STATUS_OFFLINE),
                             self.status_icons.get_icon("halt", 16, 16),
                             _("Unavailable"),
                             _("Unavailable machines"),
-                            True))
+                            True, _("Unavailable") ))
         
         tree.expand_all()
+    
+    def populate_user_category(self, id, name):
+        tree = self.user_category_tree
+        model = tree.get_model()
+        
+        iter = model.append((id, #identification
+                            "<b>%s</b>" % name, #label in treeview
+                            name)) #Column for search
     
     def tray_menu_show(self, obj, button, event):
         self.tray_menu.popup(None, None, None, button, event)
@@ -2253,17 +2288,17 @@ class Manager:
             iter = self.category_machines_iters[category_id]
             self.machines_category_model.remove(iter)
             
-            treeview = self.xml.get_object("machines_types_tree")
-            treeview.set_cursor((0,))
+            self.machines_types_tree.set_cursor((0,))
     
     def on_update_category_machine(self, manager, category):
         if category.id in self.category_machines_iters:
             iter = self.category_machines_iters[category.id]
             self.machines_category_model.set(iter,
-                                            2, "<b>%s</b>" % category.name)
+                                            2, "<b>%s</b>" % category.name,
+                                            6, category.name)
     
     def delete_category_clicked(self, obj):
-        treeview = self.xml.get_object("machines_types_tree")
+        treeview = self.machines_types_tree
         value = self.get_machine_category_selected(treeview, treeview.get_cursor())
         if not value:
             return
@@ -2283,7 +2318,7 @@ class Manager:
         self.machine_category_manager.delete(c)
         
     def edit_category_clicked(self, obj):
-        treeview = self.xml.get_object("machines_types_tree")
+        treeview = self.machines_types_tree
         value = self.get_machine_category_selected(treeview, treeview.get_cursor())
         
         if not value:

@@ -516,7 +516,9 @@
       <popup name="new_menu">
         <menuitem action="newmachinemnu"/>
         <menuitem action="newcategorymachinemnu"/>
+        <separator/>
         <menuitem action="new_user_menuitem"/>
+        <separator/>
         <menuitem action="ticket_menuitem"/>
       </popup>
     </ui>
@@ -943,8 +945,8 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="headers_visible">False</property>
-                                        <property name="enable_search">False</property>
-                                        <property name="search_column">0</property>
+                                        <property name="enable_search">True</property>
+                                        <property name="search_column">5</property>
                                         <property name="tooltip_column">3</property>
                                         <signal handler="on_machines_categories_press_event" name="button_press_event"/>
                                         <signal handler="on_machines_categories_tree_activate" name="row_activated"/>
@@ -1005,6 +1007,58 @@
                           </object>
                           <packing>
                             <property name="expand">False</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkVBox" id="vbox90">
+                            <property name="visible">True</property>
+                            <property name="spacing">6</property>
+                            <child>
+                              <object class="GtkLabel" id="label160">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">&lt;b&gt;C_ategories&lt;/b&gt;</property>
+                                <property name="use_markup">True</property>
+                                <property name="use_underline">True</property>
+                                <property name="mnemonic_widget">user_category_tree</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkAlignment" id="alignment30">
+                                <property name="visible">True</property>
+                                <property name="left_padding">12</property>
+                                <child>
+                                  <object class="GtkScrolledWindow" id="scrolledwindow10">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                                    <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                                    <property name="shadow_type">GTK_SHADOW_IN</property>
+                                    <child>
+                                      <object class="GtkTreeView" id="user_category_tree">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="headers_visible">False</property>
+                                        <property name="enable_search">True</property>
+                                        <property name="search_column">2</property>
+                                        <!--<signal handler="on_machines_categories_press_event" name="button_press_event"/>
+                                        <signal handler="on_machines_categories_tree_activate" name="row_activated"/>
+                                        <signal handler="on_machines_categories_cursor_changed" name="cursor_changed"/>-->
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="position">1</property>
                           </packing>
                         </child>
                         <child>
