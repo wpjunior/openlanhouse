@@ -50,6 +50,7 @@ class Manager:
     category_machines_iters = {}
     detect_machine_iters = {}
     users_iters = {}
+    category_users_iters = {}
     open_debts_machine_iters = {}
     open_debts_other_iters = {}
     machine_auth_pending = {}
@@ -395,6 +396,14 @@ class Manager:
         
         #Populate Users Categories
         message_id = self.statusbar.push(0, _('Loading User Categories'))
+        
+        self.user_category_manager.connect('insert', 
+                                            self.on_insert_category_user)
+        self.user_category_manager.connect('delete', 
+                                            self.on_delete_category_user)
+        self.user_category_manager.connect('update', 
+                                            self.on_update_category_user)
+        
         tree = self.user_category_tree
         
         self.users_category_model = gtk.ListStore(gobject.TYPE_INT,
@@ -411,6 +420,10 @@ class Manager:
         tree.append_column(column)
         
         self.populate_user_category(0, _("All Users"))
+        
+        #populate
+        for i in self.user_category_manager.get_all():
+            self.populate_user_category(i.id, i.name)
         
         self.statusbar.remove(0, message_id)
         
@@ -1415,6 +1428,8 @@ class Manager:
         iter = model.append((id, #identification
                             "<b>%s</b>" % name, #label in treeview
                             name)) #Column for search
+        
+        self.category_users_iters[id] = iter
     
     def tray_menu_show(self, obj, button, event):
         self.tray_menu.popup(None, None, None, button, event)
@@ -2354,6 +2369,20 @@ class Manager:
                 pass #TODO: show dialog
     
     #Users Categories
+    def get_user_category_selected(self, obj, path):
+        selection = obj.get_selection()
+        
+        rows = selection.get_selected_rows()
+        
+        if path[0] not in rows[0]:
+            selection.unselect_all()
+            selection.select_path(path[0])
+        
+        model, iteration = self.get_selects(obj)
+        value = model.get_value(iteration, 0)
+        
+        return value
+        
     def on_users_categories_press_event(self, obj, event):
         if event.button == 3 and event.type == gtk.gdk.BUTTON_PRESS:
             
@@ -2364,22 +2393,16 @@ class Manager:
                 menu.popup(None, None, None, event.button, event.get_time())
                 return
             
-            """
-            value = self.get_machine_category_selected(obj, path)
+            id = self.get_user_category_selected(obj, path)
             
-            if not value:
+            if not id:
                 return
             
-            id, mode = value
-            if (id != 0) and (mode == None):
-                widget = self.xml.get_object('category_menu')
-                widget.popup(None, None, None, event.button, event.get_time())
-            """
-        
+            widget = self.xml.get_object('category_menu')
+            widget.popup(None, None, None, event.button, event.get_time())
         
     def on_users_categories_tree_activate(self, obj, path, column):
         print obj, path, column
-        
         
     def on_users_categories_cursor_changed(self, obj):
         print obj
@@ -2400,10 +2423,68 @@ class Manager:
                 pass #TODO: show dialog
 
     def delete_user_category_clicked(self, obj):
-        print "Delete User Category"
+        treeview = self.user_category_tree
+        id = self.get_user_category_selected(treeview, treeview.get_cursor())
+        if not id:
+            return
+        
+        c = self.user_category_manager.get_all().filter_by(id=id).one()
+        
+        d = dialogs.delete(_("<b><big>Are you sure you want to "
+                                 "permanently delete '%s' Category?</big></b>\n\n"
+                                 "if you delete this category, "
+                                 "it will be permanently lost") % c.name,
+                               Parent=self.mainwindow)
+        
+        if not d.response:
+            return
+        """# TODO: Remove associed users
+        #remove associed machines
+        for i in self.machine_manager.get_all().filter_by(category_id=c.id):
+            if not i in self.instmachine_manager.machines_by_id:
+                pass
+            
+            machine_inst = self.instmachine_manager.machines_by_id[i.id]
+            self.instmachine_manager.update(machine_inst, {'category_id': 0})
+        """
+        self.user_category_manager.delete(c)
     
     def edit_user_category_clicked(self, obj):
-        print "Edit User Category"
+        treeview = self.user_category_tree
+        id = self.get_user_category_selected(treeview, treeview.get_cursor())
+        if not id:
+            return
+        
+        c = self.user_category_manager.get_all().filter_by(id=id).one()
+        
+        dlg = dialogs.UserCategory(Parent=self.mainwindow)
+        data = dlg.run(category=c)
+        
+        if data:
+            for key, value in data.items():
+                setattr(c, key, value)
+            
+            try:
+                self.user_category_manager.update(c)
+            except:
+                pass #TODO: show dialog
+    
+    def on_insert_category_user(self, manager, category):
+        self.populate_user_category(category.id, category.name)
+        
+    def on_delete_category_user(self, manager, category_id):
+        if category_id in self.category_users_iters:
+            iter = self.category_users_iters[category_id]
+            self.users_category_model.remove(iter)
+            
+            self.user_category_tree.set_cursor((0,))
+        
+    def on_update_category_user(self, manager, category):
+        if category.id in self.category_users_iters:
+            iter = self.category_users_iters[category.id]
+            self.users_category_model.set(iter,
+                                          1, "<b>%s</b>" % category.name,
+                                          2, category.name)
     
     #Category redirection
     
