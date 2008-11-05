@@ -490,12 +490,22 @@
             <property name="name">newcategorymachinemnu</property>
             <property name="tooltip" translatable="yes">Create a new machine category</property>
             <property name="label" translatable="yes">Machine Category</property>
-            <signal handler="add_new_category_clicked" name="activate"/>
+            <signal handler="add_new_machine_category_clicked" name="activate"/>
+          </object>
+        </child>
+        <child>
+          <object class="GtkAction" id="newcategoryusermnu">
+            <property name="icon-name">config-users</property>
+            <property name="name">newcategorymachinemnu</property>
+            <property name="tooltip" translatable="yes">Create a new user category</property>
+            <property name="label" translatable="yes">User Category</property>
+            <signal handler="add_new_user_category_clicked" name="activate"/>
           </object>
         </child>
         <child>
           <object class="GtkAction" id="new_user_menuitem">
             <property name="name">new_user_menuitem</property>
+            <property name="icon-name">config-users</property>
             <property name="tooltip" translatable="yes">Create a new user</property>
             <property name="label" translatable="yes">_User</property>
             <signal handler="on_new_user_menuitem_activate" name="activate"/>
@@ -518,6 +528,7 @@
         <menuitem action="newcategorymachinemnu"/>
         <separator/>
         <menuitem action="new_user_menuitem"/>
+        <menuitem action="newcategoryusermnu"/>
         <separator/>
         <menuitem action="ticket_menuitem"/>
       </popup>
@@ -1044,9 +1055,9 @@
                                         <property name="headers_visible">False</property>
                                         <property name="enable_search">True</property>
                                         <property name="search_column">2</property>
-                                        <!--<signal handler="on_machines_categories_press_event" name="button_press_event"/>
-                                        <signal handler="on_machines_categories_tree_activate" name="row_activated"/>
-                                        <signal handler="on_machines_categories_cursor_changed" name="cursor_changed"/>-->
+                                        <signal handler="on_users_categories_press_event" name="button_press_event"/>
+                                        <signal handler="on_users_categories_tree_activate" name="row_activated"/>
+                                        <signal handler="on_users_categories_cursor_changed" name="cursor_changed"/>
                                       </object>
                                     </child>
                                   </object>

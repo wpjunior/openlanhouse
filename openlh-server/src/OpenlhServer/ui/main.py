@@ -33,7 +33,7 @@ from OpenlhServer.ui.SearchEntry import SearchEntry
 from OpenlhCore.utils import md5_cripto
 from OpenlhServer.ui.utils import get_gtk_builder
 from OpenlhServer.utils import user_has_avatar, get_user_avatar_path
-from OpenlhServer.db.models import CashFlowItem, User, MachineCategory
+from OpenlhServer.db.models import CashFlowItem, User, MachineCategory, UserCategory
 from OpenlhServer.globals import *
 _ = gettext.gettext
 
@@ -82,6 +82,7 @@ class Manager:
         
         self.machine_manager = self.daemon.machine_manager
         self.machine_category_manager = self.daemon.machine_category_manager
+        self.user_category_manager = self.daemon.user_category_manager
         self.users_manager = self.daemon.users_manager
         self.cash_flow_manager = self.daemon.cash_flow_manager
         self.open_debts_machine_manager = self.daemon.open_debts_machine_manager
@@ -2265,7 +2266,7 @@ class Manager:
         else:
             return False
     
-    def add_new_category_clicked(self, obj):
+    def add_new_machine_category_clicked(self, obj):
         dlg = dialogs.MachineCategory(Parent=self.mainwindow)
         data = dlg.run()
         
@@ -2277,7 +2278,7 @@ class Manager:
             
             try:
                 self.machine_category_manager.insert(c)
-            except IntegrityError:
+            except:
                 pass #TODO: show dialog
     
     def on_insert_category_machine(self, manager, category):
@@ -2295,9 +2296,9 @@ class Manager:
             iter = self.category_machines_iters[category.id]
             self.machines_category_model.set(iter,
                                             2, "<b>%s</b>" % category.name,
-                                            6, category.name)
+                                            5, category.name)
     
-    def delete_category_clicked(self, obj):
+    def delete_machine_category_clicked(self, obj):
         treeview = self.machines_types_tree
         value = self.get_machine_category_selected(treeview, treeview.get_cursor())
         if not value:
@@ -2306,6 +2307,15 @@ class Manager:
         id, mode = value
         
         c = self.machine_category_manager.get_all().filter_by(id=id).one()
+        
+        d = dialogs.delete(_("<b><big>Are you sure you want to "
+                                 "permanently delete '%s' Category?</big></b>\n\n"
+                                 "if you delete this category, "
+                                 "it will be permanently lost") % c.name,
+                               Parent=self.mainwindow)
+        
+        if not d.response:
+            return
         
         #remove associed machines
         for i in self.machine_manager.get_all().filter_by(category_id=c.id):
@@ -2317,7 +2327,7 @@ class Manager:
         
         self.machine_category_manager.delete(c)
         
-    def edit_category_clicked(self, obj):
+    def edit_machine_category_clicked(self, obj):
         treeview = self.machines_types_tree
         value = self.get_machine_category_selected(treeview, treeview.get_cursor())
         
@@ -2340,5 +2350,77 @@ class Manager:
             
             try:
                 self.machine_category_manager.update(c)
-            except IntegrityError:
+            except:
                 pass #TODO: show dialog
+    
+    #Users Categories
+    def on_users_categories_press_event(self, obj, event):
+        if event.button == 3 and event.type == gtk.gdk.BUTTON_PRESS:
+            
+            path = obj.get_path_at_pos(int(event.x), int(event.y))
+            
+            if not path:
+                menu = self.xml.get_object("category_menu2")
+                menu.popup(None, None, None, event.button, event.get_time())
+                return
+            
+            """
+            value = self.get_machine_category_selected(obj, path)
+            
+            if not value:
+                return
+            
+            id, mode = value
+            if (id != 0) and (mode == None):
+                widget = self.xml.get_object('category_menu')
+                widget.popup(None, None, None, event.button, event.get_time())
+            """
+        
+        
+    def on_users_categories_tree_activate(self, obj, path, column):
+        print obj, path, column
+        
+        
+    def on_users_categories_cursor_changed(self, obj):
+        print obj
+    
+    def add_new_user_category_clicked(self, obj):
+        dlg = dialogs.UserCategory(Parent=self.mainwindow)
+        data = dlg.run()
+        
+        if data:
+            c = UserCategory()
+            
+            for key, value in data.items():
+                setattr(c, key, value)
+            
+            try:
+                self.user_category_manager.insert(c)
+            except:
+                pass #TODO: show dialog
+
+    def delete_user_category_clicked(self, obj):
+        print "Delete User Category"
+    
+    def edit_user_category_clicked(self, obj):
+        print "Edit User Category"
+    
+    #Category redirection
+    
+    def edit_category_clicked(self, obj):
+        if self.selpage == 0:
+            self.edit_machine_category_clicked(obj)
+        elif self.selpage == 1:
+            self.edit_user_category_clicked(obj)
+    
+    def delete_category_clicked(self, obj):
+        if self.selpage == 0:
+            self.delete_machine_category_clicked(obj)
+        elif self.selpage == 1:
+            self.delete_user_category_clicked(obj)
+    
+    def add_new_category_clicked(self, obj):
+        if self.selpage == 0:
+            self.add_new_machine_category_clicked(obj)
+        elif self.selpage == 1:
+            self.add_new_user_category_clicked(obj)

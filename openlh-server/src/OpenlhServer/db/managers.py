@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from OpenlhServer.db.models import Machine, User, CashFlowItem, HistoryItem, MachineCategory
-from OpenlhServer.db.models import OpenDebtMachineItem, OpenDebtOtherItem, Version
+from OpenlhServer.db.models import OpenDebtMachineItem, OpenDebtOtherItem, Version, UserCategory
 from OpenlhServer.db.basemanager import BaseManager, BaseFlow
 
 from sqlalchemy import Table, Column, Boolean, Integer, String, Text
@@ -49,17 +49,36 @@ class MachineCategoryManager(BaseManager):
         BaseManager.__init__(self, db_session, MachineCategory)
         
         self.table = Table(self.__table_name__,
-                      self.db_session.metadata,
-                      Column('id', Integer, primary_key=True),
-                      Column('name', String(25), nullable=False, unique=True),
-                      Column('custom_logo', Boolean, default=False),
-                      Column('custom_background', Boolean, default=False),
-                      Column('logo_path', String(100), nullable=True),
-                      Column('background_path', String(100), nullable=True),
-                      Column('price_hour', Float, default=0)
-                      )
+                          self.db_session.metadata,
+                          Column('id', Integer, primary_key=True),
+                          Column('name', String(25), nullable=False, unique=True),
+                          Column('custom_logo', Boolean, default=False),
+                          Column('custom_background', Boolean, default=False),
+                          Column('logo_path', String(100), nullable=True),
+                          Column('background_path', String(100), nullable=True),
+                          Column('custom_price_hour', Boolean, default=False),
+                          Column('price_hour', Float, default=0)
+                          )
         
         self.mapper = mapper(MachineCategory, self.table)
+
+class UserCategoryManager(BaseManager):
+    __table_name__ = "openlh_user_category"
+    
+    def __init__(self, db_session):
+        
+        BaseManager.__init__(self, db_session, UserCategory)
+        
+        self.table = Table(self.__table_name__,
+                          self.db_session.metadata,
+                          Column('id', Integer, primary_key=True),
+                          Column('name', String(25), nullable=False, unique=True),
+                          Column('allow_login', Boolean, default=True),
+                          Column('custom_price_hour', Boolean, default=False),
+                          Column('price_hour', Float, default=0)
+                          )
+        
+        self.mapper = mapper(UserCategory, self.table)
 
 class MachineManager(BaseManager):
 

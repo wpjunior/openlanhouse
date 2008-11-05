@@ -1329,7 +1329,7 @@ class AddMachine:
     def on_new_category_clicked(self, obj):
         if self.manager:
             self.accept_first_new = True
-            self.manager.add_new_category_clicked(None)
+            self.manager.add_new_machine_category_clicked(None)
             self.accept_first_new = False
     
     def row_separator_func(self, model, iter):
@@ -2268,6 +2268,9 @@ class MachineCategory:
     def on_logo_bnt_toggled(self, obj):
         self.logo_chooser.set_sensitive(obj.get_active())
     
+    def on_hourly_rate_toggled(self, obj):
+        self.xml.get_object('price_hour').set_sensitive(obj.get_active())
+        
     def set_category(self, category):
         if category.name:
             self.xml.get_object('name_entry').set_text(category.name)
@@ -2277,6 +2280,9 @@ class MachineCategory:
         
         if category.custom_background:
             self.xml.get_object('background_bnt').set_active(True)
+        
+        if category.custom_price_hour:
+            self.xml.get_object('custom_hourly_rate').set_active(True)
         
         if category.price_hour:
             self.xml.get_object('price_hour').set_value(category.price_hour)
@@ -2299,13 +2305,70 @@ class MachineCategory:
             data['name'] = self.xml.get_object('name_entry').get_text()
             data['custom_logo'] = self.xml.get_object('logo_bnt').get_active()
             data['custom_background'] = self.xml.get_object('background_bnt').get_active()
-            data['price_hour'] = self.xml.get_object('price_hour').get_value()
+            data['custom_price_hour'] = self.xml.get_object("custom_hourly_rate").get_active()
+            
+            if ('custom_price_hour' in data) and data['custom_price_hour']:
+                data['price_hour'] = self.xml.get_object('price_hour').get_value()
             
             if ('custom_logo' in data) and data['custom_logo']:
                 data['logo_path'] = self.logo_chooser.get_filename()
             
             if ('custom_background' in data) and data['custom_background']:
                 data['background_path'] = self.background_chooser.get_filename()
+        
+            self.dialog.destroy()
+            
+            return data
+        else:
+            self.dialog.destroy()
+
+
+class UserCategory:
+    def __init__(self, Parent=None):
+        self.xml = get_gtk_builder('add_user_category')
+        
+        self.dialog = self.xml.get_object('add_user_category')
+        self.xml.connect_signals(self)
+        
+        if Parent:
+            self.dialog.set_transient_for(Parent)
+    
+    def on_name_entry_changed(self, obj):
+        self.xml.get_object('okbnt').set_sensitive(bool(obj.get_text()))
+    
+    def on_hourly_rate_toggled(self, obj):
+        self.xml.get_object('price_hour').set_sensitive(obj.get_active())
+    
+    def set_category(self, category):
+        if category.name:
+            self.xml.get_object('name_entry').set_text(category.name)
+        
+        if category.custom_price_hour:
+            self.xml.get_object('custom_hourly_rate').set_active(True)
+        
+        if category.price_hour:
+            self.xml.get_object('price_hour').set_value(category.price_hour)
+        
+        if category.allow_login:
+            self.xml.get_object('allow_login').set_active(True)
+    
+    def run(self, category=None):
+        
+        if category:
+            self.set_category(category)
+            self.dialog.set_title("User Category Editor")
+        
+        if self.dialog.run():
+            data = {}
+            data['name'] = self.xml.get_object('name_entry').get_text()
+            data['price_hour'] = self.xml.get_object('price_hour').get_value()
+            
+            data['custom_price_hour'] = self.xml.get_object("custom_hourly_rate").get_active()
+            
+            if ('custom_price_hour' in data) and data['custom_price_hour']:
+                data['price_hour'] = self.xml.get_object('price_hour').get_value()
+            
+            data['allow_login'] = self.xml.get_object("allow_login").get_active()
         
             self.dialog.destroy()
             

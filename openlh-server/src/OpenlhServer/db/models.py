@@ -27,6 +27,11 @@ class MachineCategory(object):
     def __repr__(self):
         return ("<CategoryMachine(%s)>" % self.name)
 
+class UserCategory(object):
+    __name__ = "UserCategory"
+    def __repr__(self):
+        return ("<UserMachine(%s)>" % self.name)
+
 class CashFlowItem(object):
     __name__ = "CashFlowItem"
     def __repr__(self):

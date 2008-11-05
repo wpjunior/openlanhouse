@@ -3,6 +3,7 @@ uidir = $(datadir)/OpenlhServer/ui
 ui_DATA = \
 	add_credit.ui \
 	add_user.ui \
+	add_user_category.ui \
 	edit_user.ui \
 	block_machine.ui \
 	add_machine.ui \

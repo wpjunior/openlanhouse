@@ -38,7 +38,7 @@ from OpenlhServer.db.models import Machine, User, OpenDebtMachineItem, HistoryIt
 from OpenlhServer.db.session import DBSession
 from OpenlhServer.db.managers import MachineManager, UserManager, CashFlowManager
 from OpenlhServer.db.managers import OpenDebtsMachineManager, OpenDebtsOtherManager
-from OpenlhServer.db.managers import HistoryManager, VersionManager, MachineCategoryManager
+from OpenlhServer.db.managers import HistoryManager, VersionManager, MachineCategoryManager, UserCategoryManager
 from OpenlhServer.db.globals import DB_NAMES
 
 _ = gettext.gettext
@@ -630,12 +630,16 @@ class InstManager(gobject.GObject):
         if machine_inst.category_id:
             c = self.machine_category_manager.get_all().filter_by(
                                         id=machine_inst.category_id).one()
-                
-            price_per_hour = c.price_hour
+            
+            if c.custom_price_hour:
+                price_per_hour = c.price_hour
+            else:
+                price_per_hour = self.gconf_client.get_float(
+                    '/apps/openlh-server/price_per_hour')
             
         else:
             price_per_hour = self.gconf_client.get_float(
-                    '/apps/openlh-server/price_per_hour')
+                    '/apps/openlh-server/price_per_hour') #TODO: Guardar preço na instancia e monitorar pelo gconf_monitory_add
         
         return price_per_hour
     
@@ -921,6 +925,7 @@ class Server(gobject.GObject):
         self.version_manager = VersionManager(self.db_session)
         self.machine_manager = MachineManager(self.db_session)
         self.machine_category_manager = MachineCategoryManager(self.db_session)
+        self.user_category_manager = UserCategoryManager(self.db_session)
         self.users_manager = UserManager(self.db_session)
         self.cash_flow_manager = CashFlowManager(self.db_session)
         self.open_debts_machine_manager = OpenDebtsMachineManager(
