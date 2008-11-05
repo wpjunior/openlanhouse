@@ -63,6 +63,7 @@ class Manager:
     
     machine_filter_category = 0
     machine_filter_status = None
+    user_filter_category = 0
     
     def __init__(self, daemon):
         
@@ -863,6 +864,12 @@ class Manager:
         return t
     
     def on_user_visible_cb(self, model, iter):
+        
+        user_id = model.get_value(iter, treeview.USERS_CEL_ID)
+        
+        if user_id and not(self.check_user_filter(int(user_id))):
+            return False
+        
         if self.user_search_text == "":
             return True
         
@@ -2218,7 +2225,7 @@ class Manager:
         if not value:
             return
         
-        self.edit_category_clicked(None)
+        self.edit_machine_category_clicked(None)
     
     def on_machines_categories_press_event(self, obj, event):
         if event.button == 3 and event.type == gtk.gdk.BUTTON_PRESS:
@@ -2382,6 +2389,20 @@ class Manager:
         value = model.get_value(iteration, 0)
         
         return value
+    
+    def check_user_filter(self, user_id):
+        
+        #if All Machines is selected
+        if (self.user_filter_category == 0):
+            return True
+        
+        #if user_id is not found in database
+        c = self.users_manager.get_all().filter_by(id=user_id).all()
+        if not c:
+            return True
+        
+        c = c[0]
+        return c.category_id == self.user_filter_category
         
     def on_users_categories_press_event(self, obj, event):
         if event.button == 3 and event.type == gtk.gdk.BUTTON_PRESS:
@@ -2402,10 +2423,15 @@ class Manager:
             widget.popup(None, None, None, event.button, event.get_time())
         
     def on_users_categories_tree_activate(self, obj, path, column):
-        print obj, path, column
+        value = self.get_user_category_selected(obj, obj.get_cursor())
+        if not value:
+            return
+        
+        self.edit_user_category_clicked(None)
         
     def on_users_categories_cursor_changed(self, obj):
-        print obj
+        self.user_filter_category = self.get_user_category_selected(obj, obj.get_cursor())
+        gobject.idle_add(self.users_filtered.refilter)
     
     def add_new_user_category_clicked(self, obj):
         dlg = dialogs.UserCategory(Parent=self.mainwindow)

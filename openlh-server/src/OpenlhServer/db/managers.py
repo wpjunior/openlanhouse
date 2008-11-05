@@ -155,10 +155,12 @@ class UserManager(BaseManager):
                       Column('login_count', Integer, default=0),
                       Column('credit', Float, default=0),
                       Column('password', String(32), nullable=False),
+                      Column('category_id', Integer, ForeignKey('openlh_user_category.id')),
                       )
 
         self.db_session = db_session
-        self.mapper = mapper(User, self.table)
+        self.mapper = mapper(User, self.table,
+                             properties={'category':relation(UserCategory)})
     
     def get_full_name(self, user_id):
         
