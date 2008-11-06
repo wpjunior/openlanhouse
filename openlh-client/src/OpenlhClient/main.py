@@ -605,6 +605,11 @@ class Client:
             self.login_window.err_box.set_text(
                             _("Insufficient Credits."))
         
+        elif value==3:
+            self.login_attempts = 0
+            self.login_window.err_box.set_text(
+                            _("Permission Denied"))
+        
         if self.login_attempts >= 3:
             self.login_window.set_lock_all(True)
             self.login_window.on_ready_run_interable = True

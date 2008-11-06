@@ -360,17 +360,26 @@ class user_edit:
     data['notes'] = ""
     data['address'] = ""
     data['birth'] = None
+    data['category_id'] = 0
     
     input = {}
     errs = []
     warns = []
     faults = []
+    category_iters = {}
     
     user_avatar = None
+    accept_first_new = False
+    insert_connect_id = 0
     
-    def __init__(self, users_manager, Parent=None):
+    def __init__(self, manager, Parent=None):
         
-        self.users_manager = users_manager
+        self.manager = manager
+        self.users_manager = manager.users_manager
+        
+        self.insert_connect_id = self.manager.user_category_manager.connect(
+                                            'insert', 
+                                            self.on_insert_category_user)
         
         self.xml = get_gtk_builder(self.ui_file)
         self.xml.connect_signals(self)
@@ -409,6 +418,41 @@ class user_edit:
         self.reg_entry('responsible')
         self.reg_entry('city')
         self.reg_entry('phone')
+        
+        #categories
+        self.CategoryListStore = gtk.ListStore(gobject.TYPE_INT,
+                                               gobject.TYPE_STRING)
+        
+        self.CategoryComboBox = gtk.ComboBox(model=self.CategoryListStore)
+        
+        cell = gtk.CellRendererText()
+        self.CategoryComboBox.pack_start(cell, True)
+        self.CategoryComboBox.add_attribute(cell, 'text', 1)
+        self.CategoryComboBox.set_row_separator_func(self.row_separator_func)
+        
+        table = self.xml.get_object("misc_table")
+        table.attach(child=self.CategoryComboBox,
+                     left_attach=3,
+                     right_attach=4,
+                     top_attach=0,
+                     bottom_attach=1,
+                     xoptions=gtk.FILL,
+                     yoptions=gtk.EXPAND|gtk.FILL)
+        
+        self.xml.get_object("category_label").set_mnemonic_widget(self.CategoryComboBox)
+        self.CategoryComboBox.show()
+        
+        #Populate categories
+        iter = self.CategoryListStore.append((0, _("None")))
+        self.category_iters[0] = iter
+        self.CategoryComboBox.set_active_iter(iter)
+        
+        self.CategoryListStore.append((-1, ""))
+        
+        if self.manager:
+            for i in self.manager.user_category_manager.get_all():
+                iter = self.CategoryListStore.append((i.id, i.name))
+                self.category_iters[i.id] = iter
         
         if Parent:
             self.users.set_transient_for(Parent)
@@ -460,6 +504,13 @@ class user_edit:
     def check_forward_button(self):
         t = not(bool([i for i in self.faults, self.errs, self.warns if i]))
         self.ok_bnt.set_sensitive(t and not(self.nick_found))
+    
+    def on_insert_category_user(self, manager, category):
+        iter = self.CategoryListStore.append((category.id, category.name))
+        self.category_iters[category.id] = iter
+        
+        if self.accept_first_new:
+            self.CategoryComboBox.set_active_iter(iter)
     
     def on_nick_insert_text(self, obj, new_str, length, position):
         
@@ -562,6 +613,13 @@ class user_edit:
             self.data['birth'] = user.birth
             self.birth.set_time(map(int, self.data['birth'].split('-')))
         
+        self.data['category_id'] = user.category_id
+        
+        if user.category_id:
+            if user.category_id in self.category_iters:
+                iter = self.category_iters[user.category_id]
+                self.CategoryComboBox.set_active_iter(iter)
+        
         self.data['id'] = user.id
         
         if user_has_avatar(user.id):
@@ -578,6 +636,9 @@ class user_edit:
         
         newdata['birth'] = '%s-%s-%s' % self.birth.get_time()
         
+        iter = self.CategoryComboBox.get_active_iter()
+        newdata['category_id'] = self.CategoryListStore.get_value(iter, 0)
+        
         for key in self.input.keys():
             newdata[key] = self.input[key].get_text()
         
@@ -591,6 +652,19 @@ class user_edit:
             return x[1] != self.data[x[0]]
         
         return dict(filter(f, zip(new.keys(), new.values())))
+    
+    def row_separator_func(self, model, iter):
+        
+        if model.get_value(iter, 0) == -1:
+            return True
+        else:
+            return False
+    
+    def on_new_category_clicked(self, obj):
+        if self.manager:
+            self.accept_first_new = True
+            self.manager.add_new_user_category_clicked(None)
+            self.accept_first_new = False
     
     def run(self, user=None):
         
@@ -624,6 +698,11 @@ class user_edit:
                 avatar_pixbuf.save(path, "png")
             except Exception, error:
                 print error
+        
+        #Remove Callback
+        if self.insert_connect_id:
+            gobject.source_remove(self.insert_connect_id)
+            self.insert_connect_id = 0
         
         self.users.destroy()
     
@@ -670,10 +749,10 @@ class adduser(user_edit):
     lock = False
     ui_file = 'add_user'
     
-    def __init__(self, users_manager, cash_flow_manager, price_per_hour, Parent=None):
+    def __init__(self, manager, price_per_hour, Parent=None):
         
-        user_edit.__init__(self, users_manager, Parent)
-        self.cash_flow_manager = cash_flow_manager
+        user_edit.__init__(self, manager, Parent)
+        self.cash_flow_manager = manager.cash_flow_manager
         self.price_per_hour = price_per_hour
         
         self.notebook = self.xml.get_object("notebook")
@@ -808,7 +887,7 @@ class adduser(user_edit):
             path = get_user_avatar_path(user.id)
             
             try:
-                avatar_pixbuf.save(path, "jpeg", {"quality":"100"})
+                avatar_pixbuf.save(path, "png")
             except Exception, error:
                 print error
         
@@ -827,6 +906,11 @@ class adduser(user_edit):
             citem.hour = current_hour
         
             self.cash_flow_manager.insert(citem)
+        
+        #Remove Callback
+        if self.insert_connect_id:
+            gobject.source_remove(self.insert_connect_id)
+            self.insert_connect_id = 0
         
         self.users.destroy()
         
@@ -1284,6 +1368,7 @@ class AddMachine:
                      xoptions=gtk.FILL,
                      yoptions=gtk.EXPAND|gtk.FILL)
         
+        self.xml.get_object("category_label").set_mnemonic_widget(self.CategoryComboBox)
         self.CategoryComboBox.show()
         
         #Populate categories

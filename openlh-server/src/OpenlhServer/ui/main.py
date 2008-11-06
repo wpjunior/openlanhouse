@@ -468,8 +468,7 @@ class Manager:
         price_per_hour = self.gconf_client.get_float(
                                 '/apps/openlh-server/price_per_hour')
         
-        dlg = dialogs.adduser(users_manager=self.users_manager,
-                              cash_flow_manager=self.cash_flow_manager,
+        dlg = dialogs.adduser(manager=self,
                               price_per_hour=price_per_hour,
                               Parent=self.mainwindow)
         
@@ -498,8 +497,7 @@ class Manager:
             price_per_hour = self.gconf_client.get_float(
                                     '/apps/openlh-server/price_per_hour')
             
-            dlg = dialogs.adduser(users_manager=self.users_manager,
-                                  cash_flow_manager=self.cash_flow_manager,
+            dlg = dialogs.adduser(manager=self,
                                   price_per_hour=price_per_hour,
                                   Parent=self.mainwindow)
             
@@ -575,8 +573,8 @@ class Manager:
             id = int(model.get_value(iteration, 0))
             user = self.users_manager.get_all().filter_by(id=id).one()
             
-            app = dialogs.user_edit(users_manager=self.users_manager,
-                                     Parent=self.mainwindow)
+            app = dialogs.user_edit(manager=self,
+                                    Parent=self.mainwindow)
             
             app.run(user)
     
@@ -998,21 +996,6 @@ class Manager:
         if password:
             self.users_manager.change_password(user_id, md5_cripto(password))
     
-    def new_machine_by_mnu(self, obj):
-        print "New Machine"
-    
-    def new_user_by_mnu(self, obj):
-        print 'new_user_by_mnu'
-        """" #FIX_ME
-        price_per_hour = self.gconf_client.get_float(
-                              '/apps/openlh-server/price_per_hour')
-        
-        app = dialogs.adduser(database=self.database_user,
-                              cash_flow_manager=self.cash_flow_manager,
-                              price_per_hour=price_per_hour,
-                              Parent=self.mainwindow)
-        app.run()
-        """
     def new_ticket_by_mnu(self, obj):
         print 'new_ticket_by_mnu'
     
@@ -2464,15 +2447,11 @@ class Manager:
         
         if not d.response:
             return
-        """# TODO: Remove associed users
-        #remove associed machines
-        for i in self.machine_manager.get_all().filter_by(category_id=c.id):
-            if not i in self.instmachine_manager.machines_by_id:
-                pass
-            
-            machine_inst = self.instmachine_manager.machines_by_id[i.id]
-            self.instmachine_manager.update(machine_inst, {'category_id': 0})
-        """
+        
+        for i in self.users_manager.get_all().filter_by(category_id=c.id):
+            i.category_id = 0
+            self.users_manager.update(i)
+        
         self.user_category_manager.delete(c)
     
     def edit_user_category_clicked(self, obj):

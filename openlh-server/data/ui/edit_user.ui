@@ -447,7 +447,7 @@
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                     <property name="left_padding">12</property>
                     <child>
-                      <object class="GtkTable" id="table3">
+                      <object class="GtkTable" id="misc_table">
                         <property name="visible">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="n_rows">2</property>
@@ -463,9 +463,53 @@
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="right_attach">4</property>
+                            <property name="right_attach">2</property>
                           </packing>
                         </child>
+                        <child>
+                          <object class="GtkLabel" id="category_label">
+                            <property name="visible">True</property>
+                            <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                            <property name="xalign">0</property>
+                            <property name="label" translatable="yes">_Category:</property>
+                            <property name="use_markup">True</property>
+                            <property name="use_underline">True</property>
+                            <!--<property name="mnemonic_widget">responsible</property>-->
+                          </object>
+                          <packing>
+                            <property name="x_options">GTK_FILL</property>
+                            <property name="left_attach">2</property>
+                            <property name="right_attach">3</property>
+                          </packing>
+                        </child>
+                        
+                        <child>
+                          <object class="GtkButton" id="new_category">
+                            <property name="visible">True</property>
+                            <property name="tooltip" translatable="yes">Testing :)</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="relief">GTK_RELIEF_NONE</property>
+                            <signal handler="on_new_category_clicked" name="clicked"/>
+                            <child>
+                              <object class="GtkImage" id="image151">
+                                <property name="visible">True</property>
+                                <property name="stock">gtk-new</property>
+                                <property name="icon_size">1</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="left_attach">4</property>
+                            <property name="right_attach">5</property>
+                            <property name="top_attach">0</property>
+                            <property name="bottom_attach">1</property>
+                            <property name="x_options">GTK_FILL</property>
+                            <property name="y_options">GTK_FILL</property>
+                          </packing>
+                        </child>
+                        
+                        
                         <child>
                           <object class="GtkLabel" id="label14">
                             <property name="visible">True</property>
@@ -500,7 +544,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="right_attach">4</property>
+                            <property name="right_attach">5</property>
                             <property name="top_attach">1</property>
                             <property name="bottom_attach">2</property>
                           </packing>

@@ -299,7 +299,7 @@ class MachineInst(gobject.GObject):
         if not d:
             return
         
-        total = ((self.price_per_hour * d) / 60 / 60)
+        total = (float(self.price_per_hour * d) / 60 / 60)
         self.last_consume_credit = int(time.time())
         
         if self.registred:
@@ -581,7 +581,8 @@ class InstManager(gobject.GObject):
         for machine in self.machines_by_id.values():
             machine.send_information(data)
     
-    def unblock(self, machine_inst, registred, limited, user_id, time):
+    def unblock(self, machine_inst, registred, limited, 
+                user_id, time, price_per_hour=None):
         """
             Unblock machine
             @machine_inst:
@@ -608,8 +609,8 @@ class InstManager(gobject.GObject):
             machine_inst.timer_obj.reset_start_time()
             self.timer_manager.add_timerd_obj(machine_inst.timer_obj)
         
-            
-        price_per_hour = self.get_price_per_hour(machine_inst)
+        if not price_per_hour:
+            price_per_hour = self.get_price_per_hour(machine_inst)
         
         machine_inst.unblock(registred, limited, user_id, time, price_per_hour)
     
@@ -713,14 +714,30 @@ class InstManager(gobject.GObject):
         if not credit:
             return 2
         
-        price_per_hour = self.get_price_per_hour(machine_inst)
+        
         users_manager = self.server.users_manager
         user = users_manager.get_all().filter_by(id=user_id).one()
+        
+        if user.category_id:
+            if not user.category.allow_login:
+                return 3
+        
         user.login_count += 1
         user.last_login = datetime.datetime.now()
         user.last_machine_id = machine_inst.id
         users_manager.update(user)
-        self.unblock(machine_inst, True, False, user_id, None)
+        
+        #Get Category price per hour
+        if user.category_id:
+            if user.category.custom_price_hour:
+                price_per_hour = user.category.price_hour
+            else:
+                price_per_hour = self.get_price_per_hour(machine_inst)# get common hourly rate
+        else:
+            price_per_hour = self.get_price_per_hour(machine_inst)# get common hourly rate
+        
+        self.unblock(machine_inst, True, False, 
+                     user_id, None, price_per_hour=price_per_hour)
         
         return True
     
