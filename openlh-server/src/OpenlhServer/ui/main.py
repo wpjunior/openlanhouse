@@ -1981,6 +1981,7 @@ class Manager:
                                                 self.open_debts_search_entry)
         else:
             self.xml.get_object("machines_types_tree").set_cursor((0,))
+            self.xml.get_object("user_category_tree").set_cursor((0,))
             self.xml.get_object("classic_mode_radio").set_active(True)
             self.xml.get_object("sidebar_vbox").hide()
             self.xml.get_object("classic_hbox").show()
