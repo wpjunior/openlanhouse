@@ -18,8 +18,8 @@
 
 PLUGIN_NAME = "Example"
 PLUGIN_DESCRIPTION = "Plugin Example"
-PLUGIN_AUTHOR = "Wilson Pinto JÃºnior <wilson@openlanhouse.org>"
-PLUGIN_COPYRIGHT = "Copyright 2008 Wilson Pinto JÃºnior"
+PLUGIN_AUTHOR = "Wilson Pinto Júnior <wilson@openlanhouse.org>"
+PLUGIN_COPYRIGHT = "Copyright 2008 Wilson Pinto Júnior"
 PLUGIN_SITE = "http://openlanhouse.org"
 
 def enable(daemon, main_window):
