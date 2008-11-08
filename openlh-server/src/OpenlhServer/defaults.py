@@ -16,4 +16,32 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-defaults = {"name": "OpenLanhouse"}
+defaults = {"name": "OpenLanhouse",
+            "currency": "US$",
+            "listen_port": 4558,
+            "use_psyco": False,
+            "default_welcome_msg": True,
+            "login_suport": True,
+            "ticket_suport": False,
+            "ticket_size": 8,
+            "background": False,
+            "logo": False,
+            "close_apps": False,
+            "db/engine": "sqlite",
+            "ui/show_notifications": True,
+            "ui/maximized": True,
+            "ui/height": 550,
+            "ui/width": 800,
+            "ui/visible": True,
+            "ui/position_x": 0,
+            "ui/position_y": 0,
+            "ui/machines_columns": ("host", "user", "time", "time_last", "total_to_pay"),
+            "ui/users_columns": ("nick" ,"name", "email", "credit"),
+            "ui/cash_flow_columns": ("day", "hour", "type", "user", "description", "value"),
+            "ui/open_debts_machine_columns": ("day", "hour", "machine", "start_time", "end_time", "user", "value"),
+            "ui/open_debts_other_columns": ("day", "hour", "time", "user", "value"),
+            "ui/page_selected": 0,
+            "ui/show_toolbar": True,
+            "ui/show_status_bar": True,
+            "ui/show_side_bar": True
+            }
