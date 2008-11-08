@@ -77,16 +77,20 @@ except ImportError:
                            'http://www.pygtk.org')
     sys.exit(3)
 
+#Setup config backend
 try:
-    import gconf
+    from OpenlhCore.ConfigClient import config_init, get_default_client
 except ImportError:
     from OpenlhServer.ui import dialogs
-    
+
     dialogs.ok_only(_('<big><b>Required Module not found</b></big>\n\n'
-                      'OpenLanhouse needs \'python-gconf\' to run. Please install '
-                      'the lastest stable version this package.'),
+                      'OpenLanhouse needs \'openlh-core\' to run. Please install '
+                      'the compatible version of this package.'),
                     ICON=dialogs.gtk.MESSAGE_ERROR)
     sys.exit(3)
+
+from OpenlhServer.defaults import defaults
+config_init("openlh-server", CONFIG_FILE, defaults)
 
 from time import strftime
 from OpenlhServer import daemon
@@ -151,14 +155,15 @@ class OpenlhServer:
         
         logging.info('Starting OpenLanhouse Server')
         
-        self.gconf_client = gconf.client_get_default()
-        self.name = self.gconf_client.get_string("/apps/openlh-server/name")
+        self.conf_client = get_default_client()
         
-        self.admin_email = self.gconf_client.get_string(
-                                          "/apps/openlh-server/admin_email")
+        self.name = self.conf_client.get_string("name")
+
+        self.admin_email = self.conf_client.get_string(
+                                          "admin_email")
         
-        self.price_per_hour = self.gconf_client.get_float(
-                                          "/apps/openlh-server/price_per_hour")
+        self.price_per_hour = self.conf_client.get_float(
+                                          "price_per_hour")
         
         #setup price per hour
         if not self.price_per_hour:
@@ -167,7 +172,7 @@ class OpenlhServer:
             if self.price_per_hour == None:
                 sys.exit(0)
             
-            self.gconf_client.set_float("/apps/openlh-server/price_per_hour", 
+            self.conf_client.set_float("price_per_hour", 
                                         self.price_per_hour)
         
     def generate_keys(self):

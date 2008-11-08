@@ -7,4 +7,5 @@ openlh_PYTHON = \
 			globals.py \
 			g_timer.py \
 			utils.py \
-			config.py
+			config.py \
+			defaults.py

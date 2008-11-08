@@ -45,6 +45,7 @@ else:
 
 CONFIG_PREFIX = ospath.join(USER_PATH, '.config')
 CONFIG_PATH = ospath.join(CONFIG_PREFIX, 'OpenlhServer')
+CONFIG_FILE = ospath.join(CONFIG_PATH, 'openlh-server.ini')
 CERTS_PATH = ospath.join(CONFIG_PATH, 'certs')
 UI_PATH = ospath.join(CUR_PATH, 'ui')
 CACHE_PATH = ospath.join(CONFIG_PATH, 'cache')
