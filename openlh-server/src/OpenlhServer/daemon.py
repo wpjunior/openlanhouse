@@ -20,12 +20,12 @@ import sys
 import os
 import logging
 import gobject
-import gconf
 import time
 import datetime
 
 from OpenlhCore.net.server import NetServer
 from OpenlhCore.net.request_handler import RequestHandler
+from OpenlhCore.ConfigClient import get_default_client
 
 from OpenlhServer.globals import *
 from OpenlhServer.ui import dialogs
@@ -382,7 +382,8 @@ class InstManager(gobject.GObject):
         self.users_manager = users_manager
         
         self.logger = logging.getLogger('InstManager')
-        self.gconf_client = self.server.gconf_client
+        self.conf_client = self.server.conf_client
+        self.conf_client = self.server.conf_client
         self.timer_manager = TimerManager()
         
         #Get All Machine instances in database
@@ -635,12 +636,12 @@ class InstManager(gobject.GObject):
             if c.custom_price_hour:
                 price_per_hour = c.price_hour
             else:
-                price_per_hour = self.gconf_client.get_float(
-                    '/apps/openlh-server/price_per_hour')
+                price_per_hour = self.conf_client.get_float(
+                    'price_per_hour')
             
         else:
-            price_per_hour = self.gconf_client.get_float(
-                    '/apps/openlh-server/price_per_hour') #TODO: Guardar preço na instancia e monitorar pelo gconf_monitory_add
+            price_per_hour = self.conf_client.get_float(
+                    'price_per_hour') #TODO: Guardar preço na instancia e monitorar pelo monitory_add
         
         return price_per_hour
     
@@ -822,12 +823,11 @@ class Server(gobject.GObject):
         
         self.logger = logging.getLogger('server.daemon')
         
-        self.gconf_client = gconf.client_get_default()
-        self.gconf_client.add_dir('/apps/openlh-server',
-                                  gconf.CLIENT_PRELOAD_NONE)
+        self.conf_client = get_default_client()
+        #
         
         #check psyco mode
-        if self.gconf_client.get_bool('/apps/openlh-server/use_psyco'):
+        if self.conf_client.get_bool('use_psyco'):
             self.logger.info('Psyco Suport enabled')
             
             try:
@@ -839,7 +839,7 @@ class Server(gobject.GObject):
                 psyco.full()
         
         try:
-            port = self.gconf_client.get_int('/apps/openlh-server/listen_port')
+            port = self.conf_client.get_int('listen_port')
             
             if not port:
                 port = 4558
@@ -862,57 +862,57 @@ class Server(gobject.GObject):
             import sys; sys.exit(3)
         
         string_keys = {
-            'name': '/apps/openlh-server/name',
-            'admin_email': '/apps/openlh-server/admin_email',
-            'currency': '/apps/openlh-server/currency'
+            'name': 'name',
+            'admin_email': 'admin_email',
+            'currency': 'currency'
         }
         
         bool_keys = {
-            'login_suport': '/apps/openlh-server/login_suport',
-            'ticket_suport': '/apps/openlh-server/ticket_suport',
-            'default_welcome_msg': '/apps/openlh-server/default_welcome_msg',
-            'use_background': '/apps/openlh-server/background',
-            'use_logo': '/apps/openlh-server/logo'
+            'login_suport': 'login_suport',
+            'ticket_suport': 'ticket_suport',
+            'default_welcome_msg': 'default_welcome_msg',
+            'use_background': 'background',
+            'use_logo': 'logo'
         }
         
         for name in string_keys.keys():
-            value = self.gconf_client.get_string(string_keys[name])
+            value = self.conf_client.get_string(string_keys[name])
             
             if value: #FIXED BUG: XMLPICKLER cannot allow None
                 self.information[name] = value
         
         for name in bool_keys.keys():
-            value = self.gconf_client.get_bool(bool_keys[name])
+            value = self.conf_client.get_bool(bool_keys[name])
             self.information[name] = value
         
-        self.information['price.hour'] = self.gconf_client.get_float(
-                                        '/apps/openlh-server/price_per_hour')
+        self.information['price.hour'] = self.conf_client.get_float(
+                                        'price_per_hour')
         
         if self.information['ticket_suport']:
-            self.information['ticket_size'] = self.gconf_client.get_int(
-                                           '/apps/openlh-server/ticket_size')
+            self.information['ticket_size'] = self.conf_client.get_int(
+                                           'ticket_size')
         
         if not self.information['default_welcome_msg']:
-            self.information['welcome_msg'] = self.gconf_client.get_string(
-                                           '/apps/openlh-server/welcome_msg')
+            self.information['welcome_msg'] = self.conf_client.get_string(
+                                           'welcome_msg')
         
         #Connect into database
         sql_data = {}
         sql_strings_values = {
-            'engine': '/apps/openlh-server/db/engine',
-            'custom_sqlite_file': '/apps/openlh-server/db/custom_sqlite_file',
-            'host': '/apps/openlh-server/db/host',
-            'database': '/apps/openlh-server/db/database',
-            'user': '/apps/openlh-server/db/user',
-            'password': '/apps/openlh-server/db/password'
+            'engine': 'db/engine',
+            'custom_sqlite_file': 'db/custom_sqlite_file',
+            'host': 'db/host',
+            'database': 'db/database',
+            'user': 'db/user',
+            'password': 'db/password'
         }
         
         for name in sql_strings_values.keys():
-            sql_data[name] = self.gconf_client.get_string(
+            sql_data[name] = self.conf_client.get_string(
                                     sql_strings_values[name])
         
-        sql_data['port'] = self.gconf_client.get_int(
-                                    '/apps/openlh-server/db/port')
+        sql_data['port'] = self.conf_client.get_int(
+                                    'db/port')
         
         sql_data['db_type'] = DB_NAMES.index(sql_data['engine'])
         
@@ -981,11 +981,11 @@ class Server(gobject.GObject):
         self.timer_manager = self.instmachine_manager.timer_manager
         self.timer_manager.run()
         
-        self.common_background = self.gconf_client.get_string(
-                                   '/apps/openlh-server/background_path')
+        self.common_background = self.conf_client.get_string(
+                                   'background_path')
                                    
-        self.common_logo = self.gconf_client.get_string(
-                                   '/apps/openlh-server/logo_path')
+        self.common_logo = self.conf_client.get_string(
+                                   'logo_path')
         
         #generate background md5s
         if self.common_background and os.path.exists(self.common_background):
@@ -1011,16 +1011,14 @@ class Server(gobject.GObject):
                 must be a OpenlhServer.ui.main.Manager object
         """
         
-        #Set in gconf
-        plugins = self.gconf_client.get_list('/apps/openlh-server/plugins',
-                                             gconf.VALUE_STRING)
+        #Set in configs
+        plugins = self.conf_client.get_string_list('plugins')
         if not plugins:
             plugins = []
         
         if not plugin_name in plugins:
             plugins.append(plugin_name)
-        self.gconf_client.set_list('/apps/openlh-server/plugins', 
-                                   gconf.VALUE_STRING, plugins)
+        self.conf_client.set_string_list('plugins', plugins)
         
         #Get the plugin module
         plugin = get_plugin(plugin_name)
@@ -1042,16 +1040,14 @@ class Server(gobject.GObject):
                 must be a OpenlhServer.ui.main.Manager object
         """
         
-        #Set in gconf
-        plugins = self.gconf_client.get_list('/apps/openlh-server/plugins',
-                                             gconf.VALUE_STRING)
+        #Set in configs
+        plugins = self.conf_client.get_string_list('plugins')
         if not plugins:
             plugins = []
         
         if plugin_name in plugins:
             plugins.remove(plugin_name)
-        self.gconf_client.set_list('/apps/openlh-server/plugins', 
-                                   gconf.VALUE_STRING, plugins)
+        self.conf_client.set_string_list('plugins', plugins)
         
         #Get the plugin module
         plugin = get_plugin(plugin_name)
@@ -1078,8 +1074,7 @@ class Server(gobject.GObject):
                 must be a OpenlhServer.ui.main.Manager object
         """
         
-        plugins = self.gconf_client.get_list('/apps/openlh-server/plugins',
-                                             gconf.VALUE_STRING)
+        plugins = self.conf_client.get_string_list('plugins')
         if not plugins:
             plugins = []
         
@@ -1105,41 +1100,41 @@ class Server(gobject.GObject):
         alterations = {}
         
         string_keys = {
-            'name': '/apps/openlh-server/name',
-            'admin_email': '/apps/openlh-server/admin_email',
-            'currency': '/apps/openlh-server/currency'
+            'name': 'name',
+            'admin_email': 'admin_email',
+            'currency': 'currency'
         }
         
         bool_keys = {
-            'login_suport': '/apps/openlh-server/login_suport',
-            'ticket_suport': '/apps/openlh-server/ticket_suport',
-            'default_welcome_msg': '/apps/openlh-server/default_welcome_msg',
-            'use_background': '/apps/openlh-server/background',
-            'use_logo': '/apps/openlh-server/logo'
+            'login_suport': 'login_suport',
+            'ticket_suport': 'ticket_suport',
+            'default_welcome_msg': 'default_welcome_msg',
+            'use_background': 'background',
+            'use_logo': 'logo'
         }
         
         for name in string_keys.keys():
-            value = self.gconf_client.get_string(string_keys[name])
+            value = self.conf_client.get_string(string_keys[name])
             
-            if self.information[name] != value:
+            if (value != None and ((not(name in self.information)) or (name in self.information) and (self.information[name] != value))):
                 self.information[name] = value
                 alterations[name] = value
         
         for name in bool_keys.keys():
-            value = self.gconf_client.get_bool(bool_keys[name])
+            value = self.conf_client.get_bool(bool_keys[name])
             
             if self.information[name] != value:
                 self.information[name] = value
                 alterations[name] = value
         
-        value = self.gconf_client.get_float('/apps/openlh-server/price_per_hour')
+        value = self.conf_client.get_float('price_per_hour')
         if self.information['price.hour'] != value:
             self.information['price.hour'] = value
             alterations['price.hour'] = value
         
         if self.information['ticket_suport']:
             
-            value = self.gconf_client.get_int('/apps/openlh-server/ticket_size')
+            value = self.conf_client.get_int('ticket_size')
             
             if self.information.has_key('ticket_size'):
                 if self.information['ticket_size'] != value:
@@ -1151,7 +1146,7 @@ class Server(gobject.GObject):
         
         if not self.information['default_welcome_msg']:
             
-            value = self.gconf_client.get_string('/apps/openlh-server/welcome_msg')
+            value = self.conf_client.get_string('welcome_msg')
             
             if self.information.has_key('welcome_msg'):
                 if self.information['welcome_msg'] != value:
@@ -1161,14 +1156,14 @@ class Server(gobject.GObject):
                 self.information['welcome_msg'] = value
                 alterations['welcome_msg'] = value
         
-        value = self.gconf_client.get_string('/apps/openlh-server/background_path')
+        value = self.conf_client.get_string('background_path')
         if self.common_background != value:
             self.common_background = value
             value2 = md5_cripto(open(self.common_background).read())
             self.information['background_md5'] = value2
             self.instmachine_manager.update_backgroud(value)
             
-        value = self.gconf_client.get_string('/apps/openlh-server/logo_path')
+        value = self.conf_client.get_string('logo_path')
         if self.common_logo != value:
             self.common_logo = value
             value2 = md5_cripto(open(self.common_logo).read())

@@ -18,7 +18,6 @@
 
 import gobject
 import gtk
-import gconf
 import logging
 import datetime
 
@@ -28,6 +27,7 @@ from os import remove as os_remove
 from OpenlhServer.ui.plugins import PluginsWindow
 
 from OpenlhCore.utils import humanize_time
+from OpenlhCore.ConfigClient import get_default_client
 from OpenlhServer.ui import DateEdit, tray, icons, dialogs, treeview, prefs
 from OpenlhServer.ui.SearchEntry import SearchEntry
 from OpenlhCore.utils import md5_cripto
@@ -67,10 +67,9 @@ class Manager:
     
     def __init__(self, daemon):
         
-        self.gconf_client = gconf.client_get_default()
-        self.gconf_client.add_dir('/apps/openlh-server',
-                                  gconf.CLIENT_PRELOAD_NONE)
-        self.gconf_client.notify_add("/apps/openlh-server/ticket_suport",
+        self.conf_client = get_default_client()
+        
+        self.conf_client.notify_add("ticket_suport",
                                      self.on_ticket_suport_cb)
         
         self.icons = icons.Icons()
@@ -197,38 +196,38 @@ class Manager:
             self.tray.icon.connect('popup-menu', self.tray_menu_show)
             self.tray.icon.connect('activate', self.show_hide)
         
-        sel = self.gconf_client.get_int('/apps/openlh-server/ui/page_selected')
+        sel = self.conf_client.get_int('ui/page_selected')
         self.set_page_selected(sel)
         
-        if self.gconf_client.get_bool('/apps/openlh-server/ui/show_toolbar'):
+        if self.conf_client.get_bool('ui/show_toolbar'):
             self.xml.get_object("show_toolbar_menu").set_active(True)
         else:
             self.xml.get_object("MainToolbar").hide()
 
-        if self.gconf_client.get_bool('/apps/openlh-server/ui/show_status_bar'):
+        if self.conf_client.get_bool('ui/show_status_bar'):
             self.xml.get_object("show_status_bar_menu").set_active(True)
         else:
             self.statusbar.hide()
         
-        if self.gconf_client.get_bool('/apps/openlh-server/ui/maximized'):
+        if self.conf_client.get_bool('ui/maximized'):
             self.mainwindow.maximize()
         
-        width = self.gconf_client.get_int('/apps/openlh-server/ui/width')
-        height = self.gconf_client.get_int('/apps/openlh-server/ui/height')
+        width = self.conf_client.get_int('ui/width')
+        height = self.conf_client.get_int('ui/height')
         self.mainwindow.set_default_size(width, height)
         
-        x = self.gconf_client.get_int('/apps/openlh-server/ui/position_x')
-        y = self.gconf_client.get_int('/apps/openlh-server/ui/position_y')
+        x = self.conf_client.get_int('ui/position_x')
+        y = self.conf_client.get_int('ui/position_y')
         self.mainwindow.move(x, y)
         
-        if self.gconf_client.get_bool('/apps/openlh-server/ui/visible'):
+        if self.conf_client.get_bool('ui/visible'):
             self.mainwindow.show()
             self.visible = True
             self.show_menu.set_active(True)
 
         self.populate_trees()
         
-        if self.gconf_client.get_bool('/apps/openlh-server/ui/show_side_bar'):
+        if self.conf_client.get_bool('ui/show_side_bar'):
             self.set_view_mode(True)
         else:
             self.set_view_mode(False)
@@ -240,23 +239,23 @@ class Manager:
     
     def on_window_state_event(self, obj, event):
         if event.new_window_state == gtk.gdk.WINDOW_STATE_MAXIMIZED:
-            self.gconf_client.set_bool('/apps/openlh-server/ui/maximized',
+            self.conf_client.set_bool('ui/maximized',
                                        True)
             self.statusbar.set_has_resize_grip(False)
             
         elif event.new_window_state == 0:
-            self.gconf_client.set_bool('/apps/openlh-server/ui/maximized',
+            self.conf_client.set_bool('ui/maximized',
                                        False)
             self.statusbar.set_has_resize_grip(True)
     
     def save_window_positions(self):
         width, height = self.mainwindow.get_size()
-        self.gconf_client.set_int('/apps/openlh-server/ui/width', width)
-        self.gconf_client.set_int('/apps/openlh-server/ui/height', height)
+        self.conf_client.set_int('ui/width', width)
+        self.conf_client.set_int('ui/height', height)
         
         x, y = self.mainwindow.get_position()
-        self.gconf_client.set_int('/apps/openlh-server/ui/position_x', x)
-        self.gconf_client.set_int('/apps/openlh-server/ui/position_y', y)
+        self.conf_client.set_int('ui/position_x', x)
+        self.conf_client.set_int('ui/position_y', y)
     
     def populate_trees(self):
         
@@ -465,8 +464,8 @@ class Manager:
                                                        data, None)
     
     def on_new_user_menuitem_activate(self, obj):
-        price_per_hour = self.gconf_client.get_float(
-                                '/apps/openlh-server/price_per_hour')
+        price_per_hour = self.conf_client.get_float(
+                                'price_per_hour')
         
         dlg = dialogs.adduser(manager=self,
                               price_per_hour=price_per_hour,
@@ -475,8 +474,8 @@ class Manager:
         dlg.run()
     
     def on_ticket_menuitem_activate(self, obj):
-        price_per_hour = self.gconf_client.get_float(
-                                '/apps/openlh-server/price_per_hour')
+        price_per_hour = self.conf_client.get_float(
+                                'price_per_hour')
         
         dlg = dialogs.new_ticket(Parent=self.mainwindow)
         
@@ -494,8 +493,8 @@ class Manager:
                                                        data, None)
         
         elif self.selpage == 1:
-            price_per_hour = self.gconf_client.get_float(
-                                    '/apps/openlh-server/price_per_hour')
+            price_per_hour = self.conf_client.get_float(
+                                    'price_per_hour')
             
             dlg = dialogs.adduser(manager=self,
                                   price_per_hour=price_per_hour,
@@ -601,7 +600,7 @@ class Manager:
             user = self.users_manager.get_all().filter_by(id=user_id).one()
             credit = self.users_manager.get_credit(User.id, user.id)
             last_machine = self.machine_manager.get_name(user.last_machine_id)
-            currency = self.gconf_client.get_string('/apps/openlh-server/currency')
+            currency = self.conf_client.get_string('currency')
             
             if user:
                 dlg = dialogs.user_info(self.users_manager, self.mainwindow)
@@ -712,8 +711,8 @@ class Manager:
         #Get Price per hour :-)
         price_per_hour = self.instmachine_manager.get_price_per_hour(machine_inst)
         
-        currency = self.gconf_client.get_string(
-                    '/apps/openlh-server/currency')
+        currency = self.conf_client.get_string(
+                    'currency')
         
         dlg = dialogs.unblock_machine(price_per_hour=price_per_hour,
                                       currency=currency,
@@ -907,8 +906,8 @@ class Manager:
         
         user_id = int(model.get_value(iteration, 0))
         
-        price_per_hour = self.gconf_client.get_float(
-                        '/apps/openlh-server/price_per_hour')
+        price_per_hour = self.conf_client.get_float(
+                        'price_per_hour')
         
         dlg = dialogs.AddCredit(price_per_hour,
                                 Parent=self.mainwindow)
@@ -946,11 +945,11 @@ class Manager:
         
         user_id = int(model.get_value(iteration, 0))
         
-        price_per_hour = self.gconf_client.get_float(
-                                '/apps/openlh-server/price_per_hour')
+        price_per_hour = self.conf_client.get_float(
+                                'price_per_hour')
         
-        currency = self.gconf_client.get_string(
-                                      '/apps/openlh-server/currency')
+        currency = self.conf_client.get_string(
+                                      'currency')
         
         current_credit = self.users_manager.get_credit(User.id, user_id)
         
@@ -1211,7 +1210,7 @@ class Manager:
         
         self.update_status_label_for_cash_flow()
         
-        self.gconf_client.set_int('/apps/openlh-server/ui/page_selected', num)
+        self.conf_client.set_int('ui/page_selected', num)
         self.notebook_interative = True
     
     def config_trees(self):
@@ -1434,7 +1433,7 @@ class Manager:
                     self.visible = True
                     self.mainwindow.show()
                 
-                self.gconf_client.set_bool('/apps/openlh-server/ui/visible',
+                self.conf_client.set_bool('ui/visible',
                                            self.visible)
         else:
             if self.visible:
@@ -1446,7 +1445,7 @@ class Manager:
                 self.show_menu.set_active(True)
                 self.mainwindow.show()
                 
-            self.gconf_client.set_bool('/apps/openlh-server/ui/visible',
+            self.conf_client.set_bool('ui/visible',
                                        self.visible)
     
     def delete_event(self, *args):
@@ -1648,8 +1647,8 @@ class Manager:
         if not inst.session:
             return
         
-        show_notifications = self.gconf_client.get_bool(
-                       '/apps/openlh-server/ui/show_notifications')
+        show_notifications = self.conf_client.get_bool(
+                       'ui/show_notifications')
         
         if show_notifications and self.tray.notifysuport:
             if inst.status == 0:
@@ -1678,8 +1677,8 @@ class Manager:
                                     treeview.MACHINE_CEL_SOURCE,
                                     machine_instance.source)
         
-        show_notifications = self.gconf_client.get_bool(
-                            '/apps/openlh-server/ui/show_notifications')
+        show_notifications = self.conf_client.get_bool(
+                            'ui/show_notifications')
         
         if show_notifications and self.tray.notifysuport:
             if machine_instance.status == 0:
@@ -1756,21 +1755,21 @@ class Manager:
     def on_show_toolbar_menu_toggled(self, obj):
         status = obj.get_active()
 
-        self.gconf_client.set_bool("/apps/openlh-server/ui/show_toolbar",
+        self.conf_client.set_bool("ui/show_toolbar",
                                    status)
         self.xml.get_object('MainToolbar').set_property("visible", status)
 
     def on_show_status_bar_menu_toggled(self, obj):
         status = obj.get_active()
         
-        self.gconf_client.set_bool("/apps/openlh-server/ui/show_status_bar",
+        self.conf_client.set_bool("ui/show_status_bar",
                                     status)
         self.statusbar.set_property("visible", status)
 
     def on_show_side_bar_menu_toggled(self, obj):
         status = obj.get_active()
 
-        self.gconf_client.set_bool("/apps/openlh-server/ui/show_side_bar",
+        self.conf_client.set_bool("ui/show_side_bar",
                                    status)
         self.xml.get_object('sidebar_vbox').set_property("visible", status)
 
@@ -2015,7 +2014,7 @@ class Manager:
                                 self.open_debts_search_entry, expand=False)
         
         self.xml.get_object("notebook").set_show_tabs(not(side_bar_mode))
-        self.gconf_client.set_bool('/apps/openlh-server/ui/show_side_bar',
+        self.conf_client.set_bool('ui/show_side_bar',
                                    side_bar_mode)
         
     def on_classic_mode_toggled(self, obj):

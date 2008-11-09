@@ -65,15 +65,18 @@ except ImportError:
     sys.exit(3)
 
 try:
-    import gconf
+    from OpenlhCore.ConfigClient import config_init, get_default_client
 except ImportError:
     from OpenlhClient.ui import dialogs
     
-    dialogs.ok_only(_('<big><b>Required Module not found</b></big>\n\n'+
-                      'OpenLanhouse needs \'python-gconf\' to run. Please install '+
-                      'the lastest stable version this package.'),
+    dialogs.ok_only(_('<big><b>Required Module not found</b></big>\n\n'
+                      'OpenLanhouse needs \'openlh-core\' to run. Please install '
+                      'the compatible version of this package.'),
                     ICON=dialogs.gtk.MESSAGE_ERROR)
     sys.exit(3)
+
+from OpenlhClient.defaults import defaults
+config_init("openlh-client", CONFIG_FILE, defaults)
 
 from time import strftime
 from OpenlhClient import main
@@ -114,18 +117,18 @@ class OpenlhClient:
         rename_process('openlh-client')
         mkdir(CACHE_PATH)
         logging.info('Starting OpenLanhouse Client')
-        self.gconf_client = gconf.client_get_default()
+        self.conf_client = get_default_client()
         
-        if not self.gconf_client.get_string('/apps/openlh-client/hash_id'):
-            self.gconf_client.set_string('/apps/openlh-client/hash_id',
+        if not self.conf_client.get_string('hash_id'):
+            self.conf_client.set_string('hash_id',
                                          generate_id_bytime()) #Generate Hash_ID
         
-        if not self.gconf_client.get_string('/apps/openlh-client/server'):
+        if not self.conf_client.get_string('server'):
             dlg = dialogs.ConnectServer()
             host = dlg.run()
             
             if host:
-                self.gconf_client.set_string('/apps/openlh-client/server',
+                self.conf_client.set_string('server',
                                              host)
             else:
                 sys.exit(0)

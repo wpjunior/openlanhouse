@@ -20,10 +20,10 @@ import sys
 import time
 import logging
 import gtk
-import gconf
 import gobject
 
 from OpenlhCore.net.client import NetClient
+from OpenlhCore.ConfigClient import get_default_client
 
 from OpenlhClient.ui import icons
 from OpenlhClient.ui import tray
@@ -34,7 +34,7 @@ from OpenlhClient.ui import dialogs, login
 from OpenlhClient.ui.utils import get_gtk_builder
 
 try:
-    from OpenlhClienta.dbus_manager import DbusManager
+    from OpenlhClient.dbus_manager import DbusManager
 except ImportError:
     
     def gambiarra_caller(*args):
@@ -78,7 +78,7 @@ class Client:
     def __init__(self):
         
         self.logger = logging.getLogger('client.main')
-        self.gconf_client = gconf.client_get_default()
+        self.conf_client = get_default_client()
         self.dbus_manager = DbusManager(self)
         
         #BACKGROUND MD5SUM
@@ -105,11 +105,11 @@ class Client:
         if self.logo_md5:
             self.logger.info("Logo Md5sum is %s" % self.logo_md5)
         
-        self.hash_id = self.gconf_client.get_string('/apps/openlh-client/hash_id')
-        self.server = self.gconf_client.get_string('/apps/openlh-client/server')
-        self.port = self.gconf_client.get_int('/apps/openlh-client/port')
+        self.hash_id = self.conf_client.get_string('hash_id')
+        self.server = self.conf_client.get_string('server')
+        self.port = self.conf_client.get_int('port')
         
-        if not self.port: #FIXED BUG: Cannot connect if gconf value is None
+        if not self.port:
             self.port = 4558
         
         self.netclient = NetClient(self.server, self.port,
@@ -136,18 +136,18 @@ class Client:
         self.tray_menu = self.xml.get_object('tray_menu')
         self.show_window_menu = self.xml.get_object('show_window_menu')
         
-        if self.gconf_client.get_bool('/apps/openlh-client/ui/visible'):
+        if self.conf_client.get_bool('ui/visible'):
             self.main_window.show()
             self.visible = True
             self.show_window_menu.set_active(True)
         
-        b = self.gconf_client.get_bool('/apps/openlh-client/ui/show_informations')
+        b = self.conf_client.get_bool('ui/show_informations')
         self.show_informations(b)
         
-        b = self.gconf_client.get_bool('/apps/openlh-client/ui/show_time_elapsed')
+        b = self.conf_client.get_bool('ui/show_time_elapsed')
         self.show_time_elapsed(b)
         
-        b = self.gconf_client.get_bool('/apps/openlh-client/ui/show_time_remaining')
+        b = self.conf_client.get_bool('ui/show_time_remaining')
         self.show_time_remaining(b)
         
         self.xml.connect_signals(self)
@@ -181,7 +181,7 @@ class Client:
                     self.visible = True
                     self.main_window.show()
                 
-                self.gconf_client.set_bool('/apps/openlh-client/ui/visible',
+                self.conf_client.set_bool('ui/visible',
                                            self.visible)
         else:
             if self.visible:
@@ -193,7 +193,7 @@ class Client:
                 self.show_window_menu.set_active(True)
                 self.main_window.show()
             
-            self.gconf_client.set_bool('/apps/openlh-client/ui/visible',
+            self.conf_client.set_bool('ui/visible',
                                        self.visible)
     
     def on_tray_popup_menu(self, obj, button, event):
@@ -556,7 +556,7 @@ class Client:
     def show_informations(self, status):
         self.interative = False
         self.xml.get_object("information_vbox").set_property('visible', status)
-        self.gconf_client.set_bool('/apps/openlh-client/ui/show_informations',
+        self.conf_client.set_bool('ui/show_informations',
                                    status)
         self.xml.get_object("information_menuitem").set_active(status)
         self.interative = True
@@ -565,7 +565,7 @@ class Client:
         self.interative = False
         self.xml.get_object("elapsed_label").set_property('visible', status)
         self.xml.get_object("elapsed_pb").set_property('visible', status)
-        self.gconf_client.set_bool('/apps/openlh-client/ui/show_time_elapsed',
+        self.conf_client.set_bool('ui/show_time_elapsed',
                                    status)
         self.xml.get_object("time_elapsed_menuitem").set_active(status)
         self.interative = True
@@ -574,7 +574,7 @@ class Client:
         self.interative = False
         self.xml.get_object("remaining_label").set_property('visible', status)
         self.xml.get_object("remaining_pb").set_property('visible', status)
-        self.gconf_client.set_bool('/apps/openlh-client/ui/show_time_remaining',
+        self.conf_client.set_bool('ui/show_time_remaining',
                                    status)
         self.xml.get_object("time_remaining_menuitem").set_active(status)
         self.interative = True

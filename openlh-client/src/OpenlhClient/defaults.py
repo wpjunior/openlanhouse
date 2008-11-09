@@ -16,4 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-__all__ = ('ui', 'config', 'globals', 'utils', 'dbus_manager', 'main', 'defaults')
+defaults = {"port": 4558,
+            "ui/visible": True,
+            "ui/show_informations": True,
+            "ui/show_time_elapsed": True,
+            "ui/show_time_remaining": True,
+            }

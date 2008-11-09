@@ -41,12 +41,13 @@ ICON_PATH = ospath.join(CUR_PATH, 'icons')
 STATUS_ICON_PATH = ospath.join(ICON_PATH, 'status')
 
 if osname == 'nt':
-    USER_PATH = ospath.curdir# FIXME: what the fuck ?!?!
+    USER_PATH = ospath.curdir# FIX_ME
 else:
     USER_PATH = ospath.expanduser('~')
 
 CONFIG_PREFIX = ospath.join(USER_PATH, '.config')
 CONFIG_PATH = ospath.join(CONFIG_PREFIX, 'OpenlhClient')
+CONFIG_FILE = ospath.join(CONFIG_PATH, "openlh-client.ini")
 CERTS_PATH = ospath.join(CONFIG_PATH, 'certs')
 CACHE_PATH = ospath.join(CONFIG_PATH, 'cache')
 

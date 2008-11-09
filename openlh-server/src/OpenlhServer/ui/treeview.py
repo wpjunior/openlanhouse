@@ -18,8 +18,8 @@
 
 import gtk
 import gobject
-import gconf
 
+from OpenlhCore.ConfigClient import get_default_client
 from OpenlhServer.globals import *
 import gettext
 _ = gettext.gettext
@@ -81,16 +81,15 @@ class common:
     
     text_filter = ""
     
-    def __init__(self, gconf_lists_path):
+    def __init__(self, conf_lists_path):
         """
             Constructor common properties
         """
-        self.gconf_client = gconf.client_get_default()
+        self.conf_client = get_default_client()
         
-        self.active_lists = self.gconf_client.get_list(gconf_lists_path,
-                                                       gconf.VALUE_STRING)
+        self.active_lists = self.conf_client.get_string_list(conf_lists_path)
         
-        self.gconf_lists_path = gconf_lists_path
+        self.conf_lists_path = conf_lists_path
         self.store = None
         self.filter = None
         self.renders=[]
@@ -215,16 +214,15 @@ class common:
         else:
             self.active_lists.remove(low_name)
         
-        self.gconf_client.set_list(self.gconf_lists_path,
-                                   gconf.VALUE_STRING,
-                                   self.active_lists)
+        self.conf_client.set_string_list(self.conf_lists_path,
+                                         self.active_lists)
         
         column.set_property('visible', status)
 
 class machine(common):
     def __init__(self):
         
-        common.__init__(self, '/apps/openlh-server/ui/machines_columns')
+        common.__init__(self, 'ui/machines_columns')
         
         self.make_column('id', _('ID'), TEXT_CELL_RENDER,
                                             MACHINE_CEL_ID, None, max_size=100)
@@ -250,7 +248,7 @@ class machine(common):
 class users(common):
     def __init__(self):
         
-        common.__init__(self, '/apps/openlh-server/ui/users_columns')
+        common.__init__(self, 'ui/users_columns')
         
         self.make_column('id', _('ID'), TEXT_CELL_RENDER,
                                             USERS_CEL_ID, 60)
@@ -270,7 +268,7 @@ class users(common):
 class cash_flow(common):
     def __init__(self):
         
-        common.__init__(self, '/apps/openlh-server/ui/cash_flow_columns')
+        common.__init__(self, 'ui/cash_flow_columns')
         
         self.make_column('day', _('Day'), TEXT_CELL_RENDER,
                                             CASH_FLOW_CEL_DAY, 80)
@@ -293,7 +291,7 @@ class cash_flow(common):
 class open_debts_machine(common):
     def __init__(self):
         
-        common.__init__(self, '/apps/openlh-server/ui/open_debts_machine_columns')
+        common.__init__(self, 'ui/open_debts_machine_columns')
         
         self.make_column('id', _('ID'), TEXT_CELL_RENDER,
                                             OPEN_DEBTS_CEL_ID, 60)
@@ -320,7 +318,7 @@ class open_debts_machine(common):
 class open_debts_other(common):
     def __init__(self):
         
-        common.__init__(self, '/apps/openlh-server/ui/open_debts_other_columns')
+        common.__init__(self, 'ui/open_debts_other_columns')
         
         self.make_column('id', _('ID'), TEXT_CELL_RENDER,
                                             OPEN_DEBTS_OTHER_CEL_ID, 60)

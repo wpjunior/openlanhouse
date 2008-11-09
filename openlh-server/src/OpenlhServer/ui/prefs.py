@@ -17,20 +17,18 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import gtk
-import gconf
 
 from os.path import exists
 from OpenlhServer.globals import *
 from OpenlhServer.ui.dialogs import image_chooser_button
 from OpenlhServer.ui.utils import get_gtk_builder
+from OpenlhCore.ConfigClient import get_default_client
 
 class Prefs:
     def __init__(self, title=None, Parent=None):
         
-        self.gconf_client = gconf.client_get_default()
-        self.gconf_client.add_dir('/apps/openlh-server',
-                                  gconf.CLIENT_PRELOAD_NONE)
-        
+        self.conf_client = get_default_client()
+                
         self.xml = get_gtk_builder('prefs')
         self.prefs = self.xml.get_object('prefs')
         
@@ -73,11 +71,11 @@ class Prefs:
         
         data = {}
         
-        data['lan_name'] = self.gconf_client.get_string('/apps/openlh-server/name')
-        data['admin_email'] = self.gconf_client.get_string('/apps/openlh-server/admin_email')
-        data['currency'] = self.gconf_client.get_string('/apps/openlh-server/currency')
-        data['price.hour'] = self.gconf_client.get_float('/apps/openlh-server/price_per_hour')
-        data['custom_welcome_msg'] = self.gconf_client.get_string('/apps/openlh-server/welcome_msg')
+        data['lan_name'] = self.conf_client.get_string('name')
+        data['admin_email'] = self.conf_client.get_string('admin_email')
+        data['currency'] = self.conf_client.get_string('currency')
+        data['price.hour'] = self.conf_client.get_float('price_per_hour')
+        data['custom_welcome_msg'] = self.conf_client.get_string('welcome_msg')
         
         for name in 'lan_name', 'admin_email', 'currency':
             if data[name]:
@@ -86,13 +84,13 @@ class Prefs:
         if data['price.hour']:
             self.xml.get_object("price_hour").set_value(data['price.hour'])
         
-        if self.gconf_client.get_bool('/apps/openlh-server/login_suport'):
+        if self.conf_client.get_bool('login_suport'):
             self.xml.get_object('machine_login_suport').set_active(True)
         
-        if self.gconf_client.get_bool('/apps/openlh-server/ticket_suport'):
+        if self.conf_client.get_bool('ticket_suport'):
             self.xml.get_object('ticket_suport').set_active(True)
         
-        if self.gconf_client.get_bool('/apps/openlh-server/default_welcome_msg'):
+        if self.conf_client.get_bool('default_welcome_msg'):
             self.xml.get_object('default_welcome_msg').set_active(True)
         else:
             self.xml.get_object('custom_welcome_msg').set_active(True)
@@ -101,18 +99,18 @@ class Prefs:
         if data['custom_welcome_msg']:
             self.xml.get_object('custom_msg_entry').set_text(data['custom_welcome_msg'])
         
-        if self.gconf_client.get_bool('/apps/openlh-server/background'):
+        if self.conf_client.get_bool('background'):
             self.xml.get_object('background_bnt').set_active(True)
         else:
             self.background_chooser.set_sensitive(False)
         
-        if self.gconf_client.get_bool('/apps/openlh-server/logo'):
+        if self.conf_client.get_bool('logo'):
             self.xml.get_object('logo_bnt').set_active(True)
         else:
             self.logo_chooser.set_sensitive(False)
         
-        self.background_path = self.gconf_client.get_string('/apps/openlh-server/background_path')
-        self.logo_path = self.gconf_client.get_string('/apps/openlh-server/logo_path')
+        self.background_path = self.conf_client.get_string('background_path')
+        self.logo_path = self.conf_client.get_string('logo_path')
         
         if self.background_path and exists(self.background_path):
             self.background_chooser.set_filename(self.background_path)
@@ -121,48 +119,48 @@ class Prefs:
             self.logo_chooser.set_filename(self.logo_path)
         
     def lan_name_changed(self, obj, event):
-        self.gconf_client.set_string('/apps/openlh-server/name',
+        self.conf_client.set_string('name',
                                      obj.get_text())
     
     def admin_email_changed(self, obj, event):
-        self.gconf_client.set_string('/apps/openlh-server/admin_email',
+        self.conf_client.set_string('admin_email',
                                      obj.get_text())
     
     def on_currency_focus_out_event(self, obj, event):
-        self.gconf_client.set_string('/apps/openlh-server/currency',
+        self.conf_client.set_string('currency',
                                      obj.get_text())
     
     def on_price_hour_focus_out_event(self, obj, event):
-        self.gconf_client.set_float('/apps/openlh-server/price_per_hour',
+        self.conf_client.set_float('price_per_hour',
                                     obj.get_value())
         
     def on_machine_login_suport_toggled(self, obj):
-        self.gconf_client.set_bool('/apps/openlh-server/login_suport',
+        self.conf_client.set_bool('login_suport',
                                    obj.get_active())
     
     def on_ticket_suport_toggled(self, obj):
-        self.gconf_client.set_bool('/apps/openlh-server/ticket_suport',
+        self.conf_client.set_bool('ticket_suport',
                                    obj.get_active())
         
     def on_custom_welcome_msg_toggled(self, obj):
         status = obj.get_active()
         self.xml.get_object('custom_msg_entry').set_sensitive(status)
-        self.gconf_client.set_bool('/apps/openlh-server/default_welcome_msg',
+        self.conf_client.set_bool('default_welcome_msg',
                                    not(obj.get_active()))
     
     def on_custom_welcome_msg_changed(self, obj, event):
-        self.gconf_client.set_string('/apps/openlh-server/welcome_msg',
+        self.conf_client.set_string('welcome_msg',
                                      obj.get_text())
     
     def background_bnt_toggled_cb(self, obj):
         status = obj.get_active()
-        self.gconf_client.set_bool('/apps/openlh-server/background',
+        self.conf_client.set_bool('background',
                                    status)
         self.background_chooser.set_sensitive(status)
     
     def on_logo_bnt_toggled(self, obj):
         status = obj.get_active()
-        self.gconf_client.set_bool('/apps/openlh-server/logo',
+        self.conf_client.set_bool('logo',
                                    status)
         self.logo_chooser.set_sensitive(status)
         
@@ -175,7 +173,7 @@ class Prefs:
         
         if self.background_path != filename:
             self.background_path = filename
-            self.gconf_client.set_string('/apps/openlh-server/background_path',
+            self.conf_client.set_string('background_path',
                                          filename)
         
     def logo_chooser_focus(self, obj, event):
@@ -184,5 +182,5 @@ class Prefs:
         
         if self.logo_path != filename:
             self.logo_path = filename
-            self.gconf_client.set_string('/apps/openlh-server/logo_path',
+            self.conf_client.set_string('logo_path',
                                          filename)

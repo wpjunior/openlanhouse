@@ -7,4 +7,5 @@ openlh_PYTHON = \
 			utils.py \
 			config.py \
 			dbus_manager.py \
-			main.py
+			main.py \
+			defaults.py
