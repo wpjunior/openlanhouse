@@ -74,12 +74,21 @@ class Client:
     
     limited = False
     registred = False
+    os_name = ""
+    os_version = ""
     
     def __init__(self):
         
         self.logger = logging.getLogger('client.main')
         self.conf_client = get_default_client()
         self.dbus_manager = DbusManager(self)
+        
+        # Get operating system version
+        o = get_os()
+        if o[0]:
+            self.os_name = o[0]
+        if o[1]:
+            self.os_version = o[1]
         
         #BACKGROUND MD5SUM
         if ospath.exists(BACKGROUND_CACHE):
@@ -201,9 +210,14 @@ class Client:
     
     def on_about_menuitem_activate(self, obj):
         dialogs.about(self.logo, self.main_window)
+    
+    def send_myos(self):
+        self.netclient.request("set_myos", (self.os_name, self.os_version))
         
     def connected(self, obj, server):
         self.login_window.set_connected(True)
+        gobject.timeout_add(10000,
+                            self.send_myos)
         
     def disconnected(self, obj):
         self.block(False, 0)

@@ -1865,6 +1865,7 @@ class machine_info:
         self.source = xml.get_object('source')
         self.last_user = xml.get_object('last_user')
         self.textview = xml.get_object('textview')
+        self.os = xml.get_object('os')
         
         xml.connect_signals(self)
         
@@ -1872,11 +1873,28 @@ class machine_info:
         
         if Parent:
             self.dialog.set_transient_for(Parent)
+    
+    def on_os_changed(self, machine_inst, os_name, os_version):
+        self.os.set_text("%s %s" % (os_name, os_version))
         
+    def on_source_changed(self, machine_inst, source):
+        if source:
+            self.source.set_text(source)
+        else:
+            self.source.set_text("")
+               
     def run(self, machine_inst, last_user=None):
         self.dialog.set_title(_('%s Properties') % machine_inst.name)
         self.name.set_text(machine_inst.name)
         self.hash_id.set_text(machine_inst.hash_id)
+        self.os.set_text("%s %s" % (machine_inst.os_name,
+                                    machine_inst.os_version))
+        
+        os_changed_id = machine_inst.connect("os_changed",
+                                          self.on_os_changed)
+        
+        source_changed_id = machine_inst.connect("source_changed",
+                                                 self.on_source_changed)
         
         if machine_inst.source:
             self.source.set_text(machine_inst.source)
@@ -1888,6 +1906,8 @@ class machine_info:
             self.xml.get_object("last_user").set_text(last_user)
             
         self.dialog.run()
+        gobject.source_remove(os_changed_id)
+        gobject.source_remove(source_changed_id)
         self.dialog.destroy()
 
 class add_time:

@@ -58,6 +58,8 @@ class MachineInst(gobject.GObject):
     user_id = None
     source = None
     status = MACHINE_STATUS_OFFLINE
+    os_name = ""
+    os_version = ""
     
     limited = False
     time = None
@@ -69,6 +71,20 @@ class MachineInst(gobject.GObject):
     consume_credit_update_interval = 30000
     start_time = None
     mstart_time = None
+    
+    __gsignals__ = {'os_changed':(gobject.SIGNAL_RUN_FIRST,
+                                  gobject.TYPE_NONE,
+                                  (
+                                  gobject.TYPE_STRING,
+                                  gobject.TYPE_STRING
+                                  )),
+
+                    'source_changed':(gobject.SIGNAL_RUN_FIRST,
+                                      gobject.TYPE_NONE,
+                                      (
+                                      gobject.TYPE_STRING,
+                                      )),
+                    }
     
     def __init__(self, manager, id, name, hash_id, description, category_id):
         self.__gobject_init__()
@@ -93,6 +109,7 @@ class MachineInst(gobject.GObject):
         self.session = session
         self.source = session.client_address[0]
         self.send_myinfo()
+        self.emit("source_changed", self.source)
     
     def send_myinfo(self):
         """
@@ -131,6 +148,9 @@ class MachineInst(gobject.GObject):
         self.status = MACHINE_STATUS_OFFLINE
         self.session = None
         self.source = None
+        self.os_name = ""
+        self.os_version = ""
+        self.emit("source_changed", "")
     
     @threaded
     def set_background(self, background_path):
@@ -326,6 +346,11 @@ class MachineInst(gobject.GObject):
                  float(self.timer_obj._stop_time)) * 100
 
             return t
+        
+    def set_os(self, os_name, os_version):
+        self.os_name = os_name
+        self.os_version = os_version
+        self.emit("os_changed", os_name, os_version)
 
 class InstManager(gobject.GObject):
     """
@@ -450,7 +475,11 @@ class InstManager(gobject.GObject):
         
         elif method == "logout":
             return self.machine_logout(machine_inst)
-        
+    
+        elif method == "set_myos":
+            machine_inst.set_os(*params)
+            return True
+
         return True
         
     def recvfile_func(self, method, data):
