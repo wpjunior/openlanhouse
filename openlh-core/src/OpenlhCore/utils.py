@@ -382,6 +382,41 @@ def decode_filechooser_file_paths(file_paths):
     
     return file_paths_list
 
+WIN_VERSION = {
+    (1, 4, 0): '95',
+    (1, 4, 10): '98',
+    (1, 4, 90): 'ME',
+    (2, 4, 0): 'NT',
+    (2, 5, 0): '2000',
+    (2, 5, 1): 'XP',
+    (2, 5, 2): '2003',
+    (2, 6, 0): 'Vista',
+}
+
+DISTRO_INFO = {
+    'Arch Linux': '/etc/arch-release',
+    'Aurox Linux': '/etc/aurox-release',
+    'Big Linux': '/etc/atualizacao/bigversao',
+    'Conectiva Linux': '/etc/conectiva-release',
+    'CRUX': '/usr/bin/crux',
+    'Debian GNU/Linux': '/etc/debian_release',
+    'Debian GNU/Linux': '/etc/debian_version',
+    'Fedora Linux': '/etc/fedora-release',
+    'Gentoo Linux': '/etc/gentoo-release',
+    'Linux from Scratch': '/etc/lfs-release',
+    'Mandrake Linux': '/etc/mandrake-release',
+    'Slackware Linux': '/etc/slackware-release',
+    'Slackware Linux': '/etc/slackware-version',
+    'Solaris/Sparc': '/etc/release',
+    'Source Mage': '/etc/sourcemage_version',
+    'SUSE Linux': '/etc/SuSE-release',
+    'Sun JDS': '/etc/sun-release',
+    'PLD Linux': '/etc/pld-release',
+    'Yellow Dog Linux': '/etc/yellowdog-release',
+    # many distros use the /etc/redhat-release for compatibility
+    # so Redhat is the last
+    'Redhat Linux': '/etc/redhat-release'
+}
 
 def get_os():
     """
