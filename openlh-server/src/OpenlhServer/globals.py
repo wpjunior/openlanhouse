@@ -43,6 +43,7 @@ if osname == 'nt':
 else:
     USER_PATH = ospath.expanduser('~')
 
+I_AM_DEVELOPER_FILE = ospath.join(USER_PATH, ".openlanhouse_developer")
 CONFIG_PREFIX = ospath.join(USER_PATH, '.config')
 CONFIG_PATH = ospath.join(CONFIG_PREFIX, 'OpenlhServer')
 CONFIG_FILE = ospath.join(CONFIG_PATH, 'openlh-server.ini')
@@ -61,6 +62,7 @@ SERVER_TLS_TEMPLATE = ospath.join(CERTS_PATH, 'openlh-server.template')
 ##DB FILES
 SQLITE_FILE = ospath.join(CONFIG_PATH, 'database.db')
 SERVER_PID_FILE = ospath.join(CONFIG_PATH, 'openlh-server.lock')
+REGISTRATION_DIR = ospath.join(CONFIG_PATH, 'registrations')
 
 ##Icons
 SERVER_ICON_NAME = 'openlh-server'

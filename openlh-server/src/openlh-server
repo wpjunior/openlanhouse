@@ -94,7 +94,7 @@ config_init("openlh-server", CONFIG_FILE, defaults)
 
 from time import strftime
 from OpenlhServer import daemon
-from OpenlhCore.utils import rename_process, mkdir, md5_cripto, pid_alive
+from OpenlhCore.utils import rename_process, mkdir, md5_cripto, pid_alive, threaded, get_os
 from OpenlhServer.ui import dialogs, main
 from OpenlhCore.net import certgen
 
@@ -137,6 +137,9 @@ CONFIG_PATH_EXISTS = os.path.exists(CONFIG_PATH)
 if not os.path.exists(AVATARS_PATH):
     mkdir(AVATARS_PATH)
 
+if not os.path.exists(REGISTRATION_DIR):
+    mkdir(REGISTRATION_DIR)
+
 pid_dir =  os.path.dirname(SERVER_PID_FILE)
 if not os.path.exists(pid_dir):
     mkdir(pid_dir)
@@ -174,6 +177,59 @@ class OpenlhServer:
             
             self.conf_client.set_float("price_per_hour", 
                                         self.price_per_hour)
+    
+    @threaded
+    def send_registration(self):
+        """
+        send you lan house status for openlanhouse.org
+        """
+        
+        if not CONFIG_PATH_EXISTS: #skip first execution
+            return
+        
+        if os.path.exists(I_AM_DEVELOPER_FILE): #skip developers :)
+            return
+        
+        reg_file = os.path.join(REGISTRATION_DIR, APP_VERSION)
+        if os.path.exists(reg_file):
+            return
+        
+        import httplib
+        import urllib
+        data = {'lan_name': self.name,
+                'admin_email': self.admin_email,
+                'app_version': APP_VERSION,
+                }
+        
+        t = get_os()
+        if t[0]:
+            data['os_name'] = t[0]
+        else:
+            data['os_name'] = ""
+            
+        if t[1]:
+            data['os_version'] = t[1]
+        else:
+            data['os_version'] = ""
+
+        params = urllib.urlencode(data)
+
+        headers = {"Content-type": "application/x-www-form-urlencoded",
+                   "Accept": "text/plain"}
+        
+        try:
+            print "Sending you status for openlanhouse.org"
+            conn = httplib.HTTPConnection("openlanhouse.org")
+            conn.request("POST", "/status/send", params, headers)
+            response = conn.getresponse()
+        except:
+            print "Failed to connect in openlanhouse.org"
+            return
+        
+        if response.status == 200:
+            open(reg_file, "wb").write(response.read())
+        else:
+            open(reg_file, "wb").write("")
         
     def generate_keys(self):
         """
@@ -238,6 +294,7 @@ class OpenlhServer:
         if not(os.path.exists(SERVER_TLS_KEY)) or not(os.path.exists(SERVER_TLS_CERT)):
             self.generate_keys()
     
+        self.send_registration() #Send Status to openlanhouse.org
         appdaemon = daemon.Server()
         appgui = main.Manager(appdaemon)
         
