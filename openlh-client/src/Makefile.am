@@ -1,4 +1,4 @@
-SUBDIRS = OpenlhClient
+SUBDIRS = OpenlhClient pygdm
 
 openlhclientdir = $(bindir)
 bin_SCRIPTS = openlh-client

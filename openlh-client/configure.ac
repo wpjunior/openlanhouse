@@ -46,6 +46,23 @@ AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
 dnl python checks
 AM_PATH_PYTHON(2.5)
 
+PY_PREFIX=`$PYTHON -c 'import sys ; print sys.prefix'`
+PYTHON_LIBS="-lpython$PYTHON_VERSION"
+PYTHON_CFLAGS="-I$PY_PREFIX/include/python$PYTHON_VERSION"
+
+AC_SUBST([PYTHON_LIBS])
+AC_SUBST([PYTHON_CFLAGS])
+
+#PyGDM
+dnl Checking G* Libraries
+PKG_CHECK_MODULES(PYGDM,
+    glib-2.0
+    gdk-2.0
+)
+
+AC_SUBST(PYGDM_CFLAGS)
+AC_SUBST(PYGDM_LIBS)
+
 dnl gtk dependencie
 PYGTK_REQUIRED=2.12.0
 PANEL_REQUIRED_VERSION=2.0.0
@@ -129,6 +146,7 @@ data/icons/Makefile
 gnomeapplet/Makefile
 src/Makefile
 src/OpenlhClient/Makefile
+src/pygdm/Makefile
 src/OpenlhClient/ui/Makefile
 src/OpenlhClient/config.py
 po/Makefile.in
