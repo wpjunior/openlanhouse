@@ -18,5 +18,5 @@
 
 INSTALLED = False
 PREFIX = "/usr"
-APP_VERSION = "0.1svn"
+APP_VERSION = "0.2git"
 

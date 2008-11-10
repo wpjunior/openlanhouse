@@ -117,23 +117,6 @@ else
     $ac_pgconf_result])
 fi
 
-#python-certtool
-dnl Checking python-certtool
-AC_MSG_CHECKING([for the python-certtool package])
-ac_pgconf_result=`$PYTHON -c 'try:
-    import certtool
-except Exception, e:
-    print str(e)' 2> /dev/null`
-
-if test -z "$ac_pgconf_result"; then
-    AC_MSG_RESULT([yes])
-else
-    AC_MSG_RESULT([no])
-    AC_MSG_ERROR([cannot import Python module "certtool".
-    Please check if you have python-certtool installed. The error was:
-    $ac_pgconf_result])
-fi
-
 
 dnl output files
 AC_CONFIG_FILES([

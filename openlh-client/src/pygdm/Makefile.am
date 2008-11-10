@@ -6,7 +6,7 @@ gdm_la_LDFLAGS = \
 	-avoid-version
 
 gdm_la_CPPFLAGS = \
-	$(GNUTLS_CFLAGS) \
+	$(PYTHON_CFLAGS) \
 	$(PYGDM_CFLAGS)
 
 gdm_la_LIBADD = \
