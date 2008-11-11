@@ -2510,3 +2510,95 @@ class Manager:
             self.add_new_machine_category_clicked(obj)
         elif self.selpage == 1:
             self.add_new_user_category_clicked(obj)
+
+    #shutdown, reboot, logout, killapplication signal
+    def on_shutdown_machine(self, obj):
+        model, iteration = self.get_selects(self.machine_tree)
+        
+        if not iteration:
+            return
+        
+        machine_id = int(model.get_value(iteration, 0))
+        assert self.instmachine_manager.machines_by_id[machine_id]
+        machine_inst = self.instmachine_manager.machines_by_id[machine_id]
+        
+        if machine_inst.status == 0: # offline
+            dialogs.ok_only(_("<b><big>Unable to shutdown machine</big></b>\n\n"
+                              "This machine is not available"),
+                            Parent=self.mainwindow,
+                            ICON=gtk.MESSAGE_ERROR)
+            return
+        elif machine_inst.status == 1: # available
+            machine_inst.shutdown()
+            
+        elif machine_inst.status == 2: # busy
+            self.instmachine_manager.block(machine_inst,
+                                           True, 0)
+                    
+       
+    def on_reboot_machine(self, obj):
+        model, iteration = self.get_selects(self.machine_tree)
+        
+        if not iteration:
+            return
+        
+        machine_id = int(model.get_value(iteration, 0))
+        assert self.instmachine_manager.machines_by_id[machine_id]
+        machine_inst = self.instmachine_manager.machines_by_id[machine_id]
+        
+        if machine_inst.status == 0: # offline
+            dialogs.ok_only(_("<b><big>Unable to reboot machine</big></b>\n\n"
+                              "This machine is not available"),
+                            Parent=self.mainwindow,
+                            ICON=gtk.MESSAGE_ERROR)
+            return
+        
+        elif machine_inst.status == 1: #available
+            machine_inst.reboot()
+
+        elif machine_inst.status == 2: # busy
+            self.instmachine_manager.block(machine_inst,
+                                           True, 1) #block and send reboot signal
+                   
+    def on_logout_machine(self, obj):
+        model, iteration = self.get_selects(self.machine_tree)
+        
+        if not iteration:
+            return
+        
+        machine_id = int(model.get_value(iteration, 0))
+        assert self.instmachine_manager.machines_by_id[machine_id]
+        machine_inst = self.instmachine_manager.machines_by_id[machine_id]
+        
+        if machine_inst.status == 0: #offline
+            dialogs.ok_only(_("<b><big>Unable to logout machine</big></b>\n\n"
+                              "This machine is not available"),
+                            Parent=self.mainwindow,
+                            ICON=gtk.MESSAGE_ERROR)
+            return
+
+        elif machine_inst.status == 1: # available
+            machine_inst.system_logout()
+
+        elif machine_inst.status == 2: # busy
+            self.instmachine_manager.block(machine_inst,
+                                           True, 2)
+        
+    def on_quit_machine(self, obj):
+        model, iteration = self.get_selects(self.machine_tree)
+        
+        if not iteration:
+            return
+        
+        machine_id = int(model.get_value(iteration, 0))
+        assert self.instmachine_manager.machines_by_id[machine_id]
+        machine_inst = self.instmachine_manager.machines_by_id[machine_id]
+        
+        if machine_inst.status == 0:
+            dialogs.ok_only(_("<b><big>Unable to quit openlanhouse</big></b>\n\n"
+                              "This machine is not available"),
+                            Parent=self.mainwindow,
+                            ICON=gtk.MESSAGE_ERROR)
+            return
+        
+        machine_inst.quit_application()

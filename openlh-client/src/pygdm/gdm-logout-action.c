@@ -416,7 +416,7 @@ gdm_set_logout_action (GdmLogoutAction action)
         msg = g_strdup_printf (GDM_PROTOCOL_MSG_SET_ACTION " %s", action_str);
 
         response = gdm_send_protocol_msg (&gdm_protocol_data, msg);
-        g_print ("Response: %s\n", response);
+        
         g_free (msg);
         g_free (response);
 

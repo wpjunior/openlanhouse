@@ -351,6 +351,30 @@ class MachineInst(gobject.GObject):
         self.os_name = os_name
         self.os_version = os_version
         self.emit("os_changed", os_name, os_version)
+        
+    def shutdown(self):
+        """
+        Shutdown remote machine
+        """
+        self.session.request("system.shutdown", ())
+               
+    def reboot(self):
+        """
+        Reboot remote machine
+        """
+        self.session.request("system.reboot", ())
+           
+    def system_logout(self):
+        """
+        Logout remote machine
+        """
+        self.session.request("system.logout", ())
+               
+    def quit_application(self):
+        """
+        Quit OpenLanhouse client in remote machine
+        """
+        self.session.request("app.quit", ())
 
 class InstManager(gobject.GObject):
     """
@@ -459,6 +483,9 @@ class InstManager(gobject.GObject):
     
     def dispatch_func(self, hash_id, method, params):
         
+        if not hash_id in self.machines_by_hash_id:
+            from xmlrpclib import Fault
+            return Fault("HashIDFault", "Please send you hash to complete request")
         machine_inst = self.machines_by_hash_id[hash_id]
         
         if method == "get_status":

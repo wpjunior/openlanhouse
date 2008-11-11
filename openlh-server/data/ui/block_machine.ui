@@ -7,10 +7,13 @@
     </columns>
     <data>
       <row>
-        <col id="0">Shutdown</col>
+        <col id="0" translatable="yes">Shutdown</col>
       </row>
       <row>
-        <col id="0">Reboot</col>
+        <col id="0" translatable="yes">Reboot</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Logout</col>
       </row>
     </data>
   </object>

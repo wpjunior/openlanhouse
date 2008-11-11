@@ -32,6 +32,8 @@ from OpenlhCore.utils import md5_cripto
 from OpenlhCore.utils import get_os, humanize_time
 from OpenlhClient.ui import dialogs, login
 from OpenlhClient.ui.utils import get_gtk_builder
+from OpenlhClient.logout_actions import ActionManager
+
 
 try:
     from OpenlhClient.dbus_manager import DbusManager
@@ -375,8 +377,20 @@ class Client:
         self.stop_monitory_status()
         self.dbus_manager.block()
         
-        if after:
-            print "after", after
+        if not ActionManager:
+            return
+
+        if not after:
+            return
+
+        if action == 0 : #shutdown
+            ActionManager.shutdown()
+            
+        elif action == 1: #reboot
+            ActionManager.reboot()
+            
+        elif action == 2: #logout
+            ActionManager.logout()
     
     def unblock(self, data):
         assert isinstance(data, dict)
@@ -438,6 +452,22 @@ class Client:
         
         elif method == 'set_status':
             self.set_status(*params)
+            return True
+        
+        elif method == 'system.shutdown':
+            self.system_shutdown()
+            return True
+            
+        elif method == 'system.reboot':
+            self.system_reboot()
+            return True
+        
+        elif method == 'system.logout':
+            self.system_logout()
+            return True
+        
+        elif method == 'app.quit':
+            self.app_quit()
             return True
         
         else:
@@ -654,4 +684,25 @@ class Client:
         
         if response == gtk.RESPONSE_YES:
             self.netclient.request('logout')
+            
+
+    def system_shutdown(self):
+        if not ActionManager:
+            return
         
+        ActionManager.shutdown()
+
+    def system_reboot(self):
+        if not ActionManager:
+            return
+        
+        ActionManager.reboot()
+
+    def system_logout(self):
+        if not ActionManager:
+            return
+        
+        ActionManager.logout()
+
+    def app_quit(self):
+        gtk.main_quit()                

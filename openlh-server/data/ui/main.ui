@@ -590,6 +590,45 @@
             <signal handler="on_view_history_machine" name="activate"/>
           </object>
         </child>
+        
+        <child>
+          <object class="GtkAction" id="SystemActions">
+            <property name="name">SystemActions</property>
+            <property name="label" translatable="yes">_System</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkAction" id="ShutdownMachineMenu">
+            <property name="icon-name">system-shutdown</property>
+            <property name="name">ShutdownMachineMenu</property>
+            <property name="label" translatable="yes">_Shutdown</property>
+            <signal handler="on_shutdown_machine" name="activate"/>
+          </object>
+        </child>
+        <child>
+          <object class="GtkAction" id="RebootMachineMenu">
+            <property name="stock-id">gtk-refresh</property>
+            <property name="name">RebootMachineMenu</property>
+            <property name="label" translatable="yes">_Reboot</property>
+            <signal handler="on_reboot_machine" name="activate"/>
+          </object>
+        </child>
+        <child>
+          <object class="GtkAction" id="LogoutMachineMenu">
+            <property name="icon-name">gnome-logout</property>
+            <property name="name">LogoutMachineMenu</property>
+            <property name="label" translatable="yes">_Logout</property>
+            <signal handler="on_logout_machine" name="activate"/>
+          </object>
+        </child>
+        <child>
+          <object class="GtkAction" id="ExitClientMenu">
+            <property name="icon-name">gtk-quit</property>
+            <property name="name">ExitClientMenu</property>
+            <property name="label" translatable="yes">_Quit OpenLanhouse Client</property>
+            <signal handler="on_quit_machine" name="activate"/>
+          </object>
+        </child>
         <child>
           <object class="GtkAction" id="menuitem9">
             <property name="stock_id" translatable="yes">gtk-properties</property>
@@ -611,6 +650,13 @@
         <menuitem action="menuitem8"/>
         <separator/>
         <menuitem action="menuitem7894145"/>
+        <menu action="SystemActions">
+          <menuitem action="ShutdownMachineMenu"/>
+          <menuitem action="RebootMachineMenu"/>
+          <menuitem action="LogoutMachineMenu"/>
+          <separator/>
+          <menuitem action="ExitClientMenu"/>
+        </menu>
         <separator/>
         <menuitem action="menuitem9"/>
       </popup>
