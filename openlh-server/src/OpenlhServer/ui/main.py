@@ -2602,3 +2602,17 @@ class Manager:
             return
         
         machine_inst.quit_application()
+
+    
+    # Tools -> Machines Actions
+    def on_all_machines_shutdown(self, obj):
+        print "on_all_machines_shutdown"
+        
+    def on_all_machines_reboot(self, obj):
+        print "on_all_machines_reboot"
+        
+    def on_all_machines_logout(self, obj):
+        print "on_all_machines_logout"
+        
+    def on_all_machines_app_quit(self, obj):
+        print "on_all_machines_app_quit"

@@ -364,6 +364,49 @@
           </object>
         </child>
         <child>
+          <object class="GtkAction" id="menuallmachines">
+            <property name="name">menuallmachines</property>
+            <property name="label" translatable="yes">_Machines</property>
+          </object>
+        </child>
+        
+        <child>
+          <object class="GtkAction" id="AllMachinesShutdown">
+            <property name="icon-name">system-shutdown</property>
+            <property name="label" translatable="yes">_Shutdown</property>
+            <property name="name">AllMachinesShutdown</property>
+            <signal handler="on_all_machines_shutdown" name="activate"/>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkAction" id="AllMachinesReboot">
+            <property name="stock-id">gtk-refresh</property>
+            <property name="label" translatable="yes">_Reboot</property>
+            <property name="name">AllMachinesReboot</property>
+            <signal handler="on_all_machines_reboot" name="activate"/>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkAction" id="AllMachinesLogout">
+            <property name="icon-name">gnome-logout</property>
+            <property name="label" translatable="yes">_Logout</property>
+            <property name="name">AllMachinesLogout</property>
+            <signal handler="on_all_machines_logout" name="activate"/>
+          </object>
+        </child>
+        
+        <child>
+          <object class="GtkAction" id="AllMachinesAppQuit">
+            <property name="icon-name">gtk-quit</property>
+            <property name="label" translatable="yes">_Quit OpenLanhouse Client</property>
+            <property name="name">AllMachinesAppQuit</property>
+            <signal handler="on_all_machines_app_quit" name="activate"/>
+          </object>
+        </child>
+
+        <child>
           <object class="GtkAction" id="menuhelp">
             <property name="name">menuhelp</property>
             <property name="label" translatable="yes">_Help</property>
@@ -422,6 +465,13 @@
         </menu>
         <menu action="menutools">
           <menuitem action="clear_history"/>
+          <menu action="menuallmachines">
+            <menuitem action="AllMachinesShutdown"/>
+            <menuitem action="AllMachinesReboot"/>
+            <menuitem action="AllMachinesLogout"/>
+            <separator/>
+            <menuitem action="AllMachinesAppQuit"/>
+          </menu>
         </menu>
         <menu action="menuhelp">
           <menuitem action="mnuAbout"/>
