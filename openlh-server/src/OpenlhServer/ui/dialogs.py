@@ -2480,3 +2480,49 @@ class UserCategory:
             return data
         else:
             self.dialog.destroy()
+
+class SelectMachineCategory:
+    
+    category = 0
+    
+    def __init__(self, machine_category_manager, Parent=None):
+        
+        self.machine_category_manager = machine_category_manager
+        
+        self.xml = get_gtk_builder('select_machine_category')
+        self.dialog = self.xml.get_object("dialog")
+        
+        if Parent:
+            self.dialog.set_transient_for(Parent)
+        
+        combobox = self.xml.get_object("combobox")
+        combobox.set_active(0)
+        combobox.set_row_separator_func(self.row_separator_func)
+        
+        model = combobox.get_model()
+        model.append((-1, ""))
+
+        if self.machine_category_manager:
+            for i in self.machine_category_manager.get_all():
+                model.append((i.id, i.name))
+                
+        self.xml.connect_signals(self)
+
+    def row_separator_func(self, model, iter):
+        
+        if model.get_value(iter, 0) == -1:
+            return True
+        else:
+            return False
+    
+    def run(self):
+        if self.dialog.run():
+            combobox = self.xml.get_object("combobox")
+            model = combobox.get_model()
+            iter = combobox.get_active_iter()
+            self.category = model.get_value(iter, 0)
+            self.dialog.destroy()
+
+            return True
+        
+        self.dialog.destroy()

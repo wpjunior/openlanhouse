@@ -117,6 +117,10 @@ class MachineManager(BaseManager):
             out = out[0]
         
         return out
+
+    def get_machines_id_by_category_id(self, category_id):
+        s = select([Machine.id], Machine.category_id==category_id)
+        return self.db_session.session.execute(s).fetchall()
     
     def get_last_user_id(self, id):
         s = select([Machine.last_user_id], Machine.id==id)

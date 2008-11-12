@@ -2606,13 +2606,134 @@ class Manager:
     
     # Tools -> Machines Actions
     def on_all_machines_shutdown(self, obj):
-        print "on_all_machines_shutdown"
+        """
+        Send Shutdown signal for machines
+        """
+        dlg = dialogs.SelectMachineCategory(self.machine_category_manager,
+                                            Parent=self.mainwindow)
+        if not dlg.run():
+            return
+        
+        def shutdown_machine_inst(machine_inst):
+            if machine_inst.status == 1: # available
+                machine_inst.shutdown()
+            
+            elif machine_inst.status == 2: # busy
+                self.instmachine_manager.block(machine_inst,
+                                               True, 0)
+        
+        if dlg.category == 0:   # All Machines
+            for id in self.instmachine_manager.machines_by_id:
+                machine_inst = self.instmachine_manager.machines_by_id[id]
+                
+                #send shutdown signal
+                shutdown_machine_inst(machine_inst)
+
+        else: # Category
+            machines = self.machine_manager.get_machines_id_by_category_id(dlg.category)
+            for id in machines:
+                id = id[0]
+                
+                if not id in self.instmachine_manager.machines_by_id:
+                    continue
+                
+                machine_inst = self.instmachine_manager.machines_by_id[id]
+                shutdown_machine_inst(machine_inst)
         
     def on_all_machines_reboot(self, obj):
-        print "on_all_machines_reboot"
+        """
+        Send Reboot Signal to Machines
+        """
+        dlg = dialogs.SelectMachineCategory(self.machine_category_manager,
+                                            Parent=self.mainwindow)
+        if not dlg.run():
+            return
+        
+        def reboot_machine_inst(machine_inst):
+            if machine_inst.status == 1: # available
+                machine_inst.reboot()
+            
+            elif machine_inst.status == 2: # busy
+                self.instmachine_manager.block(machine_inst,
+                                               True, 1)
+        
+        if dlg.category == 0:   # All Machines
+            for id in self.instmachine_manager.machines_by_id:
+                machine_inst = self.instmachine_manager.machines_by_id[id]
+                
+                #send reboot signal
+                reboot_machine_inst(machine_inst)
+
+        else: # Category
+            machines = self.machine_manager.get_machines_id_by_category_id(dlg.category)
+            for id in machines:
+                id = id[0]
+                
+                if not id in self.instmachine_manager.machines_by_id:
+                    continue
+                
+                machine_inst = self.instmachine_manager.machines_by_id[id]
+                reboot_machine_inst(machine_inst)
         
     def on_all_machines_logout(self, obj):
-        print "on_all_machines_logout"
+        """
+        Send System Logout for machines
+        """
+        dlg = dialogs.SelectMachineCategory(self.machine_category_manager,
+                                            Parent=self.mainwindow)
+        if not dlg.run():
+            return
         
+        def logout_machine_inst(machine_inst):
+            if machine_inst.status == 1: # available
+                machine_inst.system_logout()
+            
+            elif machine_inst.status == 2: # busy
+                self.instmachine_manager.block(machine_inst,
+                                               True, 2)
+        
+        if dlg.category == 0:   # All Machines
+            for id in self.instmachine_manager.machines_by_id:
+                machine_inst = self.instmachine_manager.machines_by_id[id]
+                
+                #send system-logout signal
+                logout_machine_inst(machine_inst)
+
+        else: # Category
+            machines = self.machine_manager.get_machines_id_by_category_id(dlg.category)
+            for id in machines:
+                id = id[0]
+                
+                if not id in self.instmachine_manager.machines_by_id:
+                    continue
+                
+                machine_inst = self.instmachine_manager.machines_by_id[id]
+                logout_machine_inst(machine_inst)
+        
+
     def on_all_machines_app_quit(self, obj):
-        print "on_all_machines_app_quit"
+        dlg = dialogs.SelectMachineCategory(self.machine_category_manager,
+                                            Parent=self.mainwindow)
+        if not dlg.run():
+            return
+        
+        if dlg.category == 0:   # All Machines
+            for id in self.instmachine_manager.machines_by_id:
+                machine_inst = self.instmachine_manager.machines_by_id[id]
+                
+                #send app-quit signal
+                if machine_inst.status != 0:
+                    machine_inst.quit_application()
+
+        else: # Category
+            machines = self.machine_manager.get_machines_id_by_category_id(dlg.category)
+            for id in machines:
+                id = id[0]
+                
+                if not id in self.instmachine_manager.machines_by_id:
+                    continue
+                
+                machine_inst = self.instmachine_manager.machines_by_id[id]
+                # send app-quit signal
+                if machine_inst.status != 0:
+                    machine_inst.quit_application()
