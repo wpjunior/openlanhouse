@@ -20,6 +20,7 @@ GDM_PROTOCOL_PATH = "/var/run/gdm_socket"
 
 from os import path as ospath
 from os import environ as env
+from os import name as osname
 from OpenlhCore.utils import is_in_path, execute_command
 
 try:
@@ -50,8 +51,18 @@ class GdmActionManager:
         assert "GDMSESSION" in env, "Session must be specified by environ Variable GDMSESSION"
         session = env["GDMSESSION"]
         
+        # Openbox
+        if "openbox" in session.lower():
+            p = is_in_path("openbox")
+            
+            if not p:
+                return False
+            
+            cmd = [p, "--exit"]
+            execute_command(cmd)
+            
         # Send logout signal to GNOME
-        if "gnome" in session.lower():
+        elif "gnome" in session.lower():
             p = is_in_path("gnome-session-save")
             
             if not p:
@@ -60,7 +71,7 @@ class GdmActionManager:
             cmd = [p, "--logout"]
             a = execute_command(cmd)
         
-        #TODO: write for kde, xfce4 openbox, fluxbox, blackbox and LXDE
+        #TODO: write for kde, xfce4, fluxbox, blackbox and LXDE
         return True
 
 class PosixActionManager:
@@ -100,38 +111,29 @@ class Win32ActionManager:
         pass
     
     def shutdown(self):
-        executable = is_in_path("shutdown")
-        if not executable:
-            return False
-        
-        cmd = [executable, "-s", "-t", "0"]
+        cmd = ["shutdown", "-s", "-t", "0"]
         a = execute_command(cmd)
         print a
     
     def reboot(self):
-        executable = is_in_path("shutdown")
-        if not executable:
-            return False
-        
-        cmd = [executable, "-r", "-t", "0"]
+        cmd = ["shutdown", "-r", "-t", "0"]
         a = execute_command(cmd)
         print a
     
     def logout(self):
-        executable = is_in_path("shutdown")
-        if not executable:
-            return False
-        
         cmd = [executable, "-l"]
         a = execute_command(cmd)
         print a
 
-    
-"""
-if (HAS_GDM_CLIENT 
+
+if osname == "nt":              # if is running Windows NT
+    ActionManager = Win32ActionManager()
+
+elif (HAS_GDM_CLIENT 
     and (ospath.exists(GDM_PROTOCOL_PATH))
     and ("GDMSESSION" in env)):
     
     ActionManager = GdmActionManager()
-"""
-ActionManager = PosixActionManager()
+    
+elif osname == "posix":
+    ActionManager = PosixActionManager()
