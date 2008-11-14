@@ -34,7 +34,11 @@
   </object>
   <object class="GtkDialog" id="dialog">
     <property name="border_width">6</property>
-    <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
+    <property name="title" translatable="yes">Ticket Generator</property>
+    <property name="resizable">False</property>
+    <property name="modal">True</property>
+    <property name="window_position">GTK_WIN_POS_CENTER_ON_PARENT</property>
+    <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox1">
@@ -113,6 +117,7 @@
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="relief">GTK_RELIEF_NONE</property>
+                                <signal handler="on_refresh_button_clicked" name="clicked"/>
                                 <child>
                                   <object class="GtkImage" id="image1">
                                     <property name="visible">True</property>
@@ -228,6 +233,8 @@
                                 <property name="max_length">4</property>
                                 <property name="width_chars">3</property>
                                 <property name="adjustment">adjustment1</property>
+                                <signal handler="on_hour_value_changed" name="value_changed"/>
+                                <signal handler="on_spin_button_output" name="output"/>
                               </object>
                             </child>
                             <child>
@@ -245,6 +252,8 @@
                                 <property name="can_focus">True</property>
                                 <property name="width_chars">3</property>
                                 <property name="adjustment">adjustment2</property>
+                                <signal handler="on_minutes_value_changed" name="value_changed"/>
+                                <signal handler="on_spin_button_output" name="output"/>
                               </object>
                               <packing>
                                 <property name="position">2</property>
@@ -262,6 +271,7 @@
                             <property name="can_focus">True</property>
                             <property name="adjustment">adjustment3</property>
                             <property name="digits">2</property>
+                            <signal handler="on_total_to_pay_value_changed" name="value_changed"/>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -348,6 +358,7 @@
                             <property name="can_focus">True</property>
                             <property name="adjustment">adjustment4</property>
                             <property name="digits">2</property>
+                            <signal handler="on_hourly_rate_value_changed" name="value_changed"/>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -387,8 +398,9 @@
               </object>
             </child>
             <child>
-              <object class="GtkButton" id="button2">
+              <object class="GtkButton" id="ok_button">
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="label" translatable="yes">gtk-ok</property>
@@ -407,9 +419,8 @@
       </object>
     </child>
     <action-widgets>
-      <action-widget response="0">refresh_button</action-widget>
       <action-widget response="0">button1</action-widget>
-      <action-widget response="1">button2</action-widget>
+      <action-widget response="1">ok_button</action-widget>
     </action-widgets>
   </object>
 </interface>

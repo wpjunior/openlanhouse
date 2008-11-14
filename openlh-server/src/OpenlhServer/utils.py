@@ -18,6 +18,7 @@
 
 import os
 import sys
+import random
 
 from OpenlhServer.globals import AVATARS_PATH
 
@@ -29,3 +30,26 @@ def get_user_avatar_path(user_id):
 
 def user_has_avatar(user_id):
     return os.path.exists(get_user_avatar_path(user_id))
+
+# Ticket Generator
+TICKET_VALID_CARACTERS = ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+                   'I', 'K', 'J', 'L', 'M','N', 'O', 'P', 'Q',
+                   'R', 'S', 'T', 'U', 'V', 'X', 'W', 'Y', 'Z',
+                   '0', '1', '2', '3', '4', '5', '6', '7', '8',
+                   '9')
+
+TICKET_VALID_CARACTERS_RANGE = len(TICKET_VALID_CARACTERS) -1
+
+def random_caracter():
+    c = random.randint(0, TICKET_VALID_CARACTERS_RANGE)
+    return TICKET_VALID_CARACTERS[c]
+
+def generate_ticket(size):
+    ticket = []
+    for i in range(size):
+        ticket.append(random_caracter())
+
+    ticket = "".join(ticket)
+                
+    return ticket
+

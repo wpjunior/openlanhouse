@@ -36,7 +36,7 @@ from OpenlhServer.plugins import get_plugin
 
 from OpenlhServer.db.models import Machine, User, OpenDebtMachineItem, HistoryItem, Version
 from OpenlhServer.db.session import DBSession
-from OpenlhServer.db.managers import MachineManager, UserManager, CashFlowManager
+from OpenlhServer.db.managers import MachineManager, UserManager, CashFlowManager, OpenTicketManager
 from OpenlhServer.db.managers import OpenDebtsMachineManager, OpenDebtsOtherManager
 from OpenlhServer.db.managers import HistoryManager, VersionManager, MachineCategoryManager, UserCategoryManager
 from OpenlhServer.db.globals import DB_NAMES
@@ -1006,7 +1006,7 @@ class Server(gobject.GObject):
         self.open_debts_other_manager = OpenDebtsOtherManager(
                                                              self.db_session)
         self.history_manager = HistoryManager(self.db_session)
-        
+        self.open_ticket_manager = OpenTicketManager(self.db_session)
         
         #Create Tables
         self.db_session.create_all()

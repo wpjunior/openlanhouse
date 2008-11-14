@@ -89,6 +89,7 @@ class Manager:
         self.open_debts_machine_manager = self.daemon.open_debts_machine_manager
         self.open_debts_other_manager = self.daemon.open_debts_other_manager
         self.history_manager = self.daemon.history_manager
+        self.open_ticket_manager = self.daemon.open_ticket_manager
         
         self.instmachine_manager = self.daemon.instmachine_manager
         self.instmachine_manager.authorization_func = self.on_authorization_machine
@@ -474,10 +475,14 @@ class Manager:
         dlg.run()
     
     def on_ticket_menuitem_activate(self, obj):
-        price_per_hour = self.conf_client.get_float(
-                                'price_per_hour')
+        price_per_hour = self.conf_client.get_float('price_per_hour')
         
-        dlg = dialogs.NewTicket(Parent=self.mainwindow)
+        ticket_size = self.conf_client.get_int('ticket_size')
+        
+        dlg = dialogs.NewTicket(ticket_size=ticket_size,
+                                hourly_rate=price_per_hour,
+                                OpenTicketManager=self.open_ticket_manager,
+                                Parent=self.mainwindow)
         
         dlg.run()
     

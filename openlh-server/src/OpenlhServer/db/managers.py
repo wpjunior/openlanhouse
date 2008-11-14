@@ -18,6 +18,7 @@
 
 from OpenlhServer.db.models import Machine, User, CashFlowItem, HistoryItem, MachineCategory
 from OpenlhServer.db.models import OpenDebtMachineItem, OpenDebtOtherItem, Version, UserCategory
+from OpenlhServer.db.models import OpenTicket
 from OpenlhServer.db.basemanager import BaseManager, BaseFlow
 
 from sqlalchemy import Table, Column, Boolean, Integer, String, Text
@@ -357,3 +358,7 @@ class OpenTicketManager(BaseManager):
                       )
         
         self.mapper = mapper(OpenTicket, self.table)
+        
+    def ticket_exists(self, code):
+        s = select([OpenTicket.id], OpenTicket.code==code)
+        return bool(self.db_session.session.execute(s).fetchone())

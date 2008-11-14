@@ -35,7 +35,7 @@ from OpenlhServer.ui import icons, DateEdit, HourEntry
 from OpenlhServer.ui.SearchEntry import SearchEntry
 from OpenlhServer.ui.utils import color_entry, get_gtk_builder
 
-from OpenlhServer.utils import user_has_avatar, get_user_avatar_path
+from OpenlhServer.utils import user_has_avatar, get_user_avatar_path, generate_ticket
 from OpenlhServer.db.models import CashFlowItem, User
 
 from OpenlhCore.utils import md5_cripto
@@ -2319,15 +2319,80 @@ class set_price_per_hour:
         return price
 
 class NewTicket:
-    def __init__(self, Parent=None):
+
+    hours = 0
+    minutes = 0
+    lock = False
+
+    def __init__(self, ticket_size, hourly_rate, OpenTicketManager, Parent=None):
         self.xml = get_gtk_builder('new_ticket')
-        self.dialog = self.xml.get_object('dialog')
         
+        self.dialog = self.xml.get_object('dialog')
+        self.total_to_pay = self.xml.get_object('total_to_pay')
+        
+        self.open_ticket_manager = OpenTicketManager
+        self.hourly_rate = hourly_rate
+        self.ticket_size = ticket_size
+        
+        self.xml.get_object("hourly_rate").set_value(hourly_rate)
+
         self.xml.connect_signals(self)
+        
+        self.on_refresh_button_clicked(None) # write first code
         
         if Parent:
             self.dialog.set_transient_for(Parent)
-    
+            
+    def on_refresh_button_clicked(self, obj):
+        while True:
+            code = generate_ticket(self.ticket_size)
+            if not self.open_ticket_manager.ticket_exists(code):
+                break
+
+        widget = self.xml.get_object("code_entry")
+        widget.set_text(code)
+        
+    def on_spin_button_output(self, obj):
+        obj.set_text("%02d" % obj.get_adjustment().get_value())
+        return True
+
+    def on_hour_value_changed(self, obj):
+        self.hours = obj.get_value_as_int()
+        self.update_total_to_pay()
+
+    def on_minutes_value_changed(self, obj):
+        self.minutes = obj.get_value_as_int()
+        self.update_total_to_pay()
+
+    def update_total_to_pay(self):
+        if not self.lock:
+            self.lock = True
+            t = calculate_credit(self.hourly_rate,
+                                 self.hours,
+                                 self.minutes, 0)
+
+            self.total_to_pay.set_value(t)
+            self.lock = False
+            
+            
+    def on_total_to_pay_value_changed(self, obj):
+        
+        if not self.lock:
+            self.lock = True
+            t = obj.get_value()
+
+            hour, minutes, secs = calculate_time(self.hourly_rate, t)
+            self.xml.get_object('hour').set_value(hour)
+            self.xml.get_object('minutes').set_value(minutes)
+            
+            self.xml.get_object('ok_button').set_sensitive(bool(t))
+
+            self.lock = False
+            
+    def on_hourly_rate_value_changed(self, obj):
+        self.hourly_rate = obj.get_value()
+        self.on_total_to_pay_value_changed(self.total_to_pay)
+        
     def run(self):
         if self.dialog.run():
             pass
