@@ -2395,7 +2395,13 @@ class NewTicket:
         
     def run(self):
         if self.dialog.run():
-            pass
+            data = {}
+            data['code'] = self.xml.get_object('code_entry').get_text()
+            data['price'] = self.total_to_pay.get_value()
+            data['hourly_rate'] = self.xml.get_object('hourly_rate').get_value()
+            self.dialog.destroy()
+            
+            return data
         
         self.dialog.destroy()
 

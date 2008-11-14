@@ -34,6 +34,7 @@ from OpenlhCore.utils import md5_cripto
 from OpenlhServer.ui.utils import get_gtk_builder
 from OpenlhServer.utils import user_has_avatar, get_user_avatar_path
 from OpenlhServer.db.models import CashFlowItem, User, MachineCategory, UserCategory
+from OpenlhServer.db.models import OpenTicket
 from OpenlhServer.globals import *
 _ = gettext.gettext
 
@@ -484,7 +485,17 @@ class Manager:
                                 OpenTicketManager=self.open_ticket_manager,
                                 Parent=self.mainwindow)
         
-        dlg.run()
+        data = dlg.run()
+        
+        if not data:
+            return
+        
+        t = OpenTicket()
+        t.code = data['code']
+        t.price = data['price']
+        t.hourly_rate = data['hourly_rate']
+        self.open_ticket_manager.insert(t)
+    # TODO: Add in cash flow item
     
     def new_clicked(self, obj):
         
