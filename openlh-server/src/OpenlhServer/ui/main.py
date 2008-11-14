@@ -494,9 +494,34 @@ class Manager:
         t.code = data['code']
         t.price = data['price']
         t.hourly_rate = data['hourly_rate']
+
+        if data['notes']:
+            t.notes = data['notes']
+
         self.open_ticket_manager.insert(t)
-    # TODO: Add in cash flow item
-    
+        
+        c = CashFlowItem()
+        c.type = CASH_FLOW_TYPE_TICKET
+
+        #Insert Entry in Cash Flow
+        lctime = localtime()
+        current_hour = "%0.2d:%0.2d:%0.2d" % lctime[3:6]
+        
+        citem = CashFlowItem()
+        citem.type = CASH_FLOW_TYPE_TICKET
+                   
+        citem.value = data['price']
+        
+        if data['notes']:
+            citem.notes = data['notes']
+        
+        citem.year = lctime[0]
+        citem.month = lctime[1]
+        citem.day = lctime[2]
+        citem.hour = current_hour
+                            
+        self.cash_flow_manager.insert(citem)
+      
     def new_clicked(self, obj):
         
         if self.selpage == 0:
@@ -1801,6 +1826,8 @@ class Manager:
             type_str = _("Custom In")
         elif cash_flow_type == CASH_FLOW_CUSTOM_TYPE_OUT:
             type_str = _("Custom Out")
+        elif cash_flow_type == CASH_FLOW_TYPE_TICKET:
+            type_str = _("Ticket")
         return type_str
         
     def add_cash_flow_row(self, year, month, day, type, 

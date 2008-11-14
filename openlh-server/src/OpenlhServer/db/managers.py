@@ -355,6 +355,7 @@ class OpenTicketManager(BaseManager):
                       Column('code', String(25), nullable=False, unique=True),
                       Column('price', Float, nullable=False),
                       Column('hourly_rate', Float, nullable=False),
+                      Column('notes', Text)
                       )
         
         self.mapper = mapper(OpenTicket, self.table)

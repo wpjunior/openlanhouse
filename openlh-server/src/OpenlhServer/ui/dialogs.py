@@ -2370,7 +2370,8 @@ class NewTicket:
             t = calculate_credit(self.hourly_rate,
                                  self.hours,
                                  self.minutes, 0)
-
+            
+            self.xml.get_object('ok_button').set_sensitive(bool(t))
             self.total_to_pay.set_value(t)
             self.lock = False
             
@@ -2399,6 +2400,10 @@ class NewTicket:
             data['code'] = self.xml.get_object('code_entry').get_text()
             data['price'] = self.total_to_pay.get_value()
             data['hourly_rate'] = self.xml.get_object('hourly_rate').get_value()
+            
+            bf = self.xml.get_object("notes").get_buffer()
+            data['notes'] = bf.get_text(bf.get_start_iter(), bf.get_end_iter())
+            
             self.dialog.destroy()
             
             return data
