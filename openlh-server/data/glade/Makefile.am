@@ -16,6 +16,7 @@ old_glade_files = \
 	remove_time.glade \
 	history.glade \
 	clear_history.glade \
-	set_price_per_hour.glade
+	set_price_per_hour.glade \
+	new_ticket.glade
 
 EXTRA_DIST = $(old_glade_files) 
