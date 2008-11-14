@@ -18,10 +18,13 @@
 
 GDM_PROTOCOL_PATH = "/var/run/gdm_socket"
 
+import re
+
 from os import path as ospath
 from os import environ as env
 from os import name as osname
-from OpenlhCore.utils import is_in_path, execute_command
+from os import kill as oskill
+from OpenlhCore.utils import is_in_path, execute_command, get_output_of_command
 
 try:
     from OpenlhClient import gdm
@@ -70,8 +73,20 @@ class GdmActionManager:
             
             cmd = [p, "--logout"]
             a = execute_command(cmd)
+            
+        elif (("fluxbox" in session.lower()) or 
+              ("blackbox" in session.lower())):
+            out = get_output_of_command ("xprop -root _BLACKBOX_PID")
+            m = re.search(r'\d+')
+            
+            if not m:
+                return False
+            
+            pid = int(m.group())
+            oskill(pid)
+            
         
-        #TODO: write for kde, xfce4, fluxbox, blackbox and LXDE
+        #TODO: write for kde, xfce4, and LXDE
         return True
 
 class PosixActionManager:
@@ -99,6 +114,33 @@ class PosixActionManager:
         print a
     
     def logout(self):
+        if (("KDE_FULL_SESSION" in env) and (env["KDE_FULL_SESSION"] == "true"):
+            print "kde-logout is not implemented"
+            return False
+            
+        elif "GNOME_DESKTOP_SESSION_ID" in env:
+            p = is_in_path("gnome-session-save")
+            
+            if not p:
+                return False
+            
+            cmd = [p, "--logout"]
+            execute_command(cmd)
+            
+        # FIND XFCE4
+        if "xfce4" in get_output_of_command("xprop -root _DT_SAVE_MODE"):
+            print "xfce4 found, logout is not supported"
+            return False
+            
+        # BlackBox and fluxbox
+        out = get_output_of_command ("xprop -root _BLACKBOX_PID")
+        m = re.search(r'\d+')
+
+        if m:
+            pid = int(m.group())
+            oskill(pid)
+            return True
+            
         #TODO: find session and send logout signal
         pass
     
