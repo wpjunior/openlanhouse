@@ -477,7 +477,7 @@ class Manager:
         price_per_hour = self.conf_client.get_float(
                                 'price_per_hour')
         
-        dlg = dialogs.new_ticket(Parent=self.mainwindow)
+        dlg = dialogs.NewTicket(Parent=self.mainwindow)
         
         dlg.run()
     

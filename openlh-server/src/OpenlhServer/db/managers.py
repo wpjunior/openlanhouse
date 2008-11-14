@@ -340,3 +340,20 @@ class HistoryManager(BaseFlow):
                    and_(HistoryItem.year==year, HistoryItem.month==month))
         self.db_session.session.execute(s)
         self.commit()
+
+class OpenTicketManager(BaseManager):
+    __table_name__ = "openlh_open_tickets"
+    
+    def __init__(self, db_session):
+        
+        BaseManager.__init__(self, db_session, OpenTicket)
+        
+        self.table = Table(self.__table_name__,
+                      self.db_session.metadata,
+                      Column('id', Integer, primary_key=True),
+                      Column('code', String(25), nullable=False, unique=True),
+                      Column('price', Float, nullable=False),
+                      Column('hourly_rate', Float, nullable=False),
+                      )
+        
+        self.mapper = mapper(OpenTicket, self.table)

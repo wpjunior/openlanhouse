@@ -2318,10 +2318,10 @@ class set_price_per_hour:
         self.dialog.destroy()
         return price
 
-class new_ticket:
+class NewTicket:
     def __init__(self, Parent=None):
         self.xml = get_gtk_builder('new_ticket')
-        self.dialog = self.xml.get_object('new_ticket')
+        self.dialog = self.xml.get_object('dialog')
         
         self.xml.connect_signals(self)
         

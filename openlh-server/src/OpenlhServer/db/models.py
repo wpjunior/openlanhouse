@@ -79,3 +79,10 @@ class Version(object):
     
     def __repr__(self):
         return "<Version(%s, %s)" % (self.name, self.value)
+
+class OpenTicket(object):
+    __name__ = "OpenTicket"
+    
+    def __repr__(self):
+        return "<OpenTicket(code=%s, price=%0.2f)>" % (self.code,
+                                                       self.price)
