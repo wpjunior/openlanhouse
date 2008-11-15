@@ -2780,3 +2780,8 @@ class Manager:
                 # send app-quit signal
                 if machine_inst.status != 0:
                     machine_inst.quit_application()
+
+    def on_view_all_tickets(self, obj):
+        dlg = dialogs.ViewAllTickets(TicketManager=self.open_ticket_manager,
+                                     Parent=self.mainwindow)
+        dlg.run()

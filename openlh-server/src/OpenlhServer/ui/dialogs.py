@@ -2602,3 +2602,17 @@ class SelectMachineCategory:
             return True
         
         self.dialog.destroy()
+
+class ViewAllTickets:
+    def __init__(self, TicketManager, Parent=None):
+        self.xml = get_gtk_builder('view_all_tickets')
+        self.dialog = self.xml.get_object("dialog")
+        
+        if Parent:
+            self.dialog.set_transient_for(Parent)
+            
+        self.xml.connect_signals(self)
+        
+    def run(self):
+        self.dialog.run()
+        self.dialog.destroy()
