@@ -5,6 +5,8 @@
     <property name="title" translatable="yes">All Tickets</property>
     <property name="modal">True</property>
     <property name="window_position">GTK_WIN_POS_CENTER_ON_PARENT</property>
+    <property name="default_width">550</property>
+    <property name="default_height">330</property>
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
@@ -93,8 +95,6 @@
       </object>
     </child>
     <action-widgets>
-      <action-widget response="0">add_ticket</action-widget>
-      <action-widget response="0">remove_ticket</action-widget>
       <action-widget response="0">button1</action-widget>
     </action-widgets>
   </object>

@@ -2604,15 +2604,115 @@ class SelectMachineCategory:
         self.dialog.destroy()
 
 class ViewAllTickets:
-    def __init__(self, TicketManager, Parent=None):
+    iters = {}
+    insert_id = 0
+    delete_id = 0
+
+    def __init__(self, TicketManager, Parent=None,
+                 add_callback=None, remove_callback=None):
+        
+        self.ticket_manager = TicketManager
+        self.add_callback = add_callback
+        self.remove_callback = remove_callback
+        
         self.xml = get_gtk_builder('view_all_tickets')
         self.dialog = self.xml.get_object("dialog")
+        self.treeview = self.xml.get_object("treeview")
+        
+        # code, price, hourly_rate, notes
+        self.ListStore = gtk.ListStore(gobject.TYPE_INT,
+                                       gobject.TYPE_STRING,
+                                       gobject.TYPE_STRING,
+                                       gobject.TYPE_STRING,
+                                       gobject.TYPE_STRING)
+        self.treeview.set_model(self.ListStore)
+        
+        # Code
+        column =  gtk.TreeViewColumn(_("Code"),
+                                     gtk.CellRendererText(),
+                                     text=1)
+        
+        column.set_sort_column_id(1)
+        self.treeview.append_column(column)
+        
+        # Price
+        column =  gtk.TreeViewColumn(_("Price"),
+                                     gtk.CellRendererText(),
+                                     text=2)
+        
+        column.set_sort_column_id(2)
+        self.treeview.append_column(column)
+        
+        # Hourly rate
+        column =  gtk.TreeViewColumn(_("Hourly rate"),
+                                     gtk.CellRendererText(),
+                                     text=3)
+        
+        column.set_sort_column_id(3)
+        self.treeview.append_column(column)
+
+        # Notes
+        column =  gtk.TreeViewColumn(_("Notes"),
+                                     gtk.CellRendererText(),
+                                     text=4)
+        
+        column.set_sort_column_id(4)
+        self.treeview.append_column(column)
+        
+        self.insert_id = self.ticket_manager.connect("insert",
+                                                     self.on_ticket_insert)
+        
+        self.delete_id = self.ticket_manager.connect("delete",
+                                                     self.on_ticket_delete)
+                        
+        if self.ticket_manager:
+            for i in self.ticket_manager.get_all():
+                iter = self.ListStore.append((i.id, i.code, 
+                                              "%0.2f" % i.price,
+                                              "%0.2f" % i.hourly_rate,
+                                              i.notes))
+                self.iters[i.id] = iter
         
         if Parent:
             self.dialog.set_transient_for(Parent)
             
         self.xml.connect_signals(self)
+    
+    def on_ticket_insert (self, manager, i):
+        iter = self.ListStore.append((i.id, i.code, 
+                                      "%0.2f" % i.price,
+                                      "%0.2f" % i.hourly_rate,
+                                      i.notes))
+        self.iters[i.id] = iter
+    
+    def on_ticket_delete (self, manager, id):
+        iter = self.iters.pop(id)
+        self.ListStore.remove(iter)
         
+    def on_remove_ticket_clicked(self, obj):
+        selection = self.treeview.get_selection()
+        model, iter = selection.get_selected()
+        
+        if not iter:
+            return
+        
+        id = model.get_value(iter, 0)
+        t = self.ticket_manager.get_all().filter_by(id=id).one()
+
+        if self.remove_callback:
+            self.remove_callback(t)
+        
+    def on_add_ticket_clicked(self, obj):
+        if self.add_callback:
+            self.add_callback(obj)
+    
     def run(self):
         self.dialog.run()
+
+        if self.insert_id:
+            gobject.source_remove(self.insert_id)
+            
+        if self.delete_id:
+            gobject.source_remove(self.delete_id)
+            
         self.dialog.destroy()

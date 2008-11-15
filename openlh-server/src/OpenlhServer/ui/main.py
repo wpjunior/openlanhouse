@@ -1828,6 +1828,8 @@ class Manager:
             type_str = _("Custom Out")
         elif cash_flow_type == CASH_FLOW_TYPE_TICKET:
             type_str = _("Ticket")
+        elif cash_flow_type == CASH_FLOW_TYPE_TICKET_RETURN:
+            type_str = _("Ticket return")
         return type_str
         
     def add_cash_flow_row(self, year, month, day, type, 
@@ -2781,7 +2783,27 @@ class Manager:
                 if machine_inst.status != 0:
                     machine_inst.quit_application()
 
+    def remove_ticket(self, ticket_obj):
+        # Insert Entry in Cash Flow
+        lctime = localtime()
+        current_hour = "%0.2d:%0.2d:%0.2d" % lctime[3:6]
+        
+        citem = CashFlowItem()
+        citem.type = CASH_FLOW_TYPE_TICKET_RETURN
+                   
+        citem.value = ticket_obj.price
+                        
+        citem.year = lctime[0]
+        citem.month = lctime[1]
+        citem.day = lctime[2]
+        citem.hour = current_hour
+                            
+        self.cash_flow_manager.insert(citem)
+        self.open_ticket_manager.delete(ticket_obj)
+        
     def on_view_all_tickets(self, obj):
         dlg = dialogs.ViewAllTickets(TicketManager=self.open_ticket_manager,
-                                     Parent=self.mainwindow)
+                                     Parent=self.mainwindow,
+                                     add_callback=self.on_ticket_menuitem_activate,
+                                     remove_callback=self.remove_ticket)
         dlg.run()
