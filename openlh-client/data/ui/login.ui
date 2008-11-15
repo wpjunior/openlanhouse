@@ -19,7 +19,7 @@
         </child>
         <child>
           <object class="GtkRadioAction" id="ticket_radio_item">
-            <property name="visible">False</property>
+            <property name="visible">True</property>
             <property name="group">login_radio_item</property>
             <property name="name">ticket_radio_item</property>
             <property name="label" translatable="yes">_Ticket</property>
