@@ -486,6 +486,7 @@ class InstManager(gobject.GObject):
         if not hash_id in self.machines_by_hash_id:
             from xmlrpclib import Fault
             return Fault("HashIDFault", "Please send you hash to complete request")
+        
         machine_inst = self.machines_by_hash_id[hash_id]
         
         if method == "get_status":
@@ -506,6 +507,9 @@ class InstManager(gobject.GObject):
         elif method == "set_myos":
             machine_inst.set_os(*params)
             return True
+        
+        elif method == "send_ticket":
+            return self.accept_ticket(machine_inst, *params)
 
         return True
         
@@ -744,6 +748,22 @@ class InstManager(gobject.GObject):
             machine_inst.session.request('set_status', {'total_to_pay': value})
         
         self.emit('update_total_to_pay', machine_inst, value)
+        
+    def accept_ticket(self, machine_inst, ticket):
+        if not self.server.information['ticket_suport']:
+            return False
+        
+        if machine_inst.status != MACHINE_STATUS_AVAIL:
+            return False
+        
+        o = self.server.open_ticket_manager.ticket_exists(ticket)
+        
+        if not o:
+            return False
+        
+        # TODO: Unblock session
+        print ticket
+        return True
     
     def machine_login(self, machine_inst, username, password):
         """
