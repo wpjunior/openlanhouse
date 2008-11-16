@@ -34,18 +34,19 @@ config_in = config_in.replace('@prefix@', '').replace("@VERSION@", APP_VERSION)
 
 open("src/OpenlhCore/config.py", "wb").write(config_in)
 
-setup(name              = "openlh-core",
-      version           = APP_VERSION,
-      author            = "Wilson Pinto Júnior",
-      author_email      = "wilson@openlanhouse.org",
-      url               = "http://openlanhouse.org",
-      download_url      = "http://trac.openlanhouse.org/downloads",
-      description       = "Core lib for OpenLanhouse Server and Client",
-      long_description  = "Core lib for OpenLanhouse Server and Client",
-      license           = "GPLv3",
-      platforms         = ["Platform Independent"],
-      ext_modules       = [certtool_ext],
-      package_dir       = {'': 'src'},
-      packages          = ('OpenlhCore',),
+setup(name = "openlh-core",
+      version = APP_VERSION,
+      author = "Wilson Pinto Júnior",
+      author_email = "wilson@openlanhouse.org",
+      url = "http://openlanhouse.org",
+      download_url = "http://trac.openlanhouse.org/downloads",
+      description = "Core lib for OpenLanhouse Server and Client",
+      license = "GPLv3",
+      platforms = ["Platform Independent"],
+      ext_modules = [certtool_ext],
+      package_dir = {'OpenlhCore': 'src/OpenlhCore'},
+      packages = ('OpenlhCore', 'OpenlhCore.net',
+                  'OpenlhCore.net.backends',
+                  'OpenlhCore.net.certgen'),
 )
 
