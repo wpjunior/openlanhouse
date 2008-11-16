@@ -211,7 +211,6 @@ class OpenlhClient:
         self.stop_gnome_screensaver()
         
         try:
-            gtk.gdk.threads_init()
             gtk.main()
         except:
             pass

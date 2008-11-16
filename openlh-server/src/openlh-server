@@ -300,7 +300,6 @@ class OpenlhServer:
         
         try:
             appdaemon.netserver.serve_forever()
-            gtk.gdk.threads_init()
             gtk.main()
             
         except:
