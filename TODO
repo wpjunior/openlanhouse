@@ -18,6 +18,7 @@ OpenLanhouse Todo
  - System configuration per machine category
  - More compatibility with gnome hig!
  - Remove python-certtool dependency and use certtool binary.
+ - Add Turn Off Monitor X11 (xset dpms force off) Win32 (SendMessage(hWnd,WM_SYSCOMMAND,SC_MONITORPOWER,2);)
 
  ==== * Starting project * ====
 
