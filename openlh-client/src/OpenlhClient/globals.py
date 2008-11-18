@@ -40,10 +40,8 @@ UI_PATH = ospath.join(CUR_PATH, 'ui')
 ICON_PATH = ospath.join(CUR_PATH, 'icons')
 STATUS_ICON_PATH = ospath.join(ICON_PATH, 'status')
 
-if osname == 'nt':
-    USER_PATH = ospath.curdir# FIX_ME
-else:
-    USER_PATH = ospath.expanduser('~')
+
+USER_PATH = ospath.expanduser('~')
 
 CONFIG_PREFIX = ospath.join(USER_PATH, '.config')
 CONFIG_PATH = ospath.join(CONFIG_PREFIX, 'OpenlhClient')

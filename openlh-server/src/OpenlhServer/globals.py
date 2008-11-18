@@ -38,10 +38,7 @@ else:
 ICON_PATH = ospath.join(CUR_PATH, 'icons')
 STATUS_ICON_PATH = ospath.join(ICON_PATH, 'status')
 
-if osname == 'nt':
-    USER_PATH = ospath.curdir # FIXME: what the fuck ?!?!
-else:
-    USER_PATH = ospath.expanduser('~')
+USER_PATH = ospath.expanduser('~')
 
 I_AM_DEVELOPER_FILE = ospath.join(USER_PATH, ".openlanhouse_developer")
 CONFIG_PREFIX = ospath.join(USER_PATH, '.config')
