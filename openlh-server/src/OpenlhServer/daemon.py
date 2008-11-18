@@ -29,7 +29,7 @@ from OpenlhCore.ConfigClient import get_default_client
 
 from OpenlhServer.globals import *
 from OpenlhServer.ui import dialogs
-from OpenlhCore.utils import threaded, md5_cripto, humanize_time, calculate_credit
+from OpenlhCore.utils import threaded, md5_cripto, humanize_time, calculate_credit, calculate_time
 from OpenlhServer.g_timer import TimerManager, TimeredObj
 
 from OpenlhServer.plugins import get_plugin
@@ -73,6 +73,7 @@ class MachineInst(gobject.GObject):
     mstart_time = None
     pre_paid = False
     pre_paid_time = None
+    ticket_mode = False
     
     __gsignals__ = {'os_changed':(gobject.SIGNAL_RUN_FIRST,
                                   gobject.TYPE_NONE,
@@ -155,6 +156,7 @@ class MachineInst(gobject.GObject):
         self.emit("source_changed", "")
         self.pre_paid = False
         self.pre_paid_time = None
+        self.ticket_mode = False
     
     @threaded
     def set_background(self, background_path):
@@ -188,7 +190,8 @@ class MachineInst(gobject.GObject):
         else:
             return False
     
-    def unblock(self, registred, limited, user_id, machine_time, price_per_hour, pre_paid=False):
+    def unblock(self, registred, limited, user_id, machine_time, price_per_hour, pre_paid=False,
+                ticket_mode=False):
         """
             Unblock machine
             @registred:
@@ -205,6 +208,7 @@ class MachineInst(gobject.GObject):
         if self.session:
             self.price_per_hour = price_per_hour
             self.pre_paid = pre_paid
+            self.ticket_mode = ticket_mode
             self.last_consume_credit = int(time.time())
             self.consume_credit_update_interval = int(36000 / self.price_per_hour) #36000 = (0.01 * 60 * 60 * 1000) 
             self.consume_handler_id = gobject.timeout_add(
@@ -223,7 +227,7 @@ class MachineInst(gobject.GObject):
             if self.pre_paid:
                 self.pre_paid_time = machine_time
             
-            if self.pre_paid:
+            if self.pre_paid and not(self.ticket_mode):
                 # Insert Entry in Cash Flow
                 lctime = time.localtime()
                 current_hour = "%0.2d:%0.2d:%0.2d" % lctime[3:6]
@@ -673,7 +677,7 @@ class InstManager(gobject.GObject):
             machine.send_information(data)
     
     def unblock(self, machine_inst, registred, limited, 
-                user_id, time, price_per_hour=None, pre_paid=False):
+                user_id, time, price_per_hour=None, pre_paid=False, ticket_mode=False):
         """
             Unblock machine
             @machine_inst:
@@ -703,7 +707,8 @@ class InstManager(gobject.GObject):
         if not price_per_hour:
             price_per_hour = self.get_price_per_hour(machine_inst)
         
-        machine_inst.unblock(registred, limited, user_id, time, price_per_hour, pre_paid)
+        machine_inst.unblock(registred, limited, user_id, time, price_per_hour, 
+                             pre_paid, ticket_mode)
     
     def block(self, machine_inst, after, action):
         """
@@ -791,8 +796,21 @@ class InstManager(gobject.GObject):
         if not o:
             return False
         
-        # TODO: Unblock session
-        print ticket
+        # Unblock session
+        o = self.server.open_ticket_manager.get_all().filter_by(code=ticket).one()
+        o_time = calculate_time(o.hourly_rate, o.price)
+        
+        self.unblock(machine_inst,
+                     False, # not registred
+                     True, # limited mode
+                     0,    # None User
+                     (o_time[0], o_time[1]), # Time
+                     o.hourly_rate, # price_per_hour
+                     True, True)
+        
+        # delete ticket
+        self.server.open_ticket_manager.delete(o)
+            
         return True
     
     def machine_login(self, machine_inst, username, password):

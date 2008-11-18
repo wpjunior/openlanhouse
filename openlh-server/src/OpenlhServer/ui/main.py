@@ -825,6 +825,17 @@ class Manager:
                             ICON=gtk.MESSAGE_ERROR)
             return
         
+        if machine_inst.ticket_mode:
+            dialogs.ok_only(_("<b><big>Unable to add time</big></b>\n\n"
+                              "This machine is unblock with ticket mode."),
+                            Parent=self.mainwindow,
+                            ICON=gtk.MESSAGE_ERROR)
+            return
+        
+        if machine_inst.pre_paid:
+            print "add support for pre-paid mode"
+            return
+        
         price_per_hour = self.instmachine_manager.get_price_per_hour(machine_inst)
         
         dlg = dialogs.add_time(price_per_hour, Parent=self.mainwindow)
@@ -857,6 +868,17 @@ class Manager:
                               "This machine is not used in limited mode."),
                             Parent=self.mainwindow,
                             ICON=gtk.MESSAGE_ERROR)
+            return
+        
+        if machine_inst.ticket_mode:
+            dialogs.ok_only(_("<b><big>Unable to add time</big></b>\n\n"
+                              "This machine is unblock with ticket mode."),
+                            Parent=self.mainwindow,
+                            ICON=gtk.MESSAGE_ERROR)
+            return
+
+        if machine_inst.pre_paid:
+            print "add support for pre-paid mode"
             return
         
         price_per_hour = self.instmachine_manager.get_price_per_hour(machine_inst)
