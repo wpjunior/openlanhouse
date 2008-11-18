@@ -29,12 +29,12 @@ from OpenlhCore.ConfigClient import get_default_client
 
 from OpenlhServer.globals import *
 from OpenlhServer.ui import dialogs
-from OpenlhCore.utils import threaded, md5_cripto, humanize_time
+from OpenlhCore.utils import threaded, md5_cripto, humanize_time, calculate_credit
 from OpenlhServer.g_timer import TimerManager, TimeredObj
 
 from OpenlhServer.plugins import get_plugin
 
-from OpenlhServer.db.models import Machine, User, OpenDebtMachineItem, HistoryItem, Version
+from OpenlhServer.db.models import Machine, User, OpenDebtMachineItem, HistoryItem, Version, CashFlowItem
 from OpenlhServer.db.session import DBSession
 from OpenlhServer.db.managers import MachineManager, UserManager, CashFlowManager, OpenTicketManager
 from OpenlhServer.db.managers import OpenDebtsMachineManager, OpenDebtsOtherManager
@@ -222,9 +222,26 @@ class MachineInst(gobject.GObject):
             
             if self.pre_paid:
                 self.pre_paid_time = machine_time
-
-            # TODO: Insert Entry in cash flow item
-           
+            
+            if self.pre_paid:
+                # Insert Entry in Cash Flow
+                lctime = time.localtime()
+                current_hour = "%0.2d:%0.2d:%0.2d" % lctime[3:6]
+        
+                citem = CashFlowItem()
+                citem.type = CASH_FLOW_TYPE_MACHINE_PRE_PAID
+                citem.value = calculate_credit(self.price_per_hour, 
+                                               self.pre_paid_time[0],
+                                               self.pre_paid_time[1],
+                                               0)
+                citem.year = lctime[0]
+                citem.month = lctime[1]
+                citem.day = lctime[2]
+                citem.hour = current_hour
+                
+                m = self.manager.server.cash_flow_manager
+                m.insert(citem)
+        
             self.manager.emit("status_changed", self)
             
             data = {

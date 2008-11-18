@@ -1832,6 +1832,8 @@ class Manager:
             type_str = _("Ticket")
         elif cash_flow_type == CASH_FLOW_TYPE_TICKET_RETURN:
             type_str = _("Ticket return")
+        elif cash_flow_type == CASH_FLOW_TYPE_MACHINE_PRE_PAID:
+            type_str = _("Machine Usage (Pre-Paid)")
         return type_str
         
     def add_cash_flow_row(self, year, month, day, type, 

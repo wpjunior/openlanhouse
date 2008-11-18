@@ -4,7 +4,8 @@ OpenLanhouse Todo
 
  - Code cleanup
  - Rewrite the network system, using gnutls and glib
- - Add post-paid and before-paid system
+ - Add post-paid and before-paid system (done!)
+ - Add time and Remove Time suport for pre-paid
  - Write a very well documentation
  - Shutdown and reboot remotely (call gdm or kdm)
  - Write a ticket system
