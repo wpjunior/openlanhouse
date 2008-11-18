@@ -1514,6 +1514,7 @@ class unblock_machine:
     user_found = False
     user_credit = 0
     user_id = None
+    pre_paid = False
 
     def __init__(self, currency, price_per_hour, users_manager, Parent=None):
 
@@ -1536,6 +1537,7 @@ class unblock_machine:
         self.unlimited_radio = self.xml.get_object("unlimited_radio")
         self.limited_radio = self.xml.get_object("limited_radio")
         self.xml.get_object("user_status").set_from_file(None)
+        self.xml.get_object("hourly_rate").set_value(price_per_hour)
         
         #EntryCompletion
         self.entry_completion = gtk.EntryCompletion()
@@ -1582,15 +1584,21 @@ class unblock_machine:
             self.limited_radio.set_active(True)
             self.unlimited_radio.set_sensitive(False)
             self.xml.get_object("registred_table").set_sensitive(False)
+            self.xml.get_object("prepaid").set_sensitive(True)
         else:
             self.unlimited_radio.set_sensitive(True)
             self.xml.get_object("registred_table").set_sensitive(True)
+            self.xml.get_object("prepaid").set_sensitive(False)
         
         self.check_credit()
 
     def on_limited_radio_toggled(self, obj):
         self.xml.get_object("time_alignment").set_sensitive(obj.get_active())
         self.check_credit()
+    
+    def on_hourly_rate_value_changed(self, obj):
+        self.price_per_hour = obj.get_value()
+        self.on_total_to_pay_value_changed(self.total_to_pay)
 
     def on_spin_button_output(self, obj):
         obj.set_text("%02d" % obj.get_adjustment().get_value())
@@ -1711,7 +1719,9 @@ class unblock_machine:
             
             data = {
                     'registred': self.registred_radio.get_active(),
-                    'limited': self.limited_radio.get_active()
+                    'limited': self.limited_radio.get_active(),
+                    'pre_paid': self.xml.get_object('prepaid').get_active(),
+                    'price_per_hour': self.xml.get_object('hourly_rate').get_value()
                    }
             
             if data['registred']:

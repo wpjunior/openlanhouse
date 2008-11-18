@@ -763,10 +763,12 @@ class Manager:
         
         if data:
             self.instmachine_manager.unblock(machine_inst,
-                                         data['registred'],
-                                         data['limited'],
-                                         data['user_id'],
-                                         data['time']
+                                             data['registred'],
+                                             data['limited'],
+                                             data['user_id'],
+                                             data['time'],
+                                             data['price_per_hour'],
+                                             data['pre_paid']
                                         )
     
     def on_view_history_machine(self, obj):

@@ -71,6 +71,8 @@ class MachineInst(gobject.GObject):
     consume_credit_update_interval = 30000
     start_time = None
     mstart_time = None
+    pre_paid = False
+    pre_paid_time = None
     
     __gsignals__ = {'os_changed':(gobject.SIGNAL_RUN_FIRST,
                                   gobject.TYPE_NONE,
@@ -151,6 +153,8 @@ class MachineInst(gobject.GObject):
         self.os_name = ""
         self.os_version = ""
         self.emit("source_changed", "")
+        self.pre_paid = False
+        self.pre_paid_time = None
     
     @threaded
     def set_background(self, background_path):
@@ -184,7 +188,7 @@ class MachineInst(gobject.GObject):
         else:
             return False
     
-    def unblock(self, registred, limited, user_id, machine_time, price_per_hour):
+    def unblock(self, registred, limited, user_id, machine_time, price_per_hour, pre_paid=False):
         """
             Unblock machine
             @registred:
@@ -200,6 +204,7 @@ class MachineInst(gobject.GObject):
         """
         if self.session:
             self.price_per_hour = price_per_hour
+            self.pre_paid = pre_paid
             self.last_consume_credit = int(time.time())
             self.consume_credit_update_interval = int(36000 / self.price_per_hour) #36000 = (0.01 * 60 * 60 * 1000) 
             self.consume_handler_id = gobject.timeout_add(
@@ -214,6 +219,11 @@ class MachineInst(gobject.GObject):
             self.total_to_pay = 0.0
             self.start_time = datetime.datetime.now()
             self.mstart_time = time.time()
+            
+            if self.pre_paid:
+                self.pre_paid_time = machine_time
+
+            # TODO: Insert Entry in cash flow item
            
             self.manager.emit("status_changed", self)
             
@@ -256,8 +266,8 @@ class MachineInst(gobject.GObject):
                 gobject.source_remove(self.consume_handler_id)
             
             tt_time = "%0.2d:%0.2d:%0.2d" % humanize_time(time.time() - self.mstart_time)
-            
-            if self.total_to_pay:
+                      
+            if not(self.pre_paid) and self.total_to_pay:
                 oitem = OpenDebtMachineItem()
                 oitem.year = self.start_time.year
                 oitem.month = self.start_time.month
@@ -294,6 +304,7 @@ class MachineInst(gobject.GObject):
             self.total_to_pay = 0.0
             self.start_time = None
             self.mstart_time = None
+            self.pre_paid = False
             
             self.manager.emit("status_changed", self)
             self.session.request("core.block", (after, action)) #send block signal to machine
@@ -322,7 +333,9 @@ class MachineInst(gobject.GObject):
         total = (float(self.price_per_hour * d) / 60 / 60)
         self.last_consume_credit = int(time.time())
         
-        if self.registred:
+        if self.pre_paid:
+            pass
+        elif self.registred:
             self.manager.discount_credit(self, total)
         else:
             self.total_to_pay += total
@@ -643,7 +656,7 @@ class InstManager(gobject.GObject):
             machine.send_information(data)
     
     def unblock(self, machine_inst, registred, limited, 
-                user_id, time, price_per_hour=None):
+                user_id, time, price_per_hour=None, pre_paid=False):
         """
             Unblock machine
             @machine_inst:
@@ -673,7 +686,7 @@ class InstManager(gobject.GObject):
         if not price_per_hour:
             price_per_hour = self.get_price_per_hour(machine_inst)
         
-        machine_inst.unblock(registred, limited, user_id, time, price_per_hour)
+        machine_inst.unblock(registred, limited, user_id, time, price_per_hour, pre_paid)
     
     def block(self, machine_inst, after, action):
         """
