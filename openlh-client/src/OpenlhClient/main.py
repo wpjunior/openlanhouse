@@ -666,10 +666,37 @@ class Client:
             
         self.login_window.set_current(login.LOGIN_USER)
         
+    def on_ticket_response(self, obj, value):
+        self.login_window.set_lock_all(False)
+        
+        if value==True:
+            self.login_attempts = 0
+        elif value==False:
+            self.login_attempts += 1
+            self.login_window.err_box.set_text(
+                            _("Ticket Invalid."))
+                
+        if self.login_attempts >= 3:
+            self.login_window.set_lock_all(True)
+            self.login_window.on_ready_run_interable = True
+            self.login_window.on_ready = 60
+            
+            if self.login_window.iterable_timeout_id:
+                gobject.source_remove(self.login_window.iterable_timeout_id)
+            
+            self.login_window.on_ready_iterable()
+            
+        self.login_window.set_current(login.LOGIN_TICKET)
+        
     def on_login(self, username, password):
         self.login_window.set_lock_all(True)
         request = self.netclient.request('login', (username, password))
         request.connect("done", self.on_login_response)
+        
+    def on_ticket(self, ticket):
+        self.login_window.set_lock_all(True)
+        request = self.netclient.request('send_ticket', ticket)
+        request.connect('done', self.on_ticket_response)
     
     def on_logout_menuitem_activate(self, obj):
         dlg = gtk.MessageDialog(parent=self.main_window,

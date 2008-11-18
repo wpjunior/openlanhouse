@@ -114,7 +114,7 @@ class PosixActionManager:
         print a
     
     def logout(self):
-        if (("KDE_FULL_SESSION" in env) and (env["KDE_FULL_SESSION"] == "true"):
+        if (("KDE_FULL_SESSION" in env) and (env["KDE_FULL_SESSION"] == "true")):
             print "kde-logout is not implemented"
             return False
             

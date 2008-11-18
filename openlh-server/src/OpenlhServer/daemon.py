@@ -29,14 +29,14 @@ from OpenlhCore.ConfigClient import get_default_client
 
 from OpenlhServer.globals import *
 from OpenlhServer.ui import dialogs
-from OpenlhCore.utils import threaded, md5_cripto, humanize_time
+from OpenlhCore.utils import threaded, md5_cripto, humanize_time, calculate_credit, calculate_time
 from OpenlhServer.g_timer import TimerManager, TimeredObj
 
 from OpenlhServer.plugins import get_plugin
 
-from OpenlhServer.db.models import Machine, User, OpenDebtMachineItem, HistoryItem, Version
+from OpenlhServer.db.models import Machine, User, OpenDebtMachineItem, HistoryItem, Version, CashFlowItem
 from OpenlhServer.db.session import DBSession
-from OpenlhServer.db.managers import MachineManager, UserManager, CashFlowManager
+from OpenlhServer.db.managers import MachineManager, UserManager, CashFlowManager, OpenTicketManager
 from OpenlhServer.db.managers import OpenDebtsMachineManager, OpenDebtsOtherManager
 from OpenlhServer.db.managers import HistoryManager, VersionManager, MachineCategoryManager, UserCategoryManager
 from OpenlhServer.db.globals import DB_NAMES
@@ -71,6 +71,9 @@ class MachineInst(gobject.GObject):
     consume_credit_update_interval = 30000
     start_time = None
     mstart_time = None
+    pre_paid = False
+    pre_paid_time = None
+    ticket_mode = False
     
     __gsignals__ = {'os_changed':(gobject.SIGNAL_RUN_FIRST,
                                   gobject.TYPE_NONE,
@@ -151,6 +154,9 @@ class MachineInst(gobject.GObject):
         self.os_name = ""
         self.os_version = ""
         self.emit("source_changed", "")
+        self.pre_paid = False
+        self.pre_paid_time = None
+        self.ticket_mode = False
     
     @threaded
     def set_background(self, background_path):
@@ -184,7 +190,8 @@ class MachineInst(gobject.GObject):
         else:
             return False
     
-    def unblock(self, registred, limited, user_id, machine_time, price_per_hour):
+    def unblock(self, registred, limited, user_id, machine_time, price_per_hour, pre_paid=False,
+                ticket_mode=False):
         """
             Unblock machine
             @registred:
@@ -200,6 +207,8 @@ class MachineInst(gobject.GObject):
         """
         if self.session:
             self.price_per_hour = price_per_hour
+            self.pre_paid = pre_paid
+            self.ticket_mode = ticket_mode
             self.last_consume_credit = int(time.time())
             self.consume_credit_update_interval = int(36000 / self.price_per_hour) #36000 = (0.01 * 60 * 60 * 1000) 
             self.consume_handler_id = gobject.timeout_add(
@@ -214,7 +223,29 @@ class MachineInst(gobject.GObject):
             self.total_to_pay = 0.0
             self.start_time = datetime.datetime.now()
             self.mstart_time = time.time()
-           
+            
+            if self.pre_paid:
+                self.pre_paid_time = machine_time
+            
+            if self.pre_paid and not(self.ticket_mode):
+                # Insert Entry in Cash Flow
+                lctime = time.localtime()
+                current_hour = "%0.2d:%0.2d:%0.2d" % lctime[3:6]
+        
+                citem = CashFlowItem()
+                citem.type = CASH_FLOW_TYPE_MACHINE_PRE_PAID
+                citem.value = calculate_credit(self.price_per_hour, 
+                                               self.pre_paid_time[0],
+                                               self.pre_paid_time[1],
+                                               0)
+                citem.year = lctime[0]
+                citem.month = lctime[1]
+                citem.day = lctime[2]
+                citem.hour = current_hour
+                
+                m = self.manager.server.cash_flow_manager
+                m.insert(citem)
+        
             self.manager.emit("status_changed", self)
             
             data = {
@@ -256,8 +287,8 @@ class MachineInst(gobject.GObject):
                 gobject.source_remove(self.consume_handler_id)
             
             tt_time = "%0.2d:%0.2d:%0.2d" % humanize_time(time.time() - self.mstart_time)
-            
-            if self.total_to_pay:
+                      
+            if not(self.pre_paid) and self.total_to_pay:
                 oitem = OpenDebtMachineItem()
                 oitem.year = self.start_time.year
                 oitem.month = self.start_time.month
@@ -294,6 +325,7 @@ class MachineInst(gobject.GObject):
             self.total_to_pay = 0.0
             self.start_time = None
             self.mstart_time = None
+            self.pre_paid = False
             
             self.manager.emit("status_changed", self)
             self.session.request("core.block", (after, action)) #send block signal to machine
@@ -322,7 +354,9 @@ class MachineInst(gobject.GObject):
         total = (float(self.price_per_hour * d) / 60 / 60)
         self.last_consume_credit = int(time.time())
         
-        if self.registred:
+        if self.pre_paid:
+            pass
+        elif self.registred:
             self.manager.discount_credit(self, total)
         else:
             self.total_to_pay += total
@@ -486,6 +520,7 @@ class InstManager(gobject.GObject):
         if not hash_id in self.machines_by_hash_id:
             from xmlrpclib import Fault
             return Fault("HashIDFault", "Please send you hash to complete request")
+        
         machine_inst = self.machines_by_hash_id[hash_id]
         
         if method == "get_status":
@@ -506,6 +541,9 @@ class InstManager(gobject.GObject):
         elif method == "set_myos":
             machine_inst.set_os(*params)
             return True
+        
+        elif method == "send_ticket":
+            return self.accept_ticket(machine_inst, *params)
 
         return True
         
@@ -639,7 +677,7 @@ class InstManager(gobject.GObject):
             machine.send_information(data)
     
     def unblock(self, machine_inst, registred, limited, 
-                user_id, time, price_per_hour=None):
+                user_id, time, price_per_hour=None, pre_paid=False, ticket_mode=False):
         """
             Unblock machine
             @machine_inst:
@@ -669,7 +707,8 @@ class InstManager(gobject.GObject):
         if not price_per_hour:
             price_per_hour = self.get_price_per_hour(machine_inst)
         
-        machine_inst.unblock(registred, limited, user_id, time, price_per_hour)
+        machine_inst.unblock(registred, limited, user_id, time, price_per_hour, 
+                             pre_paid, ticket_mode)
     
     def block(self, machine_inst, after, action):
         """
@@ -744,6 +783,35 @@ class InstManager(gobject.GObject):
             machine_inst.session.request('set_status', {'total_to_pay': value})
         
         self.emit('update_total_to_pay', machine_inst, value)
+        
+    def accept_ticket(self, machine_inst, ticket):
+        if not self.server.information['ticket_suport']:
+            return False
+        
+        if machine_inst.status != MACHINE_STATUS_AVAIL:
+            return False
+        
+        o = self.server.open_ticket_manager.ticket_exists(ticket)
+        
+        if not o:
+            return False
+        
+        # Unblock session
+        o = self.server.open_ticket_manager.get_all().filter_by(code=ticket).one()
+        o_time = calculate_time(o.hourly_rate, o.price)
+        
+        self.unblock(machine_inst,
+                     False, # not registred
+                     True, # limited mode
+                     0,    # None User
+                     (o_time[0], o_time[1]), # Time
+                     o.hourly_rate, # price_per_hour
+                     True, True)
+        
+        # delete ticket
+        self.server.open_ticket_manager.delete(o)
+            
+        return True
     
     def machine_login(self, machine_inst, username, password):
         """
@@ -1006,7 +1074,7 @@ class Server(gobject.GObject):
         self.open_debts_other_manager = OpenDebtsOtherManager(
                                                              self.db_session)
         self.history_manager = HistoryManager(self.db_session)
-        
+        self.open_ticket_manager = OpenTicketManager(self.db_session)
         
         #Create Tables
         self.db_session.create_all()

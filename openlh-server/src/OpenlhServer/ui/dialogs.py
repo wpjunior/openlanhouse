@@ -35,7 +35,7 @@ from OpenlhServer.ui import icons, DateEdit, HourEntry
 from OpenlhServer.ui.SearchEntry import SearchEntry
 from OpenlhServer.ui.utils import color_entry, get_gtk_builder
 
-from OpenlhServer.utils import user_has_avatar, get_user_avatar_path
+from OpenlhServer.utils import user_has_avatar, get_user_avatar_path, generate_ticket
 from OpenlhServer.db.models import CashFlowItem, User
 
 from OpenlhCore.utils import md5_cripto
@@ -1514,6 +1514,7 @@ class unblock_machine:
     user_found = False
     user_credit = 0
     user_id = None
+    pre_paid = False
 
     def __init__(self, currency, price_per_hour, users_manager, Parent=None):
 
@@ -1536,6 +1537,7 @@ class unblock_machine:
         self.unlimited_radio = self.xml.get_object("unlimited_radio")
         self.limited_radio = self.xml.get_object("limited_radio")
         self.xml.get_object("user_status").set_from_file(None)
+        self.xml.get_object("hourly_rate").set_value(price_per_hour)
         
         #EntryCompletion
         self.entry_completion = gtk.EntryCompletion()
@@ -1582,15 +1584,21 @@ class unblock_machine:
             self.limited_radio.set_active(True)
             self.unlimited_radio.set_sensitive(False)
             self.xml.get_object("registred_table").set_sensitive(False)
+            self.xml.get_object("prepaid").set_sensitive(True)
         else:
             self.unlimited_radio.set_sensitive(True)
             self.xml.get_object("registred_table").set_sensitive(True)
+            self.xml.get_object("prepaid").set_sensitive(False)
         
         self.check_credit()
 
     def on_limited_radio_toggled(self, obj):
         self.xml.get_object("time_alignment").set_sensitive(obj.get_active())
         self.check_credit()
+    
+    def on_hourly_rate_value_changed(self, obj):
+        self.price_per_hour = obj.get_value()
+        self.on_total_to_pay_value_changed(self.total_to_pay)
 
     def on_spin_button_output(self, obj):
         obj.set_text("%02d" % obj.get_adjustment().get_value())
@@ -1711,7 +1719,9 @@ class unblock_machine:
             
             data = {
                     'registred': self.registred_radio.get_active(),
-                    'limited': self.limited_radio.get_active()
+                    'limited': self.limited_radio.get_active(),
+                    'pre_paid': self.xml.get_object('prepaid').get_active(),
+                    'price_per_hour': self.xml.get_object('hourly_rate').get_value()
                    }
             
             if data['registred']:
@@ -2318,19 +2328,95 @@ class set_price_per_hour:
         self.dialog.destroy()
         return price
 
-class new_ticket:
-    def __init__(self, Parent=None):
+class NewTicket:
+
+    hours = 0
+    minutes = 0
+    lock = False
+
+    def __init__(self, ticket_size, hourly_rate, OpenTicketManager, Parent=None):
         self.xml = get_gtk_builder('new_ticket')
-        self.dialog = self.xml.get_object('new_ticket')
         
+        self.dialog = self.xml.get_object('dialog')
+        self.total_to_pay = self.xml.get_object('total_to_pay')
+        
+        self.open_ticket_manager = OpenTicketManager
+        self.hourly_rate = hourly_rate
+        self.ticket_size = ticket_size
+        
+        self.xml.get_object("hourly_rate").set_value(hourly_rate)
+
         self.xml.connect_signals(self)
+        
+        self.on_refresh_button_clicked(None) # write first code
         
         if Parent:
             self.dialog.set_transient_for(Parent)
-    
+            
+    def on_refresh_button_clicked(self, obj):
+        while True:
+            code = generate_ticket(self.ticket_size)
+            if not self.open_ticket_manager.ticket_exists(code):
+                break
+
+        widget = self.xml.get_object("code_entry")
+        widget.set_text(code)
+        
+    def on_spin_button_output(self, obj):
+        obj.set_text("%02d" % obj.get_adjustment().get_value())
+        return True
+
+    def on_hour_value_changed(self, obj):
+        self.hours = obj.get_value_as_int()
+        self.update_total_to_pay()
+
+    def on_minutes_value_changed(self, obj):
+        self.minutes = obj.get_value_as_int()
+        self.update_total_to_pay()
+
+    def update_total_to_pay(self):
+        if not self.lock:
+            self.lock = True
+            t = calculate_credit(self.hourly_rate,
+                                 self.hours,
+                                 self.minutes, 0)
+            
+            self.xml.get_object('ok_button').set_sensitive(bool(t))
+            self.total_to_pay.set_value(t)
+            self.lock = False
+            
+            
+    def on_total_to_pay_value_changed(self, obj):
+        
+        if not self.lock:
+            self.lock = True
+            t = obj.get_value()
+
+            hour, minutes, secs = calculate_time(self.hourly_rate, t)
+            self.xml.get_object('hour').set_value(hour)
+            self.xml.get_object('minutes').set_value(minutes)
+            
+            self.xml.get_object('ok_button').set_sensitive(bool(t))
+
+            self.lock = False
+            
+    def on_hourly_rate_value_changed(self, obj):
+        self.hourly_rate = obj.get_value()
+        self.on_total_to_pay_value_changed(self.total_to_pay)
+        
     def run(self):
         if self.dialog.run():
-            pass
+            data = {}
+            data['code'] = self.xml.get_object('code_entry').get_text()
+            data['price'] = self.total_to_pay.get_value()
+            data['hourly_rate'] = self.xml.get_object('hourly_rate').get_value()
+            
+            bf = self.xml.get_object("notes").get_buffer()
+            data['notes'] = bf.get_text(bf.get_start_iter(), bf.get_end_iter())
+            
+            self.dialog.destroy()
+            
+            return data
         
         self.dialog.destroy()
 
@@ -2525,4 +2611,118 @@ class SelectMachineCategory:
 
             return True
         
+        self.dialog.destroy()
+
+class ViewAllTickets:
+    iters = {}
+    insert_id = 0
+    delete_id = 0
+
+    def __init__(self, TicketManager, Parent=None,
+                 add_callback=None, remove_callback=None):
+        
+        self.ticket_manager = TicketManager
+        self.add_callback = add_callback
+        self.remove_callback = remove_callback
+        
+        self.xml = get_gtk_builder('view_all_tickets')
+        self.dialog = self.xml.get_object("dialog")
+        self.treeview = self.xml.get_object("treeview")
+        
+        # code, price, hourly_rate, notes
+        self.ListStore = gtk.ListStore(gobject.TYPE_INT,
+                                       gobject.TYPE_STRING,
+                                       gobject.TYPE_STRING,
+                                       gobject.TYPE_STRING,
+                                       gobject.TYPE_STRING)
+        self.treeview.set_model(self.ListStore)
+        
+        # Code
+        column =  gtk.TreeViewColumn(_("Code"),
+                                     gtk.CellRendererText(),
+                                     text=1)
+        
+        column.set_sort_column_id(1)
+        self.treeview.append_column(column)
+        
+        # Price
+        column =  gtk.TreeViewColumn(_("Price"),
+                                     gtk.CellRendererText(),
+                                     text=2)
+        
+        column.set_sort_column_id(2)
+        self.treeview.append_column(column)
+        
+        # Hourly rate
+        column =  gtk.TreeViewColumn(_("Hourly rate"),
+                                     gtk.CellRendererText(),
+                                     text=3)
+        
+        column.set_sort_column_id(3)
+        self.treeview.append_column(column)
+
+        # Notes
+        column =  gtk.TreeViewColumn(_("Notes"),
+                                     gtk.CellRendererText(),
+                                     text=4)
+        
+        column.set_sort_column_id(4)
+        self.treeview.append_column(column)
+        
+        self.insert_id = self.ticket_manager.connect("insert",
+                                                     self.on_ticket_insert)
+        
+        self.delete_id = self.ticket_manager.connect("delete",
+                                                     self.on_ticket_delete)
+                        
+        if self.ticket_manager:
+            for i in self.ticket_manager.get_all():
+                iter = self.ListStore.append((i.id, i.code, 
+                                              "%0.2f" % i.price,
+                                              "%0.2f" % i.hourly_rate,
+                                              i.notes))
+                self.iters[i.id] = iter
+        
+        if Parent:
+            self.dialog.set_transient_for(Parent)
+            
+        self.xml.connect_signals(self)
+    
+    def on_ticket_insert (self, manager, i):
+        iter = self.ListStore.append((i.id, i.code, 
+                                      "%0.2f" % i.price,
+                                      "%0.2f" % i.hourly_rate,
+                                      i.notes))
+        self.iters[i.id] = iter
+    
+    def on_ticket_delete (self, manager, id):
+        iter = self.iters.pop(id)
+        self.ListStore.remove(iter)
+        
+    def on_remove_ticket_clicked(self, obj):
+        selection = self.treeview.get_selection()
+        model, iter = selection.get_selected()
+        
+        if not iter:
+            return
+        
+        id = model.get_value(iter, 0)
+        t = self.ticket_manager.get_all().filter_by(id=id).one()
+
+        if self.remove_callback:
+            self.remove_callback(t)
+        
+    def on_add_ticket_clicked(self, obj):
+        if self.add_callback:
+            self.add_callback(obj)
+    
+    def run(self):
+        self.dialog.run()
+
+        if self.insert_id:
+            gobject.source_remove(self.insert_id)
+            
+        if self.delete_id:
+            gobject.source_remove(self.delete_id)
+            
         self.dialog.destroy()

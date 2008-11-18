@@ -18,6 +18,7 @@
 
 from OpenlhServer.db.models import Machine, User, CashFlowItem, HistoryItem, MachineCategory
 from OpenlhServer.db.models import OpenDebtMachineItem, OpenDebtOtherItem, Version, UserCategory
+from OpenlhServer.db.models import OpenTicket
 from OpenlhServer.db.basemanager import BaseManager, BaseFlow
 
 from sqlalchemy import Table, Column, Boolean, Integer, String, Text
@@ -340,3 +341,25 @@ class HistoryManager(BaseFlow):
                    and_(HistoryItem.year==year, HistoryItem.month==month))
         self.db_session.session.execute(s)
         self.commit()
+
+class OpenTicketManager(BaseManager):
+    __table_name__ = "openlh_open_tickets"
+    
+    def __init__(self, db_session):
+        
+        BaseManager.__init__(self, db_session, OpenTicket)
+        
+        self.table = Table(self.__table_name__,
+                      self.db_session.metadata,
+                      Column('id', Integer, primary_key=True),
+                      Column('code', String(25), nullable=False, unique=True),
+                      Column('price', Float, nullable=False),
+                      Column('hourly_rate', Float, nullable=False),
+                      Column('notes', Text)
+                      )
+        
+        self.mapper = mapper(OpenTicket, self.table)
+        
+    def ticket_exists(self, code):
+        s = select([OpenTicket.id], OpenTicket.code==code)
+        return bool(self.db_session.session.execute(s).fetchone())

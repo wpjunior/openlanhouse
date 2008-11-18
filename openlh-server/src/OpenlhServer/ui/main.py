@@ -34,6 +34,7 @@ from OpenlhCore.utils import md5_cripto
 from OpenlhServer.ui.utils import get_gtk_builder
 from OpenlhServer.utils import user_has_avatar, get_user_avatar_path
 from OpenlhServer.db.models import CashFlowItem, User, MachineCategory, UserCategory
+from OpenlhServer.db.models import OpenTicket
 from OpenlhServer.globals import *
 _ = gettext.gettext
 
@@ -89,6 +90,7 @@ class Manager:
         self.open_debts_machine_manager = self.daemon.open_debts_machine_manager
         self.open_debts_other_manager = self.daemon.open_debts_other_manager
         self.history_manager = self.daemon.history_manager
+        self.open_ticket_manager = self.daemon.open_ticket_manager
         
         self.instmachine_manager = self.daemon.instmachine_manager
         self.instmachine_manager.authorization_func = self.on_authorization_machine
@@ -474,13 +476,52 @@ class Manager:
         dlg.run()
     
     def on_ticket_menuitem_activate(self, obj):
-        price_per_hour = self.conf_client.get_float(
-                                'price_per_hour')
+        price_per_hour = self.conf_client.get_float('price_per_hour')
         
-        dlg = dialogs.new_ticket(Parent=self.mainwindow)
+        ticket_size = self.conf_client.get_int('ticket_size')
         
-        dlg.run()
-    
+        dlg = dialogs.NewTicket(ticket_size=ticket_size,
+                                hourly_rate=price_per_hour,
+                                OpenTicketManager=self.open_ticket_manager,
+                                Parent=self.mainwindow)
+        
+        data = dlg.run()
+        
+        if not data:
+            return
+        
+        t = OpenTicket()
+        t.code = data['code']
+        t.price = data['price']
+        t.hourly_rate = data['hourly_rate']
+
+        if data['notes']:
+            t.notes = data['notes']
+
+        self.open_ticket_manager.insert(t)
+        
+        c = CashFlowItem()
+        c.type = CASH_FLOW_TYPE_TICKET
+
+        #Insert Entry in Cash Flow
+        lctime = localtime()
+        current_hour = "%0.2d:%0.2d:%0.2d" % lctime[3:6]
+        
+        citem = CashFlowItem()
+        citem.type = CASH_FLOW_TYPE_TICKET
+                   
+        citem.value = data['price']
+        
+        if data['notes']:
+            citem.notes = data['notes']
+        
+        citem.year = lctime[0]
+        citem.month = lctime[1]
+        citem.day = lctime[2]
+        citem.hour = current_hour
+                            
+        self.cash_flow_manager.insert(citem)
+      
     def new_clicked(self, obj):
         
         if self.selpage == 0:
@@ -722,10 +763,12 @@ class Manager:
         
         if data:
             self.instmachine_manager.unblock(machine_inst,
-                                         data['registred'],
-                                         data['limited'],
-                                         data['user_id'],
-                                         data['time']
+                                             data['registred'],
+                                             data['limited'],
+                                             data['user_id'],
+                                             data['time'],
+                                             data['price_per_hour'],
+                                             data['pre_paid']
                                         )
     
     def on_view_history_machine(self, obj):
@@ -782,6 +825,17 @@ class Manager:
                             ICON=gtk.MESSAGE_ERROR)
             return
         
+        if machine_inst.ticket_mode:
+            dialogs.ok_only(_("<b><big>Unable to add time</big></b>\n\n"
+                              "This machine is unblock with ticket mode."),
+                            Parent=self.mainwindow,
+                            ICON=gtk.MESSAGE_ERROR)
+            return
+        
+        if machine_inst.pre_paid:
+            print "add support for pre-paid mode"
+            return
+        
         price_per_hour = self.instmachine_manager.get_price_per_hour(machine_inst)
         
         dlg = dialogs.add_time(price_per_hour, Parent=self.mainwindow)
@@ -814,6 +868,17 @@ class Manager:
                               "This machine is not used in limited mode."),
                             Parent=self.mainwindow,
                             ICON=gtk.MESSAGE_ERROR)
+            return
+        
+        if machine_inst.ticket_mode:
+            dialogs.ok_only(_("<b><big>Unable to add time</big></b>\n\n"
+                              "This machine is unblock with ticket mode."),
+                            Parent=self.mainwindow,
+                            ICON=gtk.MESSAGE_ERROR)
+            return
+
+        if machine_inst.pre_paid:
+            print "add support for pre-paid mode"
             return
         
         price_per_hour = self.instmachine_manager.get_price_per_hour(machine_inst)
@@ -1785,6 +1850,12 @@ class Manager:
             type_str = _("Custom In")
         elif cash_flow_type == CASH_FLOW_CUSTOM_TYPE_OUT:
             type_str = _("Custom Out")
+        elif cash_flow_type == CASH_FLOW_TYPE_TICKET:
+            type_str = _("Ticket")
+        elif cash_flow_type == CASH_FLOW_TYPE_TICKET_RETURN:
+            type_str = _("Ticket return")
+        elif cash_flow_type == CASH_FLOW_TYPE_MACHINE_PRE_PAID:
+            type_str = _("Machine Usage (Pre-Paid)")
         return type_str
         
     def add_cash_flow_row(self, year, month, day, type, 
@@ -2737,3 +2808,28 @@ class Manager:
                 # send app-quit signal
                 if machine_inst.status != 0:
                     machine_inst.quit_application()
+
+    def remove_ticket(self, ticket_obj):
+        # Insert Entry in Cash Flow
+        lctime = localtime()
+        current_hour = "%0.2d:%0.2d:%0.2d" % lctime[3:6]
+        
+        citem = CashFlowItem()
+        citem.type = CASH_FLOW_TYPE_TICKET_RETURN
+                   
+        citem.value = ticket_obj.price
+                        
+        citem.year = lctime[0]
+        citem.month = lctime[1]
+        citem.day = lctime[2]
+        citem.hour = current_hour
+                            
+        self.cash_flow_manager.insert(citem)
+        self.open_ticket_manager.delete(ticket_obj)
+        
+    def on_view_all_tickets(self, obj):
+        dlg = dialogs.ViewAllTickets(TicketManager=self.open_ticket_manager,
+                                     Parent=self.mainwindow,
+                                     add_callback=self.on_ticket_menuitem_activate,
+                                     remove_callback=self.remove_ticket)
+        dlg.run()

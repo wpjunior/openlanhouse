@@ -161,6 +161,8 @@ class Login:
                 self.password = None
         else:
             self.ticket = self.entry.get_text()
+            self.main.on_ticket(self.ticket)
+            self.ticket = None
     
     def on_againbnt_clicked(self, obj):
         if self.selected_auth == LOGIN_AUTH_LOGIN:
@@ -182,7 +184,7 @@ class Login:
             self.againbnt.set_sensitive(True)
         
         if auth_widget == LOGIN_TICKET:
-            self.err_box.set_text("")
+            #self.err_box.set_text("")
             self.selected_auth = LOGIN_AUTH_TICKET
             self.label.set_text(_('_Ticket:'))
             self.entry.set_visibility(True)

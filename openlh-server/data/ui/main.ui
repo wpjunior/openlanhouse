@@ -364,6 +364,29 @@
           </object>
         </child>
         <child>
+          <object class="GtkAction" id="menutickets">
+            <property name="name">menutickets</property>
+            <property name="label" translatable="yes">_Tickets</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkAction" id="menu_new_ticket">
+            <property name="visible">True</property>
+            <!--<property name="stock_id">gtk-new</property>-->
+            <property name="name">menu_new_ticket</property>
+            <property name="label" translatable="yes">_New Ticket</property>
+            <signal handler="on_ticket_menuitem_activate" name="activate"/>
+          </object>
+        </child>
+        <child>
+          <object class="GtkAction" id="menuviewalltickets">
+            <property name="name">menuviewalltickets</property>
+            <property name="label" translatable="yes">_View All Tickets</property>
+            <signal handler="on_view_all_tickets" name="activate"/>
+          </object>
+        </child>
+        
+        <child>
           <object class="GtkAction" id="menuallmachines">
             <property name="name">menuallmachines</property>
             <property name="label" translatable="yes">_Machines</property>
@@ -465,6 +488,11 @@
         </menu>
         <menu action="menutools">
           <menuitem action="clear_history"/>
+          <separator/>
+          <menu action="menutickets">
+		  	<menuitem action="menu_new_ticket"/>
+            <menuitem action="menuviewalltickets"/>
+          </menu>
           <menu action="menuallmachines">
             <menuitem action="AllMachinesShutdown"/>
             <menuitem action="AllMachinesReboot"/>

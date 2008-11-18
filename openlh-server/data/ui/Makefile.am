@@ -21,6 +21,8 @@ ui_DATA = \
 	clear_history.ui \
 	set_price_per_hour.ui \
 	plugins.ui \
-	select_machine_category.ui
+	select_machine_category.ui \
+	new_ticket.ui \
+	view_all_tickets.ui
 
 EXTRA_DIST = $(ui_DATA) 
