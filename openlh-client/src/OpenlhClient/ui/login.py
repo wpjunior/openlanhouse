@@ -23,7 +23,7 @@ from gobject import timeout_add, idle_add, source_remove
 from time import strftime
 
 from OpenlhClient.globals import *
-from OpenlhClient.ui.background import Background
+from OpenlhClient.ui.background import LockScreenWindow
 from OpenlhClient.ui.utils import get_gtk_builder
 _ = gettext.gettext
 HOUR_24_FORMAT = False
@@ -198,21 +198,12 @@ class Login:
         self.title.set_markup("<big><big><big>%s</big></big></big>" % title)
         
     def unlock(self, obj):
-        self.login.hide()
-        self.background.stop_monitory()
         self.background.hide()
-        gtk.gdk.keyboard_ungrab()
-        gtk.gdk.pointer_ungrab()
-        self.login.set_keep_above(False)
     
     def on_entry_event(self, obj, event):
         ##HACK
         ##Redirect key and pointer forbiden events
-        
-        if event.type == gtk.gdk.GRAB_BROKEN:
-            self.background.set_window(self.idx)
-            
-        elif event.type in BUTTON_EVENTS:
+        if event.type in BUTTON_EVENTS:
             event.button = 1
         
         elif event.type in KEY_EVENTS:
@@ -221,24 +212,21 @@ class Login:
     
     def lock(self):
         self.background.show()
-        self.background.start_monitory()
-        self.background.set_window(self.idx)
         
     def run(self):
         gtk.rc_reparse_all()
         screen = gtk.gdk.screen_get_default()
         self.login.realize()
-        self.background = Background(screen)
+        self.background = LockScreenWindow()
         self.background.show()
-        self.idx = self.background.add_window(self.login)
-        self.background.set_window(self.idx)
+		self.background.set_child_window(self.login)
     
     def set_background(self, filepath):
         if filepath:
             self.login.realize()
             self.background.set_background(filepath)
         else:
-            self.background.set_background(None)
+            self.background.set_color('black')
     
     def set_logo(self, logo):
         widget = self.xml.get_object("imagealign")

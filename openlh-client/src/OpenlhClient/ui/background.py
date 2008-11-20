@@ -16,75 +16,161 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from os import path as ospath
+from os import name as osname
 import gtk
 import gobject
-import time
 
-class Background(gobject.GObject):
+if osname == 'nt':
+    import win32gui
+    import win32con
+    import pyHook
+
+class X11LockScreenWindow(gtk.Window):
     
-    selected_window = None
-    visible = False
-    io_monitory_id = 0
+    rc_parse_first_time = True
     background_file = None
+    background_color = 'black'
+    visible = False
+    child_window = None
+    grabed_window = None
+    grab_connect_id = 0
     
-    def __init__(self, screen=gtk.gdk.screen_get_default()):
+    bntevents = (gtk.gdk.BUTTON_PRESS , gtk.gdk._2BUTTON_PRESS,
+                 gtk.gdk._3BUTTON_PRESS, gtk.gdk.BUTTON_RELEASE)
+ 
+    keyevents = (gtk.gdk.KEY_PRESS, gtk.gdk.KEY_RELEASE)
+
+    
+    def __init__(self):
+        gtk.Window.__init__(self, gtk.WINDOW_POPUP)
         
-        self.background = {}
-        self.background['screen'] = screen
-        self.background['screen'].connect('size-changed', self.size_changed)
-        self.background['area.width'] = screen.get_width()
-        self.background['area.height'] = screen.get_height()
-        self.background['composited'] = screen.is_composited()
-        self.background['root_window'] = screen.get_root_window()
-    
-        self.attr = {}
-        self.attr['parent'] = self.background['root_window']
-        self.attr['width'] = screen.get_width()
-        self.attr['height'] = screen.get_height()
-        self.attr['colormap'] = screen.get_default_colormap()
-        self.attr['wclass'] = gtk.gdk.INPUT_OUTPUT
-        self.attr['visual'] = screen.get_system_visual()
-        self.attr['window_type'] = gtk.gdk.WINDOW_CHILD
-        self.attr['override_redirect'] = True
-    
-        self.attr['event_mask'] = (gtk.gdk.WA_X | gtk.gdk.WA_Y |
-                gtk.gdk.WA_VISUAL | gtk.gdk.WA_COLORMAP | gtk.gdk.WA_NOREDIR)
-    
-        self.background['draw_window'] = gtk.gdk.Window(**self.attr)
-        self.window = self.background['draw_window']
+        self.set_decorated(False)
+        self.set_skip_taskbar_hint(True)
+        self.set_skip_pager_hint(True)
+        self.set_keep_above(True)
+        self.set_left_cursor(self)
+
+        self.fullscreen()
+                        
+        self.vbox = gtk.VBox(spacing=12)
+        self.vbox.show()
+        self.add(self.vbox)
         
-        self.windows = []
-        self.grabed_window = None
+        self.drawing_area = gtk.DrawingArea()
+        self.drawing_area.show()
+        self.vbox.add(self.drawing_area)
+        self.force_no_pixmap_background(self.drawing_area)
         
-        self._pointer_events = (gtk.gdk.POINTER_MOTION_MASK |
-                gtk.gdk.POINTER_MOTION_HINT_MASK | gtk.gdk.BUTTON_PRESS_MASK |
-                                                  gtk.gdk.BUTTON_RELEASE_MASK)
+        # resize changed callback
+        screen = gtk.gdk.screen_get_default()
+        screen.connect('size-changed', self.on_size_changed)
         
-        self.start_monitory()
+    def force_no_pixmap_background(self, widget):
+        if self.rc_parse_first_time:
+            gtk.rc_parse_string("\n"
+                                "   style \"gs-theme-engine-style\"\n"
+                                "   {\n"
+                                "      bg_pixmap[NORMAL] = \"<none>\"\n"
+                                "      bg_pixmap[INSENSITIVE] = \"<none>\"\n"
+                                "      bg_pixmap[ACTIVE] = \"<none>\"\n"
+                                "      bg_pixmap[PRELIGHT] = \"<none>\"\n"
+                                "      bg[NORMAL] = { 0.0, 0.0, 0.0 }\n"
+                                "      bg[INSENSITIVE] = { 0.0, 0.0, 0.0 }\n"
+                                "      bg[ACTIVE] = { 0.0, 0.0, 0.0 }\n"
+                                "      bg[PRELIGHT] = { 0.0, 0.0, 0.0 }\n"
+                                "   }\n"
+                                "   widget \"gs-window-drawing-area*\" style : highest \"gs-theme-engine-style\"\n"
+                                "\n")
+            self.rc_parse_first_time = False
+        
+        widget.set_name("gs-window-drawing-area")
     
-    def show(self):
-        self.visible = True
-        self.background['draw_window'].show()
-    
-    def hide(self):
-        self.visible = False
-        self.background['draw_window'].hide()
-    
-    def set_background(self, image):
-        self.background_file = image
-        if not image:
-            self.window.set_background(gtk.gdk.color_parse("black"))
-            self.window.clear()
-            gtk.gdk.flush()
+    def clear_widget(self, widget):
+        color = gtk.gdk.color_parse(self.background_color)
+        
+        if not(widget.flags() & gtk.VISIBLE):
             return
         
-        pb = gtk.gdk.pixbuf_new_from_file(image).scale_simple(
-                             gtk.gdk.screen_width(),
-                             gtk.gdk.screen_height(),
-                             gtk.gdk.INTERP_BILINEAR)
+        for i in range(0, len(widget.style.bg)):
+            widget.style.bg[i] = color
+            
+        style = widget.style.copy()
+        
+        for i in range(0, len(widget.style.bg_pixmap)):
+            widget.style.bg_pixmap[i] = None
+            
+        colormap = widget.window.get_colormap()
+        colormap.alloc_color(color, writeable=False, best_match=True)
+        
+        widget.window.set_background(color)
+        widget.set_style(style)
+        
+        widget.window.clear()
+        
+        gtk.gdk.flush()
+                
+    def fullscreen(self):
+        screen = gtk.gdk.screen_get_default()
+        if self.window:
+            self.window.move_resize(0, 0,
+                                    screen.get_width(),
+                                    screen.get_height())
+        
+    def show(self):
+        self.visible = True
+        gtk.Window.show(self)
+        self.fullscreen()
+        
+        if not self.background_file:
+            self.clear_widget(self.drawing_area)
+            self.clear_widget(self)
+        else:
+            self.set_background_image(self.background_file)
+            
+        if self.child_window:
+            self.grab(self.child_window)
+            
+
+    def hide(self):
+        self.visible = False
+        gtk.Window.hide(self)
+        
+        if self.grabed_window:
+            self.ungrab(self.grabed_window)
+            
+    def set_color(self, color):
+        self.background_color = color
+        self.background_file = None
+        
+        self.clear_widget(self.drawing_area)
+        self.clear_widget(self)
+
+    def on_size_changed(self, screen):
+        self.fullscreen()
+        
+        if self.background_file:
+            self.set_background_image(self.background_file)
+                
+    def set_background_image(self, image_path):
+        
+        if not ospath.exists(image_path):
+            return
+        
+        self.background_file = image_path
+        self.background_color = 'black'
+        
+        if not self.window:
+            return #this window is not realized
+                
+        pb = gtk.gdk.pixbuf_new_from_file(image_path).scale_simple(
+            gtk.gdk.screen_width(),
+            gtk.gdk.screen_height(),
+            gtk.gdk.INTERP_BILINEAR)
         
         width, height = self.window.get_size()
-        pm = gtk.gdk.Pixmap(self.window, width, height)
+        
+        pm = gtk.gdk.Pixmap(self.drawing_area.window, width, height)
         
         if not pm:
             return
@@ -92,88 +178,164 @@ class Background(gobject.GObject):
         pm.draw_pixbuf(None, pb, 0, 0, 0, 0, -1, -1,
                        gtk.gdk.RGB_DITHER_MAX, 0, 0)
         
-        self.window.set_back_pixmap(pm, False)
-        self.window.clear()
+        self.drawing_area.window.set_back_pixmap(pm, False)
+        self.drawing_area.window.clear()
         
         gtk.gdk.flush()
+        
+    def set_child_window(self, window):
+        if self.grabed_window:
+            self.ungrab(self.grabed_window)
+            
+        self.child_window = window
+        
+        if self.visible:
+            self.grab(self.child_window)
+        
+    def ungrab(self, window):
+        window.hide()
+        self.grabed_window = None
+        window.set_keep_above(False)
+        gtk.gdk.pointer_ungrab()
+        gtk.gdk.keyboard_ungrab()
+        
+        if self.grab_connect_id > 0:
+            gobject.source_remove(self.grab_connect_id)
+            self.grab_connect_id = 0
 
-    def _set_left_cursor(self, window):
-        window = self._get_gdk_window(window)
+    def grab(self, window, att=0):
+        window.show()
+        self.grabed_window = window
+        self.set_left_cursor(window)
+        #window.set_keep_below(True)
+        window.set_keep_above(True)
+        pstatus = self.lock_pointer(window)
+        kstatus = self.lock_keyboard(window)
+        window.set_keep_above(True)
+        self.grab_connect_id = window.connect("event", 
+                                              self.grabed_window_event)
+        
+        # stop after 4 attempts
+        if att >= 4:
+            return
+
+        if pstatus != gtk.gdk.GRAB_SUCCESS or kstatus != gtk.gdk.GRAB_SUCCESS:
+            gobject.timeout_add_seconds(1, self.grab,
+                                        window,
+                                        att+1)
+        
+    def set_left_cursor(self, window):
+        window = self.get_gdk_window(window)
         window.set_cursor(gtk.gdk.Cursor(gtk.gdk.LEFT_PTR))
-    
-    def _get_gdk_window(self, window):
+        
+    def get_gdk_window(self, window):
         if isinstance(window, gtk.Window):
             window.realize()
             window = window.window
         
         return window
     
-    def _lock_keyboard(self, window):
-        window = self._get_gdk_window(window)
+    def lock_keyboard(self, window):
+        window = self.get_gdk_window(window)
         status = gtk.gdk.keyboard_grab(window, True)
         gtk.gdk.flush()
         
         return status
     
-    def _lock_pointer(self, window):
-        window = self._get_gdk_window(window)
-        status = gtk.gdk.pointer_grab(window, True, 
-                             event_mask = self._pointer_events)
+    def lock_pointer(self, window):
+        window = self.get_gdk_window(window)
+        status = gtk.gdk.pointer_grab(window, True, 0)
         
         gtk.gdk.flush()
         
         return status
     
-    def _grab(self, window):
-        window.show()
-        self.grabed_window = window
-        self._set_left_cursor(window)
-        window.set_keep_below(True)
-        pstatus = self._lock_pointer(window)
-        kstatus = self._lock_keyboard(window)
-        window.set_keep_above(True)
+    def grabed_window_event(self, obj, event):
         
-    def _ungrab(self, window):
+        if event.type == gtk.gdk.GRAB_BROKEN:
+            self.grab(self.child_window)
+        
+        elif event.type in self.bntevents:
+            event.button = 1
+ 
+        elif event.type in self.keyevents:
+            if event.hardware_keycode == 0x075:
+                event.hardware_keycode = 0xFFE9
+
+class Win32LockScreenWindow(X11LockScreenWindow):
+    def __init__(self):
+        X11LockScreenWindow.__init__(self)
+
+        # create a hook manager
+        self.hm = pyHook.HookManager()
+        # watch for all keyboard events
+        self.hm.KeyDown = self.OnKeyboardEvent
+        # set the hook
+        self.hm.HookKeyboard()
+        # create a hook manager
+        self.hm = pyHook.HookManager()
+        # watch for all mouse events
+        self.hm.MouseAll = self.OnMouseEvent
+        # set the hook
+        self.hm.HookMouse()
+
+    def ungrab(self, window):
+        window.hide()
         self.grabed_window = None
         window.set_keep_above(False)
-        gtk.gdk.pointer_ungrab()
-        gtk.gdk.keyboard_ungrab()
+        # Win32 Backend not suport gdk grab/ungrab
+        #gtk.gdk.pointer_ungrab()
+        #gtk.gdk.keyboard_ungrab()
         
-    def set_window(self, idx):
-        self.selected_window = idx
-        if idx <= len(self.windows):
-            if self.grabed_window:
-                self._ungrab(self.windows[idx])
-            self._grab(self.windows[idx])
-    
-    def add_window(self, window):
-        if not window in self.windows:
-            self.windows.append(window)
+        if self.grab_connect_id > 0:
+            gobject.source_remove(self.grab_connect_id)
+            self.grab_connect_id = 0
+
+    def grab(self, window, att=0):
+        window.show()
+        self.grabed_window = window
+        self.set_left_cursor(window)
+        #window.set_keep_below(True)
+        window.set_keep_above(True)
+        # Win32 Backend not suport gdk grab/ungrab
+        #pstatus = self.lock_pointer(window)
+        #kstatus = self.lock_keyboard(window)
+        window.set_keep_above(True)
+        self.grab_connect_id = window.connect("event", 
+                                              self.grabed_window_event)
+
+    def OnKeyboardEvent(self, event):
+	if event.Key and event.Key.lower() in ['lwin', 'tab', 'lmenu', 'escape']:
+		return False	# block these keys
+	else:
+		# return True to pass the event to other handlers
+		return True
+
+    def OnMouseEvent(self, event):
+        if not self.visible: #allow all windows
+            return True
+
+        a = [self.window.handle]
+
+        if self.grabed_window and win32gui.IsChild(self.grabed_window.window.handle,
+                                                   event.Window):
+            return True
+
+        if self.grabed_window:
+            a.append(self.grabed_window.window.handle)
+
+        try:
+            p = win32gui.GetParent(event.Window)
+        except:
+            return False
         
-        return self.windows.index(window)
-    
-    def del_window(self, window):
-        self.windows.remove(window)
-    
-    def get_windows(self):
-        return self.windows
+        if self.grabed_window and win32gui.IsChild(self.grabed_window.window.handle,
+                                                   p):
+            return True
         
-    def start_monitory(self):
-        if self.grabed_window and not(gtk.gdk.pointer_is_grabbed()):
-            self._lock_pointer(self.grabed_window)
-            self._lock_keyboard(self.grabed_window)
-        
-        self.io_monitory_id = gobject.timeout_add(500, self.start_monitory)
-    
-    def stop_monitory(self):
-        if self.io_monitory_id:
-            gobject.source_remove(self.io_monitory_id)
-    
-    def size_changed(self, obj):
-        self.set_background(self.background_file)
-        self.background['area.width'] = gtk.gdk.screen_width()
-        self.background['area.height'] = gtk.gdk.screen_height()
-        
-        self.background['draw_window'].resize(gtk.gdk.screen_width(),
-                                              gtk.gdk.screen_height())
-        
+        return event.Window in a
+
+if osname == "nt":
+    LockScreenWindow = Win32LockScreenWindow
+else:
+    LockScreenWindow = X11LockScreenWindow
