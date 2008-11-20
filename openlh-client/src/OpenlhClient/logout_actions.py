@@ -23,7 +23,8 @@ import re
 from os import path as ospath
 from os import environ as env
 from os import name as osname
-from os import kill as oskill
+if osname == "posix":
+    from os import kill as oskill
 from OpenlhCore.utils import is_in_path, execute_command, get_output_of_command
 
 try:
