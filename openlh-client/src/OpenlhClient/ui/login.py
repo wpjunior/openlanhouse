@@ -236,7 +236,7 @@ class Login:
     def set_background(self, filepath):
         if filepath:
             self.login.realize()
-            self.background.set_background(filepath)
+            self.background.set_background_image(filepath)
         else:
             self.background.set_color('black')
     
