@@ -336,13 +336,14 @@ class Win32LockScreenWindow(X11LockScreenWindow):
         return event.Window in a
 
     def show(self):
-        X11LockScreenWindow.show(self)
-
         # windows handlers
         hwnd = self.window.handle
         win32gui.SetForegroundWindow (hwnd)
         win32gui.SetWindowPos(hwnd, win32con.HWND_TOPMOST, 0,0,0,0,
-                              win32con.SWP_NOMOVE | win32con.SWP_NOACTIVATE| win32con.SWP_NOOWNERZORDER)
+                              win32con.SWP_NOMOVE | win32con.SWP_NOACTIVATE| win32con.SWP_NOOWNERZORDER|
+                              win32con.SWP_SHOWWINDOW)
+
+        X11LockScreenWindow.show(self)
 
     def hide(self):
         X11LockScreenWindow.hide(self)
