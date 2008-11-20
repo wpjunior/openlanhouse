@@ -219,7 +219,7 @@ class Login:
         self.login.realize()
         self.background = LockScreenWindow()
         self.background.show()
-		self.background.set_child_window(self.login)
+        self.background.set_child_window(self.login)
     
     def set_background(self, filepath):
         if filepath:
