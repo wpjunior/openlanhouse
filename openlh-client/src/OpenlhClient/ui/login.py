@@ -17,6 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
+from os import name as osname
 import time
 import gtk
 from gobject import timeout_add, idle_add, source_remove
@@ -59,6 +60,17 @@ class Login:
         xml = get_gtk_builder('login')
         
         self.login = xml.get_object('login')
+        
+        if osname == "nt": # Change type of login window
+            c = self.login.get_children()
+            if c:
+                w = c[0]
+                self.login.remove(w)
+                self.login = gtk.Window(gtk.WINDOW_TOPLEVEL)
+                self.login.set_decorated(False)
+                self.login.set_position(gtk.WIN_POS_CENTER_ALWAYS)
+                self.login.add(w)
+        
         self.entry = xml.get_object('entry')
         self.image = xml.get_object('image')
         self.label = xml.get_object('label')
