@@ -7,16 +7,16 @@ OpenLanhouse Todo
  - Add post-paid and before-paid system (done!)
  - Add time and Remove Time suport for pre-paid
  - Write a very well documentation
- - Shutdown and reboot remotely (call gdm or kdm)
+ - Shutdown and reboot remotely (call gdm(done) or kdm)
  - Write a ticket system (done)
  - Other OpenDebts works!
  - Add a new bugtracker (done)
  - maybe migrate to git (done)
  - maybe works in windows
- - Add price per machine category
+ - Add price per machine category(done)
  - Improvements in translations
  - Add a system of plugins (done)
- - System configuration per machine category
+ - System configuration per machine category(done)
  - More compatibility with gnome hig!
  - Remove python-certtool dependency and use certtool binary.
  - Add Turn Off Monitor X11 (xset dpms force off) Win32 (SendMessage(hWnd,WM_SYSCOMMAND,SC_MONITORPOWER,2);)
