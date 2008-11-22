@@ -369,11 +369,19 @@ class Client:
         self.cleanup_apps_timeout -= 1
         
         if self.cleanup_apps_timeout == 0:
-            print "kill all"
-            gtk.main_quit()
+            if self.login_window.iterable_timeout_id == 0: #check
+                self.login_window.set_warn_message("")
+            
+            if 'close_apps_list' in self.informations:
+                for a in self.informations['close_apps_list']:
+                    print "kill", a
+                    
+            self.cleanup_apps_id = 0
             return
         
-        print "timeout %d" % self.cleanup_apps_timeout
+        if self.login_window.iterable_timeout_id == 0: #check
+            self.login_window.set_warn_message(
+                _("Closing applications in %0.2d seconds") % (self.cleanup_apps_timeout + 1))
         
         self.cleanup_apps_id = gobject.timeout_add_seconds(1,
                                                            self.do_cleanup_timeout)
@@ -392,10 +400,10 @@ class Client:
         self.stop_monitory_status()
         self.dbus_manager.block()
         
-        if cleanup_apps:
-            self.cleanup_apps_timeout = 30
-            self.cleanup_apps_id = gobject.timeout_add_seconds(1,
-                                                           self.do_cleanup_timeout)
+        if 'close_apps' in self.informations:
+            if self.informations['close_apps'] and cleanup_apps:
+                self.cleanup_apps_timeout = 30
+                self.do_cleanup_timeout()
         
         if not ActionManager:
             return
@@ -422,6 +430,10 @@ class Client:
         self.update_time = None
         self.time = (0, 0)
         
+        if self.cleanup_apps_id > 0:
+            gobject.source_remove(self.cleanup_apps_id)
+            self.cleanup_apps_id = 0
+
         if 'limited' in data and 'registred' in data:
             self.limited = data['limited']
             self.registred = data['registred']

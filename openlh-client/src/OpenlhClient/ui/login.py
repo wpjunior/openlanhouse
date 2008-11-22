@@ -311,6 +311,7 @@ class Login:
         if not status:
             if self.iterable_timeout_id:
                 source_remove(self.iterable_timeout_id)
+                self.iterable_timeout_id = 0
             
             self.run_interable = True
             self.timeout_connect = 15
@@ -319,6 +320,7 @@ class Login:
         else:
             if self.iterable_timeout_id:
                 source_remove(self.iterable_timeout_id)
+                self.iterable_timeout_id = 0
             
             self.warn_msg.set_text('')
             self.wm_title.set_text(_("OpenLanhouse Client - Connected"))
@@ -375,3 +377,6 @@ class Login:
             return
         
         print "admin"
+
+    def set_warn_message(self, message):
+        self.warn_msg.set_text(message)
