@@ -69,6 +69,8 @@ class Client:
     visible = False
     monitory_handler_id = 0
     update_time_handler_id = 0
+    cleanup_apps_id = 0
+    cleanup_apps_timeout = 30
     currency = "US$" #by default
     interative = True
     login_attempts = 0
@@ -363,7 +365,20 @@ class Client:
         self.remaining_pb.set_fraction(0.0)
         self.other_info = {}
     
-    def block(self, after, action):
+    def do_cleanup_timeout(self):
+        self.cleanup_apps_timeout -= 1
+        
+        if self.cleanup_apps_timeout == 0:
+            print "kill all"
+            gtk.main_quit()
+            return
+        
+        print "timeout %d" % self.cleanup_apps_timeout
+        
+        self.cleanup_apps_id = gobject.timeout_add_seconds(1,
+                                                           self.do_cleanup_timeout)
+
+    def block(self, after, action, cleanup_apps=True):
         self.blocked = True
         self.elapsed_time = 0
         self.left_time = 0
@@ -376,6 +391,11 @@ class Client:
         self.login_window.lock()
         self.stop_monitory_status()
         self.dbus_manager.block()
+        
+        if cleanup_apps:
+            self.cleanup_apps_timeout = 30
+            self.cleanup_apps_id = gobject.timeout_add_seconds(1,
+                                                           self.do_cleanup_timeout)
         
         if not ActionManager:
             return

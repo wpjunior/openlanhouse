@@ -996,7 +996,8 @@ class Server(gobject.GObject):
             'ticket_suport': 'ticket_suport',
             'default_welcome_msg': 'default_welcome_msg',
             'use_background': 'background',
-            'use_logo': 'logo'
+            'use_logo': 'logo',
+            'close_apps': 'close_apps'
         }
         
         for name in string_keys.keys():
@@ -1008,6 +1009,11 @@ class Server(gobject.GObject):
         for name in bool_keys.keys():
             value = self.conf_client.get_bool(bool_keys[name])
             self.information[name] = value
+
+        # Close apps lists
+        
+        self.information['close_apps_list'] = self.conf_client.get_string_list(
+            "close_apps_list")
         
         self.information['price.hour'] = self.conf_client.get_float(
                                         'price_per_hour')
@@ -1234,7 +1240,8 @@ class Server(gobject.GObject):
             'ticket_suport': 'ticket_suport',
             'default_welcome_msg': 'default_welcome_msg',
             'use_background': 'background',
-            'use_logo': 'logo'
+            'use_logo': 'logo',
+            'close_apps': 'close_apps'
         }
         
         for name in string_keys.keys():
@@ -1279,6 +1286,12 @@ class Server(gobject.GObject):
             else:
                 self.information['welcome_msg'] = value
                 alterations['welcome_msg'] = value
+
+        # close apps
+        value = self.conf_client.get_string_list("close_apps_list")
+        if self.information['close_apps_list'] != value:
+            self.information['close_apps_list'] = value
+            alterations['close_apps_list'] = value
         
         value = self.conf_client.get_string('background_path')
         if self.common_background != value:
