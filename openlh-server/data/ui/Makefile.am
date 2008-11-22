@@ -23,6 +23,7 @@ ui_DATA = \
 	plugins.ui \
 	select_machine_category.ui \
 	new_ticket.ui \
-	view_all_tickets.ui
+	view_all_tickets.ui \
+	edit_close_apps.ui
 
 EXTRA_DIST = $(ui_DATA) 

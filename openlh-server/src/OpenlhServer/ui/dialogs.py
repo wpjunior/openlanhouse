@@ -42,6 +42,7 @@ from OpenlhCore.utils import md5_cripto
 from OpenlhCore.utils import calculate_time, calculate_credit
 from OpenlhCore.utils import check_nick, check_name
 from OpenlhCore.utils import is_in_path, execute_command, threaded
+from OpenlhCore.ConfigClient import get_default_client
 
 GNOME_OPEN_PATH = is_in_path('gnome-open')
 
@@ -2728,9 +2729,67 @@ class ViewAllTickets:
         self.dialog.destroy()
 
 class EditCloseApplications:
-    def __init__(self):
-        pass
+    def __init__(self, Parent=None):
+        self.conf_client = get_default_client()
+        self.xml = get_gtk_builder('edit_close_apps')
+        self.dialog = self.xml.get_object("dialog")
+        
+        self.treeview = self.xml.get_object("treeview")
+        
+        self.ListStore = gtk.ListStore(gobject.TYPE_STRING)
+        self.treeview.set_model(self.ListStore)
+        
+        self.renderer = gtk.CellRendererText()
+        self.renderer.set_property("editable", True)
+        self.renderer.connect("edited", self.column_edited)
+        self.column = gtk.TreeViewColumn(_("Applications"),
+                                         self.renderer,
+                                         text=0)
+        
+        self.treeview.append_column(self.column)
+        
+        if Parent:
+            self.dialog.set_transient_for(Parent)
+            
+        self.xml.connect_signals(self)
+        
+        #Populate apps
+
+    def column_edited(self, renderer, path_string, text):
+        
+        iter = self.ListStore.get_iter_from_string(path_string)
+        old_text = self.ListStore.get_value(iter, 0)
+        
+        # not accept spaces
+        if " " in text:
+            text = text.split(" ")[0]
+
+        if not(text):
+            if old_text == _("Application name"):
+                self.ListStore.remove(iter)
+            return
+        
+        # remove iter
+        if text == _("Application name"):
+            self.ListStore.remove(iter)
+            return
+        
+        self.ListStore.set_value(iter, 0, text)
+    
+    def on_add_button_clicked(self, obj):
+        iter = self.ListStore.append((_("Application name"),))
+        path = self.ListStore.get_path(iter)
+        self.treeview.set_cursor_on_cell(path, self.column,
+                                         self.renderer,
+                                         start_editing=True)
+                
+    def on_remove_button_clicked(self, obj):
+        cursor = self.treeview.get_cursor()
+        iter = self.ListStore.get_iter(cursor[0])
+        self.ListStore.remove(iter)
+        self.treeview.grab_focus()
     
     def run(self):
-        pass
+        self.dialog.run()
+        self.dialog.destroy()
         
