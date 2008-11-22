@@ -2754,6 +2754,8 @@ class EditCloseApplications:
         self.xml.connect_signals(self)
         
         #Populate apps
+        for a in self.conf_client.get_string_list("close_apps_list"):
+            self.ListStore.append((a,))
 
     def column_edited(self, renderer, path_string, text):
         
@@ -2761,6 +2763,10 @@ class EditCloseApplications:
         old_text = self.ListStore.get_value(iter, 0)
         
         # not accept spaces
+        if text == _("Application name"):
+            self.ListStore.remove(iter)
+            return
+
         if " " in text:
             text = text.split(" ")[0]
 
@@ -2770,9 +2776,7 @@ class EditCloseApplications:
             return
         
         # remove iter
-        if text == _("Application name"):
-            self.ListStore.remove(iter)
-            return
+        
         
         self.ListStore.set_value(iter, 0, text)
     
@@ -2791,5 +2795,22 @@ class EditCloseApplications:
     
     def run(self):
         self.dialog.run()
+
+        # save apps
+        apps = []
+        for i in self.ListStore:
+            app_name = i[0]
+
+            if app_name == _("Application name"):
+                continue
+            
+            if " " in app_name:
+                app_name = app_name.split(" ")[0]
+                
+            apps.append(app_name)
+            
+        self.conf_client.set_string_list("close_apps_list",
+                                         apps)
+
         self.dialog.destroy()
         
