@@ -2726,3 +2726,11 @@ class ViewAllTickets:
             gobject.source_remove(self.delete_id)
             
         self.dialog.destroy()
+
+class EditCloseApplications:
+    def __init__(self):
+        pass
+    
+    def run(self):
+        pass
+        

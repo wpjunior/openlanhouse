@@ -20,7 +20,7 @@ import gtk
 
 from os.path import exists
 from OpenlhServer.globals import *
-from OpenlhServer.ui.dialogs import image_chooser_button
+from OpenlhServer.ui.dialogs import image_chooser_button, EditCloseApplications
 from OpenlhServer.ui.utils import get_gtk_builder
 from OpenlhCore.ConfigClient import get_default_client
 
@@ -108,6 +108,10 @@ class Prefs:
             self.xml.get_object('logo_bnt').set_active(True)
         else:
             self.logo_chooser.set_sensitive(False)
+            
+        if self.conf_client.get_bool('close_apps'):
+            self.xml.get_object('close_apps_bnt').set_active(True)
+            self.xml.get_object('edit_apps').set_sensitive(True)
         
         self.background_path = self.conf_client.get_string('background_path')
         self.logo_path = self.conf_client.get_string('logo_path')
@@ -184,3 +188,13 @@ class Prefs:
             self.logo_path = filename
             self.conf_client.set_string('logo_path',
                                          filename)
+
+    def on_edit_apps_clicked(self, obj):
+        dlg = EditCloseApplications()
+        dlg.run()
+        
+    def on_close_apps_bnt_toggled(self, obj):
+        widget = self.xml.get_object("edit_apps")
+        widget.set_sensitive(obj.get_active())
+        self.conf_client.set_bool('close_apps',
+                                  obj.get_active())
