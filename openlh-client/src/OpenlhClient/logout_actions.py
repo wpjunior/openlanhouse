@@ -164,7 +164,7 @@ class Win32ActionManager:
         print a
     
     def logout(self):
-        cmd = [executable, "-l"]
+        cmd = ["shutdown", "-l"]
         a = execute_command(cmd)
         print a
 
