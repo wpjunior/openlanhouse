@@ -616,3 +616,10 @@ def pid_alive(app, path):
     # If we are here, pidfile exists, but some unexpected error occured.
     # Assume running.
     return True
+
+def kill_process(process_name):
+    if os.name != "nt":         # posix
+        cmd = ["killall", process_name, "-u", os.environ['USER']]
+        execute_command(cmd)
+    else:
+        print "kill", process_name, "not implemented"

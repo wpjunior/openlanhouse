@@ -28,7 +28,7 @@ from OpenlhCore.ConfigClient import get_default_client
 from OpenlhClient.ui import icons
 from OpenlhClient.ui import tray
 from OpenlhClient.globals import *
-from OpenlhCore.utils import md5_cripto
+from OpenlhCore.utils import md5_cripto, kill_process
 from OpenlhCore.utils import get_os, humanize_time
 from OpenlhClient.ui import dialogs, login
 from OpenlhClient.ui.utils import get_gtk_builder
@@ -374,7 +374,7 @@ class Client:
             
             if 'close_apps_list' in self.informations:
                 for a in self.informations['close_apps_list']:
-                    print "kill", a
+                    kill_process(a) # Kill process
                     
             self.cleanup_apps_id = 0
             return
