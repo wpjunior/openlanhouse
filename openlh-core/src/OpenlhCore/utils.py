@@ -617,9 +617,24 @@ def pid_alive(app, path):
     # Assume running.
     return True
 
+def kill_windows_process(process_name):
+    cmd = ["taskkill",  "/f", "/fi",
+           "USERNAME eq %s" % os.environ['USERNAME'],
+           "/im", "%s.exe" % process_name]
+    
+    out, err, retval = execute_command(cmd)
+    
+    if retval != 0:
+        print err.strip()
+    else:
+        print out.strip()
+    
 def kill_process(process_name):
-    if os.name != "nt":         # posix
+    if os.name == "posix":         # posix
         cmd = ["killall", process_name, "-u", os.environ['USER']]
         execute_command(cmd)
-    else:
-        print "kill", process_name, "not implemented"
+
+    elif os.name == "nt":       # windows handler
+        t = threading.Thread(target=kill_windows_process, args=(process_name,))
+        t.setDaemon(True)
+        t.start()
