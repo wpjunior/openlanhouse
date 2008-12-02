@@ -81,8 +81,8 @@ class Login:
         self.imagealign = xml.get_object('imagealign')
         self.wm_title = xml.get_object('wm_title')
         self.xml = xml
-        self.login_radio_item = self.xml.get_object("login_radio_item")
-        self.ticket_radio_item = self.xml.get_object("ticket_radio_item")
+        #self.login_radio_item = self.xml.get_object("login_radio_item")
+        self.ticket_radio_item = self.xml.get_object("ticket_button")
         self.admin_radio_item = self.xml.get_object("admin_radio_item")
         self.err_box = self.xml.get_object("err_box")
         
@@ -252,7 +252,7 @@ class Login:
     def set_lock_all(self, status):
         self.entry.set_sensitive(not(status))
         self.label.set_sensitive(not(status))
-        self.xml.get_object("mode_menuitem").set_sensitive(not(status))
+        #self.xml.get_object("mode_menuitem").set_sensitive(not(status))
         
         if status:
             self.label.set_text("")
@@ -331,46 +331,58 @@ class Login:
         
         if not(status) and not(self.login_suport):
             self.set_lock_all(True)
+            self.ticket_radio_item.set_sensitive(False)
             return
         else:
             self.set_lock_all(False)
-            self.ticket_radio_item.set_sensitive(status)
-        
+            
         if not(status) and self.login_suport:
-            self.login_radio_item.set_active(True)
+            self.ticket_radio_item.set_active(False)
+            self.ticket_radio_item.set_sensitive(False)
         elif status and not(self.login_suport):
             self.ticket_radio_item.set_active(True)
+            self.ticket_radio_item.set_sensitive(False)
+        else:
+            self.ticket_radio_item.set_sensitive(True)
     
     def set_login_suport(self, status):
         self.login_suport = status
-        self.login_radio_item.set_sensitive(status)
         
         if not(status) and not(self.ticket_suport):
             self.set_lock_all(True)
-            return
-        elif not(status) and self.ticket_suport:
-            self.set_lock_all(False)
-            self.login_radio_item.set_active(status)
-            self.ticket_radio_item.set_active(True)
-        elif status and not(self.ticket_suport):
-            self.set_lock_all(False)
-            self.login_radio_item.set_active(status)
             self.ticket_radio_item.set_sensitive(False)
+            return
         else:
             self.set_lock_all(False)
-            self.login_radio_item.set_active(status)
+
+        if not(status) and self.ticket_suport:
+            self.set_lock_all(False)
+            #self.login_radio_item.set_active(status)
+            self.ticket_radio_item.set_active(True)
+            self.ticket_radio_item.set_sensitive(False)
+
+        elif status and not(self.ticket_suport):
+            self.set_lock_all(False)
+            #self.login_radio_item.set_active(status)
+            self.ticket_radio_item.set_active(False)
+            self.ticket_radio_item.set_sensitive(False)
+        else:
+            self.ticket_radio_item.set_sensitive(True)
+        #else:
+        #    self.set_lock_all(False)
+        #    self.login_radio_item.set_active(status)
     
-    def on_login_radio_item_toggled(self, obj):
+    #def on_login_radio_item_toggled(self, obj):
+    #    if not obj.get_active():
+    #        return
+        
+    #    self.set_current(LOGIN_USER)
+        
+    def on_ticket_button_toggled(self, obj):
         if not obj.get_active():
-            return
-        
-        self.set_current(LOGIN_USER)
-        
-    def on_ticket_radio_item_toggled(self, obj):
-        if not obj.get_active():
-            return
-        
-        self.set_current(LOGIN_TICKET)
+            self.set_current(LOGIN_USER)
+        else:
+            self.set_current(LOGIN_TICKET)
     
     def on_admin_radio_item_toggled(self, obj):
         if not obj.get_active():

@@ -69,7 +69,7 @@ class X11LockScreenWindow(gtk.Window):
     def force_no_pixmap_background(self, widget):
         if self.rc_parse_first_time:
             gtk.rc_parse_string("\n"
-                                "   style \"gs-theme-engine-style\"\n"
+                                "   style \"bg-theme-engine-style\"\n"
                                 "   {\n"
                                 "      bg_pixmap[NORMAL] = \"<none>\"\n"
                                 "      bg_pixmap[INSENSITIVE] = \"<none>\"\n"
@@ -80,11 +80,11 @@ class X11LockScreenWindow(gtk.Window):
                                 "      bg[ACTIVE] = { 0.0, 0.0, 0.0 }\n"
                                 "      bg[PRELIGHT] = { 0.0, 0.0, 0.0 }\n"
                                 "   }\n"
-                                "   widget \"gs-window-drawing-area*\" style : highest \"gs-theme-engine-style\"\n"
+                                "   widget \"bg-window-drawing-area*\" style : highest \"bg-theme-engine-style\"\n"
                                 "\n")
             self.rc_parse_first_time = False
         
-        widget.set_name("gs-window-drawing-area")
+        widget.set_name("bg-window-drawing-area")
     
     def clear_widget(self, widget):
         color = gtk.gdk.color_parse(self.background_color)
@@ -207,11 +207,15 @@ class X11LockScreenWindow(gtk.Window):
         window.show()
         self.grabed_window = window
         self.set_left_cursor(window)
-        #window.set_keep_below(True)
         window.set_keep_above(True)
         pstatus = self.lock_pointer(window)
         kstatus = self.lock_keyboard(window)
         window.set_keep_above(True)
+
+        if self.grab_connect_id > 0:
+            gobject.source_remove(self.grab_connect_id)
+            self.grab_connect_id = 0
+
         self.grab_connect_id = window.connect("event", 
                                               self.grabed_window_event)
         
@@ -238,6 +242,7 @@ class X11LockScreenWindow(gtk.Window):
     def lock_keyboard(self, window):
         window = self.get_gdk_window(window)
         status = gtk.gdk.keyboard_grab(window, True)
+        
         gtk.gdk.flush()
         
         return status
@@ -251,8 +256,9 @@ class X11LockScreenWindow(gtk.Window):
         return status
     
     def grabed_window_event(self, obj, event):
-        
+
         if event.type == gtk.gdk.GRAB_BROKEN:
+            print self.child_window
             self.grab(self.child_window)
         
         elif event.type in self.bntevents:
