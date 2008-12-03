@@ -27,7 +27,7 @@ from OpenlhClient.globals import *
 from OpenlhClient.ui.background import LockScreenWindow
 from OpenlhClient.ui.utils import get_gtk_builder
 _ = gettext.gettext
-HOUR_24_FORMAT = False
+HOUR_24_FORMAT = True
 
 (LOGIN_AUTH_NONE,
  LOGIN_AUTH_LOGIN,
