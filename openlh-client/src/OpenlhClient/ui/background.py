@@ -314,11 +314,28 @@ class Win32LockScreenWindow(X11LockScreenWindow):
         if not self.visible: #allow all windows
             return True
         
-	    if event.Key and event.Key.lower() in ['lwin', 'tab', 'lmenu', 'escape']:
-	        return False	# block these keys
-        else:
-            # return True to pass the event to other handlers
-    	    return True
+        if event.Key and event.Key.lower() in ['lwin', 'tab', 'lmenu', 'escape']:
+            return False	# block these keys
+        
+        a = [self.window.handle]
+
+        if self.grabed_window and win32gui.IsChild(self.grabed_window.window.handle,
+                                                   event.Window):
+            return True
+
+        if self.grabed_window:
+            a.append(self.grabed_window.window.handle)
+
+        try:
+            p = win32gui.GetParent(event.Window)
+        except:
+            return False
+        
+        if self.grabed_window and win32gui.IsChild(self.grabed_window.window.handle,
+                                                   p):
+            return True
+        
+        return event.Window in a
 
     def OnMouseEvent(self, event):
         if not self.visible: #allow all windows
