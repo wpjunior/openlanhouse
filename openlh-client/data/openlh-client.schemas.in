@@ -16,47 +16,6 @@
     </schema>
     
     <schema>
-      <key>/schemas/apps/openlh-client/ui/show_informations</key>
-      <applyto>/apps/openlh-client/ui/show_informations</applyto>
-      <owner>openlh-client</owner>
-      <type>bool</type>
-      <default>true</default>
-      
-      <locale name="C">
-        <short>Show Informations</short>
-        <long>Show Informations.</long>
-      </locale>
-      
-    </schema>
-    
-    <schema>
-      <key>/schemas/apps/openlh-client/ui/show_time_elapsed</key>
-      <applyto>/apps/openlh-client/ui/show_time_elapsed</applyto>
-      <owner>openlh-client</owner>
-      <type>bool</type>
-      <default>true</default>
-      
-      <locale name="C">
-        <short>Show Informations</short>
-        <long>Show Informations.</long>
-      </locale>
-      
-    </schema>
-    
-    <schema>
-      <key>/schemas/apps/openlh-client/ui/show_time_remaining</key>
-      <applyto>/apps/openlh-client/ui/show_time_remaining</applyto>
-      <owner>openlh-client</owner>
-      <type>bool</type>
-      <default>true</default>
-      
-      <locale name="C">
-        <short>Show Time Remaining</short>
-        <long>Show Time Remaining.</long>
-      </locale>
-    </schema>
-    
-    <schema>
       <key>/schemas/apps/openlh-client/port</key>
       <applyto>/apps/openlh-client/port</applyto>
       <owner>openlh-client</owner>

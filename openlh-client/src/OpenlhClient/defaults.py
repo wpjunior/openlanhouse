@@ -16,9 +16,4 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-defaults = {"port": 4558,
-            "ui/visible": True,
-            "ui/show_informations": True,
-            "ui/show_time_elapsed": True,
-            "ui/show_time_remaining": True,
-            }
+defaults = {"port": 4558}

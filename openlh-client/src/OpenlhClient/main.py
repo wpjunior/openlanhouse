@@ -149,19 +149,13 @@ class Client:
         self.tray_menu = self.xml.get_object('tray_menu')
         self.show_window_menu = self.xml.get_object('show_window_menu')
         
-        if self.conf_client.get_bool('ui/visible'):
-            self.main_window.show()
-            self.visible = True
-            self.show_window_menu.set_active(True)
-        
-        b = self.conf_client.get_bool('ui/show_informations')
-        self.show_informations(b)
-        
-        b = self.conf_client.get_bool('ui/show_time_elapsed')
-        self.show_time_elapsed(b)
-        
-        b = self.conf_client.get_bool('ui/show_time_remaining')
-        self.show_time_remaining(b)
+        self.main_window.show()
+        self.visible = True
+        self.show_window_menu.set_active(True)
+
+        self.show_informations(True)
+        self.show_time_elapsed(True)
+        self.show_time_remaining(True)
         
         self.xml.connect_signals(self)
         
@@ -193,9 +187,7 @@ class Client:
                 else:
                     self.visible = True
                     self.main_window.show()
-                
-                self.conf_client.set_bool('ui/visible',
-                                           self.visible)
+
         else:
             if self.visible:
                 self.visible = False
@@ -205,9 +197,6 @@ class Client:
                 self.visible = True
                 self.show_window_menu.set_active(True)
                 self.main_window.show()
-            
-            self.conf_client.set_bool('ui/visible',
-                                       self.visible)
     
     def on_tray_popup_menu(self, obj, button, event):
         self.tray_menu.popup(None, None, None, button, event)
@@ -430,6 +419,12 @@ class Client:
         self.update_time = None
         self.time = (0, 0)
         
+        self.show_window_menu.set_active(True)
+        self.main_window.show()
+        self.show_informations(True)
+        self.show_time_elapsed(True)
+        self.show_time_remaining(True)
+        
         if self.cleanup_apps_id > 0:
             gobject.source_remove(self.cleanup_apps_id)
             self.cleanup_apps_id = 0
@@ -632,8 +627,6 @@ class Client:
     def show_informations(self, status):
         self.interative = False
         self.xml.get_object("information_vbox").set_property('visible', status)
-        self.conf_client.set_bool('ui/show_informations',
-                                   status)
         self.xml.get_object("information_menuitem").set_active(status)
         self.interative = True
     
@@ -641,8 +634,6 @@ class Client:
         self.interative = False
         self.xml.get_object("elapsed_label").set_property('visible', status)
         self.xml.get_object("elapsed_pb").set_property('visible', status)
-        self.conf_client.set_bool('ui/show_time_elapsed',
-                                   status)
         self.xml.get_object("time_elapsed_menuitem").set_active(status)
         self.interative = True
     
@@ -650,8 +641,6 @@ class Client:
         self.interative = False
         self.xml.get_object("remaining_label").set_property('visible', status)
         self.xml.get_object("remaining_pb").set_property('visible', status)
-        self.conf_client.set_bool('ui/show_time_remaining',
-                                   status)
         self.xml.get_object("time_remaining_menuitem").set_active(status)
         self.interative = True
     
