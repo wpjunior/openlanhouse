@@ -40,59 +40,6 @@ PKG_CHECK_MODULES([DEPENDENCIES], [
     pygtk-2.0 >= $PYGTK_REQUIRED
 ])
 
-#python-gnutls
-dnl Checking python-gnutls
-AC_MSG_CHECKING([for the python-gnutls package])
-ac_pgnutls_result=`$PYTHON -c 'try:
-    import gnutls
-    import gnutls.crypto
-    import gnutls.connection
-except Exception, e:
-    print str(e)' 2> /dev/null`
-
-if test -z "$ac_pgnutls_result"; then
-    AC_MSG_RESULT([yes])
-else
-    AC_MSG_RESULT([no])
-    AC_MSG_ERROR([cannot import Python module "gnutls".
-    Please check if you have python-gnutls installed. The error was:
-    $ac_pgnutls_result])
-fi
-
-#python-gconf
-dnl Checking python-gconf
-AC_MSG_CHECKING([for the python-gconf package])
-ac_pgconf_result=`$PYTHON -c 'try:
-    import gconf
-except Exception, e:
-    print str(e)' 2> /dev/null`
-
-if test -z "$ac_pgconf_result"; then
-    AC_MSG_RESULT([yes])
-else
-    AC_MSG_RESULT([no])
-    AC_MSG_ERROR([cannot import Python module "gconf".
-    Please check if you have python-gconf installed. The error was:
-    $ac_pgconf_result])
-fi
-
-#python-certtool
-dnl Checking python-certtool
-AC_MSG_CHECKING([for the python-certtool package])
-ac_pgconf_result=`$PYTHON -c 'try:
-    import certtool
-except Exception, e:
-    print str(e)' 2> /dev/null`
-
-if test -z "$ac_pgconf_result"; then
-    AC_MSG_RESULT([yes])
-else
-    AC_MSG_RESULT([no])
-    AC_MSG_ERROR([cannot import Python module "certtool".
-    Please check if you have python-certtool installed. The error was:
-    $ac_pgconf_result])
-fi
-
 #python-sqlalchemy
 dnl Checking python-sqlalchemy
 AC_MSG_CHECKING([for the python-sqlalchemy package])
