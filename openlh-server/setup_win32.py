@@ -55,8 +55,9 @@ setup(name = 'OpenLanhouse Server',
                   }
                  ],
                 options=opts,
-                data_files=[("data/ui", glob.glob("data\ui\*")),
-                            ("data/icons", glob.glob("data\icons\*"))],
+                data_files=[("data/ui", glob.glob("data\ui\*.ui")),
+                            ("data/icons/status", glob.glob("data\icons\status\*.png")),
+                            ("data/icons", glob.glob("data\icons\*.png"))],
 	
 	)
 	
