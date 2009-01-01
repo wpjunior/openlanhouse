@@ -1,4 +1,3 @@
-SUBDIRS = net ui
 
 openlhdir = $(pythondir)/OpenlhCore
 openlh_PYTHON = \
