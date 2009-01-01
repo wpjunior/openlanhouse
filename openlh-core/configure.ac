@@ -64,6 +64,7 @@ src/Makefile
 src/certtool/Makefile
 src/OpenlhCore/Makefile
 src/OpenlhCore/net/Makefile
+src/OpenlhCore/ui/Makefile
 src/OpenlhCore/net/backends/Makefile
 src/OpenlhCore/net/certgen/Makefile
 src/OpenlhCore/config.py
