@@ -26,7 +26,6 @@ from OpenlhCore.net.client import NetClient
 from OpenlhCore.ConfigClient import get_default_client
 
 from OpenlhClient.ui import icons
-from OpenlhClient.ui import tray
 from OpenlhClient.globals import *
 from OpenlhCore.utils import md5_cripto, kill_process
 from OpenlhCore.utils import get_os, humanize_time
@@ -160,11 +159,11 @@ class Client:
         self.xml.connect_signals(self)
         
         #Tray
-        self.tray = tray.Tray(_("OpenLanhouse - Client"), None, "openlh-client")
+        self.tray_icon = gtk.status_icon_new_from_icon_name("openlh-client")
+        self.tray_icon.set_tooltip(_("OpenLanhouse - Client"))
         
-        if self.tray.iconsuport:
-            self.tray.icon.connect('popup-menu', self.on_tray_popup_menu)
-            self.tray.icon.connect('activate', self.on_show_hide)
+        self.tray_icon.connect('popup-menu', self.on_tray_popup_menu)
+        self.tray_icon.connect('activate', self.on_show_hide)
         
         #Login Window
         self.login_window = login.Login(self)

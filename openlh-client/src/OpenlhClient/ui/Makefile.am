@@ -6,5 +6,4 @@ openlh_ui_PYTHON = \
 			icons.py \
 			login.py \
 			prefs.py \
-			tray.py \
 			utils.py

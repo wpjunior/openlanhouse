@@ -16,5 +16,5 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-__all__ = ('background', 'dialogs', 'icons', 'login', 
-           'prefs', 'tray', 'utils')
+__all__ = ('background', 'dialogs', 'icons', 'login',
+           'prefs', 'utils')
