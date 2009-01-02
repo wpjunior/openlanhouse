@@ -30,7 +30,7 @@ class X11LockScreenWindow(gtk.Window):
     
     rc_parse_first_time = True
     background_file = None
-    background_color = 'black'
+    window_background_color = 'black'
     visible = False
     child_window = None
     grabed_window = None
@@ -58,8 +58,13 @@ class X11LockScreenWindow(gtk.Window):
         self.add(self.vbox)
         
         self.drawing_area = gtk.DrawingArea()
+        color = gtk.gdk.color_parse(self.window_background_color)
+
         self.drawing_area.show()
         self.vbox.add(self.drawing_area)
+
+        self.drawing_area.realize()
+        self.drawing_area.window.set_background(color)
         self.force_no_pixmap_background(self.drawing_area)
         
         # resize changed callback
@@ -87,24 +92,25 @@ class X11LockScreenWindow(gtk.Window):
         widget.set_name("bg-window-drawing-area")
     
     def clear_widget(self, widget):
-        color = gtk.gdk.color_parse(self.background_color)
+        
+        color = gtk.gdk.color_parse(self.window_background_color)
         
         if not(widget.flags() & gtk.VISIBLE):
             return
         
-        for i in range(0, len(widget.style.bg)):
-            widget.style.bg[i] = color
+        #for i in range(0, len(widget.style.bg)):
+        #    widget.style.bg[i] = color
             
         style = widget.style.copy()
         
-        for i in range(0, len(widget.style.bg_pixmap)):
-            widget.style.bg_pixmap[i] = None
+        #for i in range(0, len(widget.style.bg_pixmap)):
+        #    widget.style.bg_pixmap[i] = None
             
         colormap = widget.window.get_colormap()
         colormap.alloc_color(color, writeable=False, best_match=True)
         
         widget.window.set_background(color)
-        widget.set_style(style)
+        #widget.set_style(style)
         
         widget.window.clear()
         
@@ -140,7 +146,7 @@ class X11LockScreenWindow(gtk.Window):
             self.ungrab(self.grabed_window)
             
     def set_color(self, color):
-        self.background_color = color
+        self.window_background_color = color
         self.background_file = None
         
         self.clear_widget(self.drawing_area)
@@ -158,7 +164,7 @@ class X11LockScreenWindow(gtk.Window):
             return
         
         self.background_file = image_path
-        self.background_color = 'black'
+        self.window_background_color = 'black'
         
         if not self.window:
             return #this window is not realized

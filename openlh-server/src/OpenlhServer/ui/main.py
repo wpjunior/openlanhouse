@@ -30,7 +30,7 @@ from OpenlhServer.ui.plugins import PluginsWindow
 from OpenlhCore.utils import humanize_time
 from OpenlhCore.ConfigClient import get_default_client
 from OpenlhCore.ui import notification
-from OpenlhServer.ui import DateEdit, tray, icons, dialogs, treeview, prefs
+from OpenlhServer.ui import DateEdit, icons, dialogs, treeview, prefs
 from OpenlhServer.ui.SearchEntry import SearchEntry
 from OpenlhCore.utils import md5_cripto
 from OpenlhServer.ui.utils import get_gtk_builder

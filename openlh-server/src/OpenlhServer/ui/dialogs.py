@@ -79,7 +79,7 @@ class about(gtk.AboutDialog):
         if Parent:
             self.set_transient_for(Parent)
         
-        self.set_name(_("OpenLanhouse Server"))
+        self.set_name(_("OpenLanhouse"))
         self.set_version(APP_VERSION)
         
         self.set_website(APP_SITE)
