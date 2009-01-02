@@ -23,11 +23,13 @@ import datetime
 
 from time import localtime
 from os import remove as os_remove
+from os import path as ospath
 
 from OpenlhServer.ui.plugins import PluginsWindow
 
 from OpenlhCore.utils import humanize_time
 from OpenlhCore.ConfigClient import get_default_client
+from OpenlhCore.ui import notification
 from OpenlhServer.ui import DateEdit, tray, icons, dialogs, treeview, prefs
 from OpenlhServer.ui.SearchEntry import SearchEntry
 from OpenlhCore.utils import md5_cripto
@@ -75,10 +77,13 @@ class Manager:
         
         self.icons = icons.Icons()
         self.status_icons = icons.Icons(icon_path=STATUS_ICON_PATH)
+		
+        notification.popup_init("openlh-server")
         
         self.halt_icon = self.status_icons.get_icon("halt")
         self.available_icon = self.status_icons.get_icon("available")
         self.busy_icon = self.status_icons.get_icon("busy")
+        self.popup_icon = ospath.join(ICON_PATH, "openlh-server.png")
         
         self.daemon = daemon
         
@@ -190,13 +195,11 @@ class Manager:
         self.open_debts_search_entry.show()
         
         self.config_trees()
-
-        self.tray = tray.Tray(_("OpenLanhouse - Server"),
-                             None, "openlh-server")
         
-        if self.tray.iconsuport:
-            self.tray.icon.connect('popup-menu', self.tray_menu_show)
-            self.tray.icon.connect('activate', self.show_hide)
+        self.tray_icon = gtk.status_icon_new_from_icon_name("openlh-server")
+        self.tray_icon.set_tooltip("openlh-server")
+        self.tray_icon.connect('popup-menu', self.tray_menu_show)
+        self.tray_icon.connect('activate', self.show_hide)
         
         sel = self.conf_client.get_int('ui/page_selected')
         self.set_page_selected(sel)
@@ -1715,7 +1718,7 @@ class Manager:
         show_notifications = self.conf_client.get_bool(
                        'ui/show_notifications')
         
-        if show_notifications and self.tray.notifysuport:
+        if show_notifications:
             if inst.status == 0:
                 title = _('%s Disconnected') % inst.name
                 msg = _('%s is now Offline') % inst.name
@@ -1724,10 +1727,7 @@ class Manager:
                 title = _('%s Connected') % inst.name
                 msg = _('%s is now Available') % inst.name
             
-            nt = self.tray.notify_msg(title, msg, in_status_icon=False)
-            
-            if nt:
-                nt.show()
+            notification.Popup(title, msg, self.popup_icon)
     
     def on_machine_status_changed(self, obj, machine_instance):
         
@@ -1745,23 +1745,18 @@ class Manager:
         show_notifications = self.conf_client.get_bool(
                             'ui/show_notifications')
         
-        if show_notifications and self.tray.notifysuport:
+        if show_notifications:
             if machine_instance.status == 0:
-                title = _('%s Unavailable')
-                msg = _('%s is now Unavailable')
+                title = _('%s Unavailable') % machine_instance.name
+                msg = _('%s is now Unavailable') % machine_instance.name
             elif machine_instance.status == 1:
-                title = _('%s Available')
-                msg = _('%s is now Available')
+                title = _('%s Available') % machine_instance.name
+                msg = _('%s is now Available') % machine_instance.name
             elif machine_instance.status == 2:
-                title = _('%s Busy')
-                msg = _('%s is now Busy')
+                title = _('%s Busy') % machine_instance.name
+                msg = _('%s is now Busy') % machine_instance.name
             
-            nt = self.tray.notify_msg(title % machine_instance.name,
-                                      msg % machine_instance.name,
-                                      in_status_icon=False)
-            
-            if nt:
-                nt.show()
+            notification.Popup(title, msg, self.popup_icon)
         
         if machine_instance.status == 2 and machine_instance.user_id:
             full_name = self.users_manager.get_full_name(

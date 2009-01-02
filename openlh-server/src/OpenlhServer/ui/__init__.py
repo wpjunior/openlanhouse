@@ -16,5 +16,5 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-__all__ = ('dialogs', 'icons', 'tray',  'DateEdit', 'SearchEntry', 'utils',
+__all__ = ('dialogs', 'icons', 'DateEdit', 'SearchEntry', 'utils',
            'main', 'prefs', 'treeview', 'plugins')

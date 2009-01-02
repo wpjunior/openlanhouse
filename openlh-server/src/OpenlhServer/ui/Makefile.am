@@ -8,7 +8,6 @@ openlh_ui_PYTHON = \
 			icons.py \
 			main.py \
 			prefs.py \
-			tray.py \
 			treeview.py \
 			utils.py \
 			plugins.py

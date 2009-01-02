@@ -46,6 +46,7 @@ setup(name = "openlh-core",
       ext_modules = [certtool_ext],
       package_dir = {'OpenlhCore': 'src/OpenlhCore'},
       packages = ('OpenlhCore', 'OpenlhCore.net',
+                  'OpenlhCore.ui',
                   'OpenlhCore.net.backends',
                   'OpenlhCore.net.certgen'),
 )
