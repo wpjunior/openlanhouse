@@ -8,4 +8,5 @@ openlh_PYTHON = \
 			g_timer.py \
 			utils.py \
 			config.py \
-			defaults.py
+			defaults.py \
+			plugins_manager.py

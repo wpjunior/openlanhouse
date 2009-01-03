@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in
-SUBDIRS = data src po
+SUBDIRS = data src po plugins
 
 #DISTCLEANFILES = \
 #	intltool-extract \

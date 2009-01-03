@@ -21,11 +21,11 @@ import gtk
 
 from OpenlhServer.ui.utils import get_gtk_builder
 from OpenlhServer.globals import _
-from OpenlhServer.plugins import __all__ as ALL_PLUGINS
+from OpenlhServer.plugins_manager import __all__ as ALL_PLUGINS
 
-from OpenlhServer.plugins import get_plugin, get_plugin_name, get_plugin_author
-from OpenlhServer.plugins import get_plugin_description, get_plugin_copyright
-from OpenlhServer.plugins import get_plugin_site
+from OpenlhServer.plugins_manager import get_plugin, get_plugin_name, get_plugin_author
+from OpenlhServer.plugins_manager import get_plugin_description, get_plugin_copyright
+from OpenlhServer.plugins_manager import get_plugin_site
 
 class PluginsWindow:
     

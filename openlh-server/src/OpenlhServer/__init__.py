@@ -17,4 +17,4 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 __all__ = ('daemon', 'globals', 'ui', 'db', 'g_timer',
-           'utils', 'config', 'defaults', 'plugins')
+           'utils', 'config', 'defaults', 'plugins_manager')

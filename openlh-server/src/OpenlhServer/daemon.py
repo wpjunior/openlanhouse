@@ -32,7 +32,7 @@ from OpenlhServer.ui import dialogs
 from OpenlhCore.utils import threaded, md5_cripto, humanize_time, calculate_credit, calculate_time
 from OpenlhServer.g_timer import TimerManager, TimeredObj
 
-from OpenlhServer.plugins import get_plugin
+from OpenlhServer.plugins_manager import get_plugin
 
 from OpenlhServer.db.models import Machine, User, OpenDebtMachineItem, HistoryItem, Version, CashFlowItem
 from OpenlhServer.db.session import DBSession
