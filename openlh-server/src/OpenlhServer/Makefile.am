@@ -1,4 +1,4 @@
-SUBDIRS = ui db plugins
+SUBDIRS = ui db
 
 openlhdir = $(pythondir)/OpenlhServer
 openlh_PYTHON = \

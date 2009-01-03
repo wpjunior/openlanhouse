@@ -1,5 +1,5 @@
 SUBDIRS = example
 
-openlhdir = $(pythondir)/OpenlhServer/plugins
+openlhdir = $(libdir)/OpenlhServer/plugins
 openlh_PYTHON = \
 			__init__.py

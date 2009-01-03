@@ -75,10 +75,10 @@ data/icons/status/Makefile
 src/Makefile
 src/OpenlhServer/Makefile
 src/OpenlhServer/ui/Makefile
-src/OpenlhServer/plugins/Makefile
-src/OpenlhServer/plugins/example/Makefile
 src/OpenlhServer/db/Makefile
 src/OpenlhServer/config.py
+plugins/Makefile
+plugins/example/Makefile
 po/Makefile.in
 ])
 
