@@ -34,5 +34,5 @@ src/OpenlhServer/ui/HourEntry.py
 src/OpenlhServer/ui/main.py
 src/OpenlhServer/ui/prefs.py
 src/OpenlhServer/ui/SearchEntry.py
-src/OpenlhServer/ui/tray.py
 src/OpenlhServer/ui/treeview.py
+data/ui/view_all_tickets.ui

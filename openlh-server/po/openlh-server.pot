@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-26 20:03-0200\n"
+"POT-Creation-Date: 2009-01-05 11:04-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,7 +23,6 @@ msgid "LAN House Manager for Gnome Desktop"
 msgstr ""
 
 #: ../data/openlh-server.desktop.in.in.h:2
-#: ../src/OpenlhServer/ui/dialogs.py:82
 msgid "OpenLanhouse Server"
 msgstr ""
 
@@ -698,7 +697,7 @@ msgstr ""
 msgid "New machines were found"
 msgstr ""
 
-#: ../data/glade/main.glade.h:30 ../src/OpenlhServer/ui/main.py:194
+#: ../data/glade/main.glade.h:30
 msgid "OpenLanhouse - Server"
 msgstr ""
 
@@ -724,15 +723,15 @@ msgstr ""
 msgid "Window"
 msgstr ""
 
-#: ../data/glade/main.glade.h:36 ../src/OpenlhServer/ui/main.py:1166
+#: ../data/glade/main.glade.h:36 ../src/OpenlhServer/ui/main.py:1169
 msgid "_Add Credit"
 msgstr ""
 
-#: ../data/glade/main.glade.h:37 ../src/OpenlhServer/ui/main.py:1137
+#: ../data/glade/main.glade.h:37 ../src/OpenlhServer/ui/main.py:1140
 msgid "_Add Time"
 msgstr ""
 
-#: ../data/glade/main.glade.h:38 ../src/OpenlhServer/ui/main.py:1134
+#: ../data/glade/main.glade.h:38 ../src/OpenlhServer/ui/main.py:1137
 msgid "_Block"
 msgstr ""
 
@@ -788,7 +787,7 @@ msgstr ""
 msgid "_Open Debts"
 msgstr ""
 
-#: ../data/glade/main.glade.h:53 ../src/OpenlhServer/ui/main.py:1230
+#: ../data/glade/main.glade.h:53 ../src/OpenlhServer/ui/main.py:1233
 msgid "_Paid"
 msgstr ""
 
@@ -796,11 +795,11 @@ msgstr ""
 msgid "_Register"
 msgstr ""
 
-#: ../data/glade/main.glade.h:55 ../src/OpenlhServer/ui/main.py:1169
+#: ../data/glade/main.glade.h:55 ../src/OpenlhServer/ui/main.py:1172
 msgid "_Remove Credit"
 msgstr ""
 
-#: ../data/glade/main.glade.h:56 ../src/OpenlhServer/ui/main.py:1140
+#: ../data/glade/main.glade.h:56 ../src/OpenlhServer/ui/main.py:1143
 msgid "_Remove Time"
 msgstr ""
 
@@ -816,7 +815,7 @@ msgstr ""
 msgid "_Tools"
 msgstr ""
 
-#: ../data/glade/main.glade.h:60 ../src/OpenlhServer/ui/main.py:1131
+#: ../data/glade/main.glade.h:60 ../src/OpenlhServer/ui/main.py:1134
 msgid "_Unblock"
 msgstr ""
 
@@ -1182,6 +1181,10 @@ msgstr ""
 msgid "Contributors:"
 msgstr ""
 
+#: ../src/OpenlhServer/ui/dialogs.py:82
+msgid "OpenLanhouse"
+msgstr ""
+
 #: ../src/OpenlhServer/ui/dialogs.py:86
 msgid "OpenLanhouse Website"
 msgstr ""
@@ -1205,7 +1208,7 @@ msgstr ""
 
 #. Populate categories
 #: ../src/OpenlhServer/ui/dialogs.py:447
-#: ../src/OpenlhServer/ui/dialogs.py:1376 ../src/OpenlhServer/ui/main.py:2127
+#: ../src/OpenlhServer/ui/dialogs.py:1376 ../src/OpenlhServer/ui/main.py:2122
 msgid "None"
 msgstr ""
 
@@ -1299,8 +1302,8 @@ msgid "User"
 msgstr ""
 
 #: ../src/OpenlhServer/ui/dialogs.py:2163
-#: ../src/OpenlhServer/ui/dialogs.py:2224 ../src/OpenlhServer/ui/main.py:335
-#: ../src/OpenlhServer/ui/main.py:1594 ../src/OpenlhServer/ui/main.py:1867
+#: ../src/OpenlhServer/ui/dialogs.py:2224 ../src/OpenlhServer/ui/main.py:338
+#: ../src/OpenlhServer/ui/main.py:1597 ../src/OpenlhServer/ui/main.py:1862
 msgid "Unknown user"
 msgstr ""
 
@@ -1346,67 +1349,67 @@ msgid "Application name"
 msgstr ""
 
 #. Populate Machines treeview
-#: ../src/OpenlhServer/ui/main.py:266
+#: ../src/OpenlhServer/ui/main.py:269
 msgid "Loading machines"
 msgstr ""
 
 #. Start Loop to update times
 #. Populate Users treeview
-#: ../src/OpenlhServer/ui/main.py:279
+#: ../src/OpenlhServer/ui/main.py:282
 msgid "Loading users"
 msgstr ""
 
 #. Populate OpenDebts Machine
-#: ../src/OpenlhServer/ui/main.py:322
+#: ../src/OpenlhServer/ui/main.py:325
 msgid "Loading OpenDebts"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:340 ../src/OpenlhServer/ui/main.py:1599
+#: ../src/OpenlhServer/ui/main.py:343 ../src/OpenlhServer/ui/main.py:1602
 msgid "Unknown machine"
 msgstr ""
 
 #. Populate Categories machine
-#: ../src/OpenlhServer/ui/main.py:358
+#: ../src/OpenlhServer/ui/main.py:361
 msgid "Loading Machine Categories"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:391
+#: ../src/OpenlhServer/ui/main.py:394
 msgid "All Machines"
 msgstr ""
 
 #. Populate Users Categories
-#: ../src/OpenlhServer/ui/main.py:400
+#: ../src/OpenlhServer/ui/main.py:403
 msgid "Loading User Categories"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:424
+#: ../src/OpenlhServer/ui/main.py:427
 msgid "All Users"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:448
+#: ../src/OpenlhServer/ui/main.py:451
 msgid "<b>Machine usage</b>"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:448 ../src/OpenlhServer/ui/main.py:449
+#: ../src/OpenlhServer/ui/main.py:451 ../src/OpenlhServer/ui/main.py:452
 msgid "fill me"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:449
+#: ../src/OpenlhServer/ui/main.py:452
 msgid "<b>Other</b>"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:601
+#: ../src/OpenlhServer/ui/main.py:604
 msgid "Edit Machine - OpenLanhouse"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:659
+#: ../src/OpenlhServer/ui/main.py:662
 msgid ""
 "<b><big>Unable to delete machine</big></b>\n"
 "\n"
 "This machine is in use"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:665
+#: ../src/OpenlhServer/ui/main.py:668
 #, python-format
 msgid ""
 "<b><big>Are you sure you want to permanently delete '%s'?</big></b>\n"
@@ -1415,7 +1418,7 @@ msgid ""
 msgstr ""
 
 #. TODO: assert credit == 0
-#: ../src/OpenlhServer/ui/main.py:679
+#: ../src/OpenlhServer/ui/main.py:682
 #, python-format
 msgid ""
 "<b><big>Are you sure you want to permanently delete '%s'?</big></b>\n"
@@ -1423,113 +1426,113 @@ msgid ""
 "if you delete this user, it will be permanently lost"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:706
+#: ../src/OpenlhServer/ui/main.py:709
 msgid ""
 "<b><big>Unable to block machine</big></b>\n"
 "\n"
 "This machine is not available"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:713
+#: ../src/OpenlhServer/ui/main.py:716
 msgid ""
 "<b><big>Unable to block machine</big></b>\n"
 "\n"
 "This machine already blocked"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:740
+#: ../src/OpenlhServer/ui/main.py:743
 msgid ""
 "<b><big>Unable to unblock machine</big></b>\n"
 "\n"
 "This machine is not available"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:746
+#: ../src/OpenlhServer/ui/main.py:749
 msgid ""
 "<b><big>Unable to unblock machine</big></b>\n"
 "\n"
 "This machine already in use"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:814
+#: ../src/OpenlhServer/ui/main.py:817
 msgid ""
 "<b><big>Unable to add time</big></b>\n"
 "\n"
 "This machine is not in use."
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:822
+#: ../src/OpenlhServer/ui/main.py:825
 msgid ""
 "<b><big>Unable to add time</big></b>\n"
 "\n"
 "This machine is not used in limited mode."
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:829 ../src/OpenlhServer/ui/main.py:874
+#: ../src/OpenlhServer/ui/main.py:832 ../src/OpenlhServer/ui/main.py:877
 msgid ""
 "<b><big>Unable to add time</big></b>\n"
 "\n"
 "This machine is unblock with ticket mode."
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:860
+#: ../src/OpenlhServer/ui/main.py:863
 msgid ""
 "<b><big>Unable to remove time</big></b>\n"
 "\n"
 "This machine is not in use."
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:867
+#: ../src/OpenlhServer/ui/main.py:870
 msgid ""
 "<b><big>Unable to remove time</big></b>\n"
 "\n"
 "This machine is not used in limited mode."
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:1459 ../src/OpenlhServer/ui/main.py:1462
+#: ../src/OpenlhServer/ui/main.py:1462 ../src/OpenlhServer/ui/main.py:1465
 msgid "Available"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:1460
+#: ../src/OpenlhServer/ui/main.py:1463
 msgid "Available machines"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:1466 ../src/OpenlhServer/ui/main.py:1468
+#: ../src/OpenlhServer/ui/main.py:1469 ../src/OpenlhServer/ui/main.py:1471
 msgid "Busy"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:1467
+#: ../src/OpenlhServer/ui/main.py:1470
 msgid "Busy machines"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:1472 ../src/OpenlhServer/ui/main.py:1474
+#: ../src/OpenlhServer/ui/main.py:1475 ../src/OpenlhServer/ui/main.py:1477
 msgid "Unavailable"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:1473
+#: ../src/OpenlhServer/ui/main.py:1476
 msgid "Unavailable machines"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:1521 ../src/OpenlhServer/ui/main.py:1525
+#: ../src/OpenlhServer/ui/main.py:1524 ../src/OpenlhServer/ui/main.py:1528
 msgid "<big><b>Are you sure you want to quit?</b></big>"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:1720
+#: ../src/OpenlhServer/ui/main.py:1723
 #, python-format
 msgid "%s Disconnected"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:1721
+#: ../src/OpenlhServer/ui/main.py:1724
 #, python-format
 msgid "%s is now Offline"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:1724
+#: ../src/OpenlhServer/ui/main.py:1727
 #, python-format
 msgid "%s Connected"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:1725 ../src/OpenlhServer/ui/main.py:1754
+#: ../src/OpenlhServer/ui/main.py:1728 ../src/OpenlhServer/ui/main.py:1754
 #, python-format
 msgid "%s is now Available"
 msgstr ""
@@ -1559,48 +1562,48 @@ msgstr ""
 msgid "%s is now Busy"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:1844
+#: ../src/OpenlhServer/ui/main.py:1839
 msgid "Credit In"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:1846
+#: ../src/OpenlhServer/ui/main.py:1841
 msgid "Credit Out"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:1848
+#: ../src/OpenlhServer/ui/main.py:1843
 msgid "Machine Usage"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:1850
+#: ../src/OpenlhServer/ui/main.py:1845
 msgid "Custom In"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:1852
+#: ../src/OpenlhServer/ui/main.py:1847
 msgid "Custom Out"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:1854
+#: ../src/OpenlhServer/ui/main.py:1849
 msgid "Ticket"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:1856
+#: ../src/OpenlhServer/ui/main.py:1851
 msgid "Ticket return"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:1858
+#: ../src/OpenlhServer/ui/main.py:1853
 msgid "Machine Usage (Pre-Paid)"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:1890
+#: ../src/OpenlhServer/ui/main.py:1885
 #, python-format
 msgid "Cash in: %0.2f, Cash out: %0.2f"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:2115
+#: ../src/OpenlhServer/ui/main.py:2110
 msgid "Unlimited"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:2387 ../src/OpenlhServer/ui/main.py:2513
+#: ../src/OpenlhServer/ui/main.py:2382 ../src/OpenlhServer/ui/main.py:2508
 #, python-format
 msgid ""
 "<b><big>Are you sure you want to permanently delete '%s' Category?</big></"
@@ -1610,7 +1613,7 @@ msgid ""
 msgstr ""
 
 #. offline
-#: ../src/OpenlhServer/ui/main.py:2597
+#: ../src/OpenlhServer/ui/main.py:2592
 msgid ""
 "<b><big>Unable to shutdown machine</big></b>\n"
 "\n"
@@ -1618,7 +1621,7 @@ msgid ""
 msgstr ""
 
 #. offline
-#: ../src/OpenlhServer/ui/main.py:2621
+#: ../src/OpenlhServer/ui/main.py:2616
 msgid ""
 "<b><big>Unable to reboot machine</big></b>\n"
 "\n"
@@ -1626,14 +1629,14 @@ msgid ""
 msgstr ""
 
 #. offline
-#: ../src/OpenlhServer/ui/main.py:2645
+#: ../src/OpenlhServer/ui/main.py:2640
 msgid ""
 "<b><big>Unable to logout machine</big></b>\n"
 "\n"
 "This machine is not available"
 msgstr ""
 
-#: ../src/OpenlhServer/ui/main.py:2669
+#: ../src/OpenlhServer/ui/main.py:2664
 msgid ""
 "<b><big>Unable to quit openlanhouse</big></b>\n"
 "\n"
