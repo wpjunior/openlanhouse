@@ -21,6 +21,7 @@ import logging
 import gobject
 import datetime
 import time
+import webbrowser
 
 from OpenlhServer.globals import *
 _ = gettext.gettext
@@ -58,10 +59,18 @@ def gnome_open_link(obj, link, url_type):
     
     execute_command(command)
 
-if GNOME_OPEN_PATH:
+def open_link(obj, link, url_type):
+    if url_type == URL_TYPE_SITE:
+        webbrowser.open(link)
+
+
+if not GNOME_OPEN_PATH:
     gtk.about_dialog_set_email_hook(gnome_open_link, URL_TYPE_EMAIL)
     gtk.about_dialog_set_url_hook(gnome_open_link, URL_TYPE_SITE)
     gtk.link_button_set_uri_hook(gnome_open_link, URL_TYPE_SITE)
+else:
+    gtk.about_dialog_set_url_hook(open_link, URL_TYPE_SITE)
+    gtk.link_button_set_uri_hook(open_link, URL_TYPE_SITE)
 
 class about(gtk.AboutDialog):
     def __init__(self, logo, Parent=None):
