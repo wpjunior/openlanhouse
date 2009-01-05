@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  Copyright (C) 2008 Wilson Pinto Júnior <wilson@openlanhouse.org>
+#  Copyright (C) 2008-2009 Wilson Pinto Júnior <wilson@openlanhouse.org>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -51,5 +51,6 @@ def get_gtk_builder(name):
     filename = "%s/%s.ui" % (UI_PATH, name)
     assert ospath.exists(filename)
     b = gtk.Builder()
+    b.set_property("translation-domain", I18N_APP)
     b.add_from_file(filename)
     return b
