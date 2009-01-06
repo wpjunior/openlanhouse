@@ -64,7 +64,7 @@ def open_link(obj, link, url_type):
         webbrowser.open(link)
 
 
-if not GNOME_OPEN_PATH:
+if GNOME_OPEN_PATH:
     gtk.about_dialog_set_email_hook(gnome_open_link, URL_TYPE_EMAIL)
     gtk.about_dialog_set_url_hook(gnome_open_link, URL_TYPE_SITE)
     gtk.link_button_set_uri_hook(gnome_open_link, URL_TYPE_SITE)

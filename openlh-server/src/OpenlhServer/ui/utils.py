@@ -18,6 +18,7 @@
 
 import gtk
 import threading
+from os.path import join as os_join
 
 from OpenlhServer.globals import *
 
@@ -48,7 +49,7 @@ def color_entry(entry, color=None):
         entry.modify_base(state, color)
 
 def get_gtk_builder(name):
-    filename = "%s/%s.ui" % (UI_PATH, name)
+    filename = os_join(UI_PATH, "%s.ui" % name)
     assert ospath.exists(filename)
     b = gtk.Builder()
     b.set_property("translation-domain", I18N_APP)
