@@ -598,6 +598,24 @@
             <signal handler="on_ticket_menuitem_activate" name="activate"/>
           </object>
         </child>
+        <child>
+          <object class="GtkAction" id="cashflow_menuitem">
+            <property name="visible">True</property>
+            <property name="stock_id">gtk-exec</property>
+            <property name="name">cashflow_menuitem</property>
+            <property name="label" translatable="yes">_Cash flow item</property>
+            <signal handler="on_cashflow_menuitem_activate" name="activate"/>
+          </object>
+        </child>
+        <child>
+          <object class="GtkAction" id="debt_menuitem">
+            <property name="visible">True</property>
+            <property name="stock_id">gtk-open</property>
+            <property name="name">debt_menuitem</property>
+            <property name="label" translatable="yes">_Debt</property>
+            <signal handler="on_debt_menuitem_activate" name="activate"/>
+          </object>
+        </child>
       </object>
     </child>
     <ui>
@@ -609,6 +627,9 @@
         <menuitem action="newcategoryusermnu"/>
         <separator/>
         <menuitem action="ticket_menuitem"/>
+        <separator/>
+        <menuitem action="cashflow_menuitem"/>
+        <menuitem action="debt_menuitem"/>
       </popup>
     </ui>
   </object>

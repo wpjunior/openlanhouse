@@ -2828,3 +2828,38 @@ class Manager:
                                      add_callback=self.on_ticket_menuitem_activate,
                                      remove_callback=self.remove_ticket)
         dlg.run()
+
+    def on_debt_menuitem_activate(self, obj):
+        print "on_debt_menuitem_activate"
+
+    def on_cashflow_menuitem_activate(self, obj):
+        dlg = dialogs.NewCashFlowItem(users_manager=self.users_manager,
+                                      Parent=self.mainwindow)
+        
+        data = dlg.run()
+            
+        if not data:
+            return
+            
+        #Insert Entry in Cash Flow
+        lctime = localtime()
+        current_hour = "%0.2d:%0.2d:%0.2d" % lctime[3:6]
+        
+        citem = CashFlowItem()
+            
+        if data['type']:
+            citem.type = CASH_FLOW_CUSTOM_TYPE_OUT
+        else:
+            citem.type = CASH_FLOW_CUSTOM_TYPE_IN
+            
+        citem.value = data['value']
+        citem.notes = data['notes']
+        citem.year = lctime[0]
+        citem.month = lctime[1]
+        citem.day = lctime[2]
+        citem.hour = current_hour
+            
+        if 'user_id' in data:
+            citem.user_id = data['user_id']
+            
+        self.cash_flow_manager.insert(citem)
