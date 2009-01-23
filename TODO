@@ -9,7 +9,7 @@ OpenLanhouse Todo
  - Write a very well documentation
  - Shutdown and reboot remotely (call gdm(done) or kdm)
  - Write a ticket system (done)
- - Other OpenDebts works!
+ - Other OpenDebts works! (done)
  - Add a new bugtracker (done)
  - maybe migrate to git (done)
  - maybe works in windows
