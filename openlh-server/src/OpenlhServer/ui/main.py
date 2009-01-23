@@ -357,6 +357,35 @@ class Manager:
             self.open_debts_machine_iters[item.id] = iter
             
         self.statusbar.remove(0, message_id)
+
+        #Populate Other OpenDebts
+        message_id = self.statusbar.push(0, _('Loading Other OpenDebts'))
+        
+        self.open_debts_other_manager.connect('insert', 
+                                            self.on_insert_opendebt_other)
+        self.open_debts_other_manager.connect('delete', 
+                                            self.on_delete_opendebt_other)
+        self.open_debts_other_manager.connect('update', 
+                                            self.on_update_opendebt_other)
+        
+        for item in self.open_debts_other_manager.get_all():
+            if item.user:
+                username = item.user.full_name
+            else:
+                username = _("Unknown user")
+                        
+            the_time = datetime.date(int(item.year), int(item.month), int(item.day))
+            
+            iter = self.open_debts_other_store.append((item.id,
+                                                the_time.strftime('%x'),
+                                                item.time,
+                                                username,
+                                                item.notes,
+                                                "%0.2f" % item.value))
+            
+            self.open_debts_other_iters[item.id] = iter
+            
+        self.statusbar.remove(0, message_id)
         
         #Populate Categories machine
         message_id = self.statusbar.push(0, _('Loading Machine Categories'))
@@ -579,6 +608,9 @@ class Manager:
             
             self.cash_flow_manager.insert(citem)
         
+        elif self.selpage == 3:
+            self.on_debt_menuitem_activate(None)
+        
     def new_machine(self, data):
         print data
         
@@ -652,7 +684,24 @@ class Manager:
                 dlg.run(currency, user, credit, last_machine)
         
     def del_clicked(self, obj):
-        model, iteration = self.get_selects(self.seltree)
+
+        # Get Treeview
+
+        if self.selpage == 3:
+            pagenum = self.xml.get_object("open_debts_notebook").get_current_page()
+            
+            if pagenum == 0:
+                tree = self.xml.get_object("open_debts_machine_treeview")
+            elif pagenum == 1:
+                tree = self.xml.get_object("open_debts_other_treeview")
+
+        else:
+            tree = self.seltree
+        
+        if not tree:
+            return
+
+        model, iteration = self.get_selects(tree)
         
         if self.selpage == 0 and iteration:
             machine_id = int(model.get_value(iteration, 0))
@@ -695,6 +744,46 @@ class Manager:
                         print str(e)
                 
                 self.users_manager.delete(user)
+        
+        elif self.selpage == 3 and iteration:
+            pagenum = self.xml.get_object("open_debts_notebook").get_current_page()
+            
+            d = dialogs.delete(_("<b><big>Are you sure you want to "
+                                 "permanently delete this debt?</big></b>\n\n"
+                                 "if you delete this debt, "
+                                 "it will be permanently lost"),
+                               Parent=self.mainwindow)
+
+            if not d.response:
+                return
+            
+            # Machine usage
+            if pagenum == 0:
+                model, iteration = self.get_selects(self.xml.get_object(
+                                            "open_debts_machine_treeview"))
+        
+                if not iteration:
+                    return
+        
+                id = int(model.get_value(iteration, 0))
+        
+                oitem = self.open_debts_machine_manager.get_all().filter_by(id=id).one()
+                self.open_debts_machine_manager.delete(oitem)
+            
+            # Other
+            elif pagenum == 1:
+                model, iteration = self.get_selects(self.xml.get_object(
+                                            "open_debts_other_treeview"))
+        
+                if not iteration:
+                    return
+        
+                id = int(model.get_value(iteration, 0))
+        
+                oitem = self.open_debts_other_manager.get_all().filter_by(id=id).one()
+                self.open_debts_other_manager.delete(oitem)
+            
+            return
     
     def block_machine_clicked(self, obj):
         model, iteration = self.get_selects(self.machine_tree)
@@ -1621,6 +1710,31 @@ class Manager:
         
     def on_update_opendebt_machine(self, obj, item):
         print obj, item
+        
+    #OpenDebts Machine
+    def on_insert_opendebt_other(self, obj, item):
+        if item.user:
+            username = item.user.full_name
+        else:
+            username = _("Unknown user")
+                
+        the_time = datetime.date(int(item.year), int(item.month), int(item.day))
+        
+        iter = self.open_debts_other_store.append((item.id,
+                                                the_time.strftime('%x'),
+                                                item.time,
+                                                username,
+                                                item.notes,
+                                                "%0.2f" % item.value))
+            
+        self.open_debts_other_iters[item.id] = iter
+        
+    def on_delete_opendebt_other(self, obj, id):
+        iter = self.open_debts_other_iters.pop(id)
+        self.open_debts_other_store.remove(iter)
+        
+    def on_update_opendebt_other(self, obj, item):
+        print obj, item
     
     #Machine's Detect
     def update_new_machines_state(self):
@@ -1836,6 +1950,9 @@ class Manager:
 
     ## Cash Flow
     def get_cash_flow_type_by_int(self, cash_flow_type):
+        
+        type_str = _("Unknown type")
+        
         if cash_flow_type == CASH_FLOW_TYPE_CREDIT_IN:
             type_str = _("Credit In")
         elif cash_flow_type == CASH_FLOW_TYPE_CREDIT_OUT:
@@ -1852,6 +1969,9 @@ class Manager:
             type_str = _("Ticket return")
         elif cash_flow_type == CASH_FLOW_TYPE_MACHINE_PRE_PAID:
             type_str = _("Machine Usage (Pre-Paid)")
+        elif cash_flow_type == CASH_FLOW_TYPE_DEBT_PAID:
+            type_str = _("Debt Paid")
+        
         return type_str
         
     def add_cash_flow_row(self, year, month, day, type, 
@@ -2210,7 +2330,56 @@ class Manager:
         self.open_debts_machine_manager.delete(oitem)
     
     def on_paid_open_debts_other(self, obj):
-        print "on_paid_open_debts_machine"
+        model, iteration = self.get_selects(self.xml.get_object(
+                                            "open_debts_other_treeview"))
+        
+        if not iteration:
+            return
+        
+        id = int(model.get_value(iteration, 0))
+        
+        oitem = self.open_debts_other_manager.get_all().filter_by(id=id).one()
+        
+        if oitem.user:
+            cur_credit = self.users_manager.get_credit(User.id, oitem.user.id)
+
+            if cur_credit >= oitem.value:
+                dlg = dialogs.yes_no(_("This user has enough credit to pay the debt, "
+                                       "want you to use the credits to pay the bill?"),
+                                     Parent=self.mainwindow)
+                
+                # Pay with user credits
+                if dlg.response:
+                    cur_credit = self.users_manager.get_credit(User.id, oitem.user.id)
+                    cur_credit -= oitem.value
+                    
+                    # Check user credit is upper than 0
+                    if not cur_credit > 0:
+                        return
+                    
+                    self.users_manager.update_credit(oitem.user_id,
+                                                     cur_credit)
+                    
+                    self.open_debts_other_manager.delete(oitem)
+                    return
+            
+            
+        # Insert Entry in Cash Flow
+        lctime = localtime()
+        current_hour = "%0.2d:%0.2d:%0.2d" % lctime[3:6]
+        
+        citem = CashFlowItem()
+        citem.type = CASH_FLOW_TYPE_DEBT_PAID
+        citem.value = oitem.value
+        citem.user_id = oitem.user_id
+        citem.notes = oitem.notes
+        citem.year = lctime[0]
+        citem.month = lctime[1]
+        citem.day = lctime[2]
+        citem.hour = current_hour
+        
+        self.cash_flow_manager.insert(citem)
+        self.open_debts_other_manager.delete(oitem)
     
     def on_view_history(self, obj):
         if self.selpage == 0:
