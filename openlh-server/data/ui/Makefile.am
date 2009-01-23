@@ -24,6 +24,7 @@ ui_DATA = \
 	select_machine_category.ui \
 	new_ticket.ui \
 	view_all_tickets.ui \
-	edit_close_apps.ui
+	edit_close_apps.ui \
+	add_opendebt.ui
 
 EXTRA_DIST = $(ui_DATA) 

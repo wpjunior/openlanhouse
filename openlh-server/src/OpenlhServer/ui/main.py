@@ -22,6 +22,7 @@ import logging
 import datetime
 
 from time import localtime
+from time import strftime as time_strftime
 from os import remove as os_remove
 from os import path as ospath
 
@@ -36,7 +37,7 @@ from OpenlhCore.utils import md5_cripto
 from OpenlhServer.ui.utils import get_gtk_builder
 from OpenlhServer.utils import user_has_avatar, get_user_avatar_path
 from OpenlhServer.db.models import CashFlowItem, User, MachineCategory, UserCategory
-from OpenlhServer.db.models import OpenTicket
+from OpenlhServer.db.models import OpenTicket, OpenDebtOtherItem
 from OpenlhServer.globals import *
 _ = gettext.gettext
 
@@ -2830,7 +2831,35 @@ class Manager:
         dlg.run()
 
     def on_debt_menuitem_activate(self, obj):
-        print "on_debt_menuitem_activate"
+        dlg = dialogs.NewDebt(self.users_manager,
+                              Parent=self.mainwindow)
+        data = dlg.run()
+        
+        if not data:
+            return
+        
+        o = self.users_manager.get_credit_and_id(data['user'])
+
+        if not o:
+            return
+
+        user_id = o[1]
+        now = datetime.datetime.now()
+        now_time = time_strftime(_("%H:%M:%S"))
+
+        i = OpenDebtOtherItem()
+        i.day = now.day
+        i.month = now.month
+        i.year = now.year
+
+        i.time = i.start_time = i.end_time = now_time
+        i.value = data['value']
+        i.user_id = user_id
+                
+        if 'notes' in data:
+            i.notes = data['notes']
+        
+        self.open_debts_other_manager.insert(i)
 
     def on_cashflow_menuitem_activate(self, obj):
         dlg = dialogs.NewCashFlowItem(users_manager=self.users_manager,

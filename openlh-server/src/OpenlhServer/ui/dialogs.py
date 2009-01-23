@@ -2823,3 +2823,109 @@ class EditCloseApplications:
 
         self.dialog.destroy()
         
+class NewDebt:
+    def __init__(self, users_manager, Parent=None):
+        self.xml = get_gtk_builder('add_opendebt')
+        self.dialog = self.xml.get_object("dialog")
+        
+        self.users_manager = users_manager
+
+        self._user_entry_timeout_id = 0
+
+        if Parent:
+            self.dialog.set_transient_for(Parent)
+
+        self.total_to_pay = self.xml.get_object("total_to_pay")
+        self.warning_label = self.xml.get_object("warning_label")
+        self.user_entry = self.xml.get_object("user_entry")
+        self.xml.get_object("user_status").set_from_file(None)
+        
+        #EntryCompletion
+        self.entry_completion = gtk.EntryCompletion()
+        self.entry_list_store = gtk.ListStore(gobject.TYPE_STRING,
+                                              gobject.TYPE_STRING)
+        
+        
+        render_name = gtk.CellRendererText()
+        self.entry_completion.pack_start(render_name, expand=True)
+        self.entry_completion.add_attribute(render_name, "text", 0)
+        
+        render_nick = gtk.CellRendererText()
+        self.entry_completion.pack_start(render_nick, expand=False)
+        self.entry_completion.add_attribute(render_nick, "text", 1)
+         
+        self.entry_completion.set_property('text_column', 1)
+
+        self.entry_completion.set_model(self.entry_list_store)
+        self.entry_completion.set_match_func(self.entry_completion_match_func)
+        self.user_entry.set_completion(self.entry_completion)
+        self.populate_list_store()
+        
+        self.xml.connect_signals(self)
+        
+    def run(self):
+        s = self.dialog.run()
+
+        if not s:
+            self.dialog.destroy()
+            return
+            
+        data = {}
+        data['user'] = self.xml.get_object('user_entry').get_text()
+        data['value'] = self.xml.get_object('debt_value').get_value()
+        
+        bf = self.xml.get_object('notes').get_buffer()
+        data['notes'] = bf.get_text(bf.get_start_iter(),
+                                    bf.get_end_iter())
+
+        self.dialog.destroy()
+        return data
+
+    def entry_completion_match_func(self, completion, key, iter):
+        
+        model = completion.get_model()
+        full_name = model.get_value(iter, 0)
+        nick = model.get_value(iter, 1)
+        
+        if nick.startswith(key) or full_name.lower().startswith(key):
+            return True
+        
+        return False
+
+    def populate_list_store(self):
+        for user in self.users_manager.get_full_name_and_nick():
+            self.entry_list_store.append(user)
+
+    def on_user_entry_changed(self, obj):
+        
+        if self._user_entry_timeout_id > 0:
+            gobject.source_remove(self._user_entry_timeout_id)
+        
+        timeout = 1000
+        
+        self._user_entry_timeout_id = gobject.timeout_add(timeout,
+                                    self.on_user_entry_changed_done)
+
+    def on_user_entry_changed_done(self):
+        nick = self.user_entry.get_text()
+        out = self.users_manager.get_credit_and_id(nick)
+
+        if out:
+            self.user_found = True
+            self.xml.get_object('found_status').set_text("")
+
+        elif nick == "":
+            self.user_found = False
+            self.xml.get_object('found_status').set_text("")
+
+        else:
+            self.user_found = False
+            self.xml.get_object('found_status').set_text(_("User not found"))
+        
+        self.xml.get_object('ok_button').set_sensitive(self.user_found)
+        
+        if self.user_found:
+            self.xml.get_object('user_status').set_from_stock('gtk-apply',
+                                                              gtk.ICON_SIZE_MENU)
+        else:
+            self.xml.get_object('user_status').set_from_file(None)
