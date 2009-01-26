@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+_Name=LAN House Preferences
+_Comment=Preferences for you LAN House
+TryExec=openlh-client-config
+Exec=openlh-client-config
+Icon=openlh-client-config
+Type=Application
+Categories=GNOME;GTK;Settings;
+StartupNotify=true

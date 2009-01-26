@@ -3,7 +3,7 @@ SUBDIRS = ui glade icons
 uidir = $(datadir)/OpenlhClient
 
 desktopdir = $(datadir)/applications
-desktop_in_files = openlh-client.desktop.in
+desktop_in_files = openlh-client.desktop.in openlh-client-config.desktop.in
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 @INTLTOOL_DESKTOP_RULE@
 
