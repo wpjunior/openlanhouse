@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  Copyright (C) 2008 Wilson Pinto Júnior <wilson@openlanhouse.org>
+#  Copyright (C) 2008-2009 Wilson Pinto Júnior <wilson@openlanhouse.org>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@ import logging
 import getopt
 
 from OpenlhClient.globals import *
-from OpenlhCore.utils import mkdir
+from OpenlhCore.utils import mkdir, pid_alive
 _ = gettext.gettext
 
 disable_autodebug = False
@@ -79,8 +79,7 @@ from OpenlhClient.defaults import defaults
 config_init("openlh-client", CONFIG_FILE, defaults)
 
 from time import strftime
-from OpenlhClient import main
-from OpenlhCore.utils import rename_process, pid_alive
+from OpenlhCore.utils import rename_process
 from OpenlhClient.utils import generate_id_bytime
 from OpenlhClient.ui import dialogs
 from OpenlhCore.net import certgen
@@ -88,12 +87,12 @@ from OpenlhCore.net import certgen
 if os.name == 'posix':
     log_normal_format = ('\033[0;33m%(name)-17s ' +
                          '\033[0;31m%(levelname)-8s '+
-                         '\033[0;37m%(message)s') #Debug colored by ANSI colors
+                         '\033[0;37m%(message)s') # Debug colored by ANSI colors
     
     log_debug_format = ('\033[0;32m%(asctime)s ' +
                         '\033[0;31m%(levelname)-6s ' +
                         '\033[0;33m%(name)-17s ' +
-                        '\033[0;37m%(message)s') #Debug colored by ANSI colors
+                        '\033[0;37m%(message)s') # Debug colored by ANSI colors
 else:
     log_normal_format = '%(name)-14s %(levelname)-8s %(message)s'
     log_debug_format = '%(asctime)s (levelname)-6s (name)-17s (message)s'
@@ -112,28 +111,17 @@ logging.basicConfig(level=log_level,
 
 # Check OpenlhClient is already running
 if pid_alive('openlh-client', CLIENT_PID_FILE):
-    dialogs.ok_only(_('OpenLanhouse-Client is already running'),
+    dialogs.ok_only(_('OpenLanhouse-Client is running'),
                     ICON=dialogs.gtk.MESSAGE_ERROR)
     sys.exit(3)
 
-pid_dir =  os.path.dirname(CLIENT_PID_FILE)
-if not os.path.exists(pid_dir):
-    mkdir(pid_dir)
-
-
-f = open(CLIENT_PID_FILE, 'w')
-f.write(str(os.getpid()))
-f.close()
-del pid_dir
-del f
-
-class OpenlhClient:
+class OpenlhClientConfig:
     
     def __init__(self):
         
-        rename_process('openlh-client')
+        rename_process('openlh-client-config')
         mkdir(CACHE_PATH)
-        logging.info('Starting OpenLanhouse Client')
+        logging.info('Starting OpenLanhouse Client Config')
         self.conf_client = get_default_client()
         
         if not self.conf_client.get_string('hash_id'):
@@ -224,8 +212,8 @@ class OpenlhClient:
         if not(os.path.exists(CLIENT_TLS_KEY)) or not(os.path.exists(CLIENT_TLS_CERT)):
             self.generate_keys()
         
-        app = main.Client()
-        self.stop_gnome_screensaver()
+        #app = main.Client()
+        #self.stop_gnome_screensaver()
         
         try:
             gtk.main()
@@ -234,5 +222,5 @@ class OpenlhClient:
         
 
 if __name__ == "__main__":
-    app = OpenlhClient()
+    app = OpenlhClientConfig()
     app.run()

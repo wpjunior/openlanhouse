@@ -58,6 +58,7 @@ LOGO_CACHE = ospath.join(CACHE_PATH, 'logo')
 ##CLIENT FILES
 ##CONFIG FILES
 CONFIG_CLIENT = ospath.join(CONFIG_PATH, 'openlh-client.conf')
+CLIENT_PID_FILE = ospath.join(CONFIG_PATH, 'openlh-client.lock')
 
 ##CLIENT TLS FILES
 CLIENT_TLS_KEY = ospath.join(CERTS_PATH, 'openlh-client.key')
