@@ -1478,8 +1478,23 @@ class Manager:
     def on_machine_treeview_status_sort(self, model, iter1, iter2, column_id):
         pix_a = model.get_value(iter1, column_id)
         pix_b = model.get_value(iter2, column_id)
-        print pix_a,pix_b
-        return -1
+        
+        types = {self.halt_icon: 0,
+                 self.available_icon: 1,
+                 self.busy_icon: 2}
+        
+        # transform pixbuf in int
+        if pix_a in types:
+            type_a = types[pix_a]
+        else:
+            type_a = 3
+        
+        if pix_b in types:
+            type_b = types[pix_b]
+        else:
+            type_b = 3
+        
+        return cmp(type_a, type_b)
     
     def on_user_treeview_credit_sort(self, model, iter1, iter2, column_id):
         try:
