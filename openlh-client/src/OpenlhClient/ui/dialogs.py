@@ -427,3 +427,17 @@ class ConnectServer:
             return host
         
         self.dialog.hide()
+
+class Prefs:
+    def __init__(self, server=None):
+        self.xml = get_gtk_builder("prefs")
+        self.dialog = self.xml.get_object("dialog")
+        
+        if server:
+            self.xml.get_object("server_entry").set_text(server)
+    
+    def run(self):
+        self.dialog.run()
+        addr = self.xml.get_object("server_entry").get_text()
+        self.dialog.destroy()
+        return addr

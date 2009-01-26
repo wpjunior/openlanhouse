@@ -192,34 +192,18 @@ class OpenlhClientConfig:
                 pass
             
             sys.exit(0)
-    
-    def stop_gnome_screensaver(self):
-        try:
-            import dbus
-            s = dbus.SessionBus()
-            services = s.get_object('org.freedesktop.DBus',
-                                    '/org/freedesktop/DBus').ListNames()
-    
-            if not "org.gnome.ScreenSaver" in services:
-                return
         
-            s.get_object("org.gnome.ScreenSaver", "/org/gnome/ScreenSaver").Quit()
-        except:
-            pass
-    
     def run(self):
         
         if not(os.path.exists(CLIENT_TLS_KEY)) or not(os.path.exists(CLIENT_TLS_CERT)):
             self.generate_keys()
         
-        #app = main.Client()
-        #self.stop_gnome_screensaver()
+        addr = self.conf_client.get_string("server")
+        dlg = dialogs.Prefs(server=addr)
+        addr = dlg.run()
         
-        try:
-            gtk.main()
-        except:
-            pass
-        
+        if addr:
+            self.conf_client.set_string("server", addr)        
 
 if __name__ == "__main__":
     app = OpenlhClientConfig()
