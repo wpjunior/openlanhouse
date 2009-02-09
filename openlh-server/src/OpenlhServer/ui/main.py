@@ -50,6 +50,7 @@ class Manager:
     cash_flow_total = 0
     notebook_interative = True
     
+    # GtkTreeIters
     machines_iters = {}
     category_machines_iters = {}
     detect_machine_iters = {}
@@ -61,6 +62,7 @@ class Manager:
     
     cash_flow_status_msg_id = 0
     
+    # Search texts
     machine_search_text = ""
     user_search_text = ""
     cash_flow_search_text = ""
@@ -72,7 +74,6 @@ class Manager:
     def __init__(self, daemon):
         
         self.conf_client = get_default_client()
-        
         self.conf_client.notify_add("ticket_suport",
                                      self.on_ticket_suport_cb)
         
@@ -88,6 +89,7 @@ class Manager:
         
         self.daemon = daemon
         
+        # Get Table managers
         self.machine_manager = self.daemon.machine_manager
         self.machine_category_manager = self.daemon.machine_category_manager
         self.user_category_manager = self.daemon.user_category_manager
@@ -101,23 +103,22 @@ class Manager:
         self.instmachine_manager = self.daemon.instmachine_manager
         self.instmachine_manager.authorization_func = self.on_authorization_machine
         
+        # Connect Machine signals
         self.instmachine_manager.connect("new", self.on_new_machine)
         self.instmachine_manager.connect("delete", self.on_delete_machine)
         self.instmachine_manager.connect("update", self.on_update_machine)
         self.instmachine_manager.connect("update_total_to_pay",
                                          self.on_update_total_to_pay_machine)
-        
         self.instmachine_manager.connect("status_changed", 
-                                     self.on_machine_status_changed)
+                                         self.on_machine_status_changed)
         
         self.logo = self.icons.get_icon(SERVER_ICON_NAME)
         
-        #Widgets
+        # get gtkbuilder widgets
         self.xml = get_gtk_builder("main")
         
         self.mainwindow = self.xml.get_object('mainwindow')
         self.new_machines = self.xml.get_object('new_machines')
-        
         self.new_machines_tree = self.xml.get_object('new_machines_tree')
         self.machine_tree = self.xml.get_object('machinetree')
         self.users_tree = self.xml.get_object('userstree')
@@ -125,20 +126,18 @@ class Manager:
         self.open_debts_treeview = self.xml.get_object('open_debts_treeview')
         self.machines_types_tree = self.xml.get_object('machines_types_tree')
         self.user_category_tree = self.xml.get_object('user_category_tree')
-        
         self.ui_manager1 = self.xml.get_object("uimanager1")
-        
         self.bntaction1 = self.xml.get_object('bntaction1')
         self.bntaction2 = self.xml.get_object('bntaction2')
         self.bntaction3 = self.xml.get_object('bntaction3')
         self.bntaction4 = self.xml.get_object('bntaction4')
-        
         self.statusbar = self.xml.get_object("statusbar")
         self.columns_mnu = self.ui_manager1.get_widget(
-                       '/ui/MainMenu/mnuView/coluns_mnu')
+            '/ui/MainMenu/mnuView/coluns_mnu')
         self.tray_menu = self.xml.get_object('tray_menu')
         self.show_menu = self.xml.get_object('show_menu')
         
+        # Add Calendar
         self.date_daily_calendar = DateEdit.DateEdit()
         
         self.xml.get_object("daily_day_hbox").pack_start(self.date_daily_calendar)
@@ -156,12 +155,14 @@ class Manager:
         self.xml.get_object('cash_flow_tgl').set_mode(False)
         self.xml.get_object('open_debts_radio_btn').set_mode(False)
         
+        # Construct Search Entrys
         icon_theme = gtk.icon_theme_get_default()
         self.machine_search_entry = SearchEntry(icon_theme)
         self.user_search_entry = SearchEntry(icon_theme)
         self.cash_flow_search_entry = SearchEntry(icon_theme)
         self.open_debts_search_entry = SearchEntry(icon_theme)
         
+        # Set mnemonic widgets
         self.xml.get_object("find_machines_title").set_mnemonic_widget(
                                                 self.machine_search_entry)
         self.xml.get_object("find_machines_label").set_mnemonic_widget(
@@ -182,13 +183,14 @@ class Manager:
         self.xml.get_object("label_open_debts").set_mnemonic_widget(
                                                 self.open_debts_search_entry)
         
+        # Connect search entry signals
         self.machine_search_entry.connect("terms-changed",
-                                                self.on_machine_search)
+                                          self.on_machine_search)
         self.user_search_entry.connect("terms-changed", self.on_user_search)
         self.cash_flow_search_entry.connect("terms-changed",
-                                                self.on_cash_flow_search)
+                                            self.on_cash_flow_search)
         self.open_debts_search_entry.connect("terms-changed",
-                                                self.on_open_debts_search)
+                                             self.on_open_debts_search)
         
         self.machine_search_entry.show()
         self.user_search_entry.show()
@@ -197,11 +199,13 @@ class Manager:
         
         self.config_trees()
         
+        # Construct tray icon
         self.tray_icon = gtk.status_icon_new_from_icon_name("openlh-server")
         self.tray_icon.set_tooltip("openlh-server")
         self.tray_icon.connect('popup-menu', self.tray_menu_show)
         self.tray_icon.connect('activate', self.show_hide)
         
+        # Get widget configurations
         sel = self.conf_client.get_int('ui/page_selected')
         self.set_page_selected(sel)
         
@@ -240,8 +244,26 @@ class Manager:
         
         self.xml.connect_signals(self)
         
-        #Load Plugins
+        # Load Plugins
         self.daemon.load_plugins(self)
+
+    def get_selected_treeview(self):
+        # Get Treeview
+        if self.selpage == 3:
+            pagenum = self.xml.get_object("open_debts_notebook").get_current_page()
+            
+            if pagenum == 0:
+                tree = self.xml.get_object("open_debts_machine_treeview")
+            elif pagenum == 1:
+                tree = self.xml.get_object("open_debts_other_treeview")
+
+        else:
+            tree = self.seltree
+        
+        if not tree:
+            return
+        
+        return tree
     
     def on_window_state_event(self, obj, event):
         if event.new_window_state == gtk.gdk.WINDOW_STATE_MAXIMIZED:
@@ -265,7 +287,7 @@ class Manager:
     
     def populate_trees(self):
         
-        #Populate Machines treeview
+        # Populate Machines treeview
         
         message_id = self.statusbar.push(0, _('Loading machines'))
         
@@ -277,9 +299,9 @@ class Manager:
             self.machines_iters[key] = iter
         
         self.statusbar.remove(0, message_id)
-        self.on_update_machines_time() #Start Loop to update times
+        self.on_update_machines_time() # Start Loop to update times
         
-        #Populate Users treeview
+        # Populate Users treeview
         message_id = self.statusbar.push(0, _('Loading users'))
         
         self.users_manager.connect('insert', self.on_new_user)
@@ -298,7 +320,7 @@ class Manager:
             
         self.statusbar.remove(0, message_id)
         
-        #Populate Cash Flow
+        # Populate Cash Flow
         cal = self.daily_calendar
         self.on_cash_flow_calendar_day_selected(cal)
         self.on_cash_flow_calendar_month_changed(cal)
@@ -320,9 +342,9 @@ class Manager:
                             self.on_cash_flow_calendar_monthly_mode_changed)
             
         self.cash_flow_manager.connect('insert',
-                                              self.on_cash_flow_insert)
+                                       self.on_cash_flow_insert)
         
-        #Populate OpenDebts Machine
+        # Populate OpenDebts Machine
         message_id = self.statusbar.push(0, _('Loading OpenDebts'))
         
         self.open_debts_machine_manager.connect('insert', 
@@ -346,27 +368,27 @@ class Manager:
             the_time = datetime.date(int(item.year), int(item.month), int(item.day))
             
             iter = self.open_debts_machine_store.append((item.id,
-                                                the_time.strftime('%x'),
-                                                machine_name,
-                                                item.start_time, 
-                                                item.end_time, 
-                                                username,
-                                                item.notes,
-                                                "%0.2f" % item.value))
+                                                         the_time.strftime('%x'),
+                                                         machine_name,
+                                                         item.start_time, 
+                                                         item.end_time, 
+                                                         username,
+                                                         item.notes,
+                                                         "%0.2f" % item.value))
             
             self.open_debts_machine_iters[item.id] = iter
             
         self.statusbar.remove(0, message_id)
 
-        #Populate Other OpenDebts
+        # Populate Other OpenDebts
         message_id = self.statusbar.push(0, _('Loading Other OpenDebts'))
         
         self.open_debts_other_manager.connect('insert', 
-                                            self.on_insert_opendebt_other)
+                                              self.on_insert_opendebt_other)
         self.open_debts_other_manager.connect('delete', 
-                                            self.on_delete_opendebt_other)
+                                              self.on_delete_opendebt_other)
         self.open_debts_other_manager.connect('update', 
-                                            self.on_update_opendebt_other)
+                                              self.on_update_opendebt_other)
         
         for item in self.open_debts_other_manager.get_all():
             if item.user:
@@ -377,25 +399,25 @@ class Manager:
             the_time = datetime.date(int(item.year), int(item.month), int(item.day))
             
             iter = self.open_debts_other_store.append((item.id,
-                                                the_time.strftime('%x'),
-                                                item.time,
-                                                username,
-                                                item.notes,
-                                                "%0.2f" % item.value))
+                                                       the_time.strftime('%x'),
+                                                       item.time,
+                                                       username,
+                                                       item.notes,
+                                                       "%0.2f" % item.value))
             
             self.open_debts_other_iters[item.id] = iter
             
         self.statusbar.remove(0, message_id)
         
-        #Populate Categories machine
+        # Populate Categories machine
         message_id = self.statusbar.push(0, _('Loading Machine Categories'))
         
         self.machine_category_manager.connect('insert', 
-                                            self.on_insert_category_machine)
+                                              self.on_insert_category_machine)
         self.machine_category_manager.connect('delete', 
-                                            self.on_delete_category_machine)
+                                              self.on_delete_category_machine)
         self.machine_category_manager.connect('update', 
-                                            self.on_update_category_machine)
+                                              self.on_update_category_machine)
         
         tree = self.machines_types_tree
         
@@ -423,13 +445,12 @@ class Manager:
         
         self.populate_category_machine(0, _("All Machines"))
         
-        #populate
         for i in self.machine_category_manager.get_all():
             self.populate_category_machine(i.id, i.name)
         
         self.statusbar.remove(0, message_id)
         
-        #Populate Users Categories
+        # Populate Users Categories
         message_id = self.statusbar.push(0, _('Loading User Categories'))
         
         self.user_category_manager.connect('insert', 
@@ -456,13 +477,12 @@ class Manager:
         
         self.populate_user_category(0, _("All Users"))
         
-        #populate
         for i in self.user_category_manager.get_all():
             self.populate_user_category(i.id, i.name)
         
         self.statusbar.remove(0, message_id)
         
-        #Populate Categories Open Debts
+        # Populate Categories Open Debts
         tree = self.xml.get_object('open_debts_types_tree')
         
         model = gtk.ListStore(gobject.TYPE_PYOBJECT,
@@ -483,7 +503,7 @@ class Manager:
         
         self.set_open_debts_selected_page()
         
-        #Set Sensitive True
+        # Set Sensitive True
         self.xml.get_object('MainMenu').set_sensitive(True)
         self.xml.get_object('MainToolbar').set_sensitive(True)
         self.xml.get_object('notebook').set_sensitive(True)
@@ -499,8 +519,7 @@ class Manager:
                                                        data, None)
     
     def on_new_user_menuitem_activate(self, obj):
-        price_per_hour = self.conf_client.get_float(
-                                'price_per_hour')
+        price_per_hour = self.conf_client.get_float('price_per_hour')
         
         dlg = dialogs.adduser(manager=self,
                               price_per_hour=price_per_hour,
@@ -558,75 +577,37 @@ class Manager:
     def new_clicked(self, obj):
         
         if self.selpage == 0:
-            dlg = dialogs.AlertAddMachine(Parent=self.mainwindow)
-            if dlg.run():
-                dlg = dialogs.AddMachine(Parent=self.mainwindow, Manager=self)
-                data = dlg.run(set_hash_sensitive=True)
-                if data:
-                    self.instmachine_manager.allow_machine(data['hash_id'],
-                                                       data, None)
+            self.on_newmachinemnu_activate(obj)
         
         elif self.selpage == 1:
-            price_per_hour = self.conf_client.get_float(
-                                    'price_per_hour')
-            
-            dlg = dialogs.adduser(manager=self,
-                                  price_per_hour=price_per_hour,
-                                  Parent=self.mainwindow)
-            
-            dlg.run()
+            self.on_new_user_menuitem_activate(obj)
         
         elif self.selpage == 2:
-            dlg = dialogs.NewCashFlowItem(users_manager=self.users_manager,
-                                  Parent=self.mainwindow)
-            
-            data = dlg.run()
-            
-            if not data:
-                return
-            
-            #Insert Entry in Cash Flow
-            lctime = localtime()
-            current_hour = "%0.2d:%0.2d:%0.2d" % lctime[3:6]
-        
-            citem = CashFlowItem()
-            
-            if data['type']:
-                citem.type = CASH_FLOW_CUSTOM_TYPE_OUT
-            else:
-                citem.type = CASH_FLOW_CUSTOM_TYPE_IN
-            
-            citem.value = data['value']
-            citem.notes = data['notes']
-            citem.year = lctime[0]
-            citem.month = lctime[1]
-            citem.day = lctime[2]
-            citem.hour = current_hour
-            
-            if 'user_id' in data:
-                citem.user_id = data['user_id']
-            
-            self.cash_flow_manager.insert(citem)
+            self.on_cashflow_menuitem_activate(obj)
         
         elif self.selpage == 3:
-            self.on_debt_menuitem_activate(None)
-        
-    def new_machine(self, data):
-        print data
-        
+            self.on_debt_menuitem_activate(obj)
+                
     def prefs_clicked(self, obj):
         self.set_sensitive(False)
-        dlg= prefs.Prefs(Parent=self.mainwindow)
+
+        dlg = prefs.Prefs(Parent=self.mainwindow)
         dlg.prefs.run()
-        dlg.prefs.hide()
+        dlg.prefs.destroy()
         self.reload_configs()
+
         self.set_sensitive(True)
         
     def reload_configs(self):
         self.daemon.reload_configs()
     
     def edit_clicked(self, obj):
-        model, iteration = self.get_selects(self.seltree)
+        tree = self.get_selected_treeview()
+        
+        if not tree:
+            return
+
+        model, iteration = self.get_selects(tree)
         
         if self.selpage == 0 and iteration:
             machine_id = int(model.get_value(iteration, 0))
@@ -634,7 +615,7 @@ class Manager:
             machine_inst = self.instmachine_manager.machines_by_id[machine_id]
             
             dlg = dialogs.AddMachine(Parent=self.mainwindow, Manager=self)
-            dlg.dialog.set_title(_("Edit Machine - OpenLanhouse"))
+            dlg.dialog.set_title(_("Edit Machine"))
             data = dlg.run({'hash_id': machine_inst.hash_id,
                             'name': machine_inst.name,
                             'description': machine_inst.description,
@@ -655,7 +636,13 @@ class Manager:
             app.run(user)
     
     def properties_clicked(self, obj):
-        model, iteration = self.get_selects(self.seltree)
+
+        tree = self.get_selected_treeview()
+        
+        if not tree:
+            return
+
+        model, iteration = self.get_selects(tree)
         
         if self.selpage == 0 and iteration:
             machine_id = int(model.get_value(iteration, 0))
@@ -671,7 +658,6 @@ class Manager:
             dlg.run(machine_inst, last_user)
         
         if self.selpage == 1 and iteration:
-            
             user_id = int(model.get_value(iteration, 0))
             
             user = self.users_manager.get_all().filter_by(id=user_id).one()
@@ -684,19 +670,8 @@ class Manager:
                 dlg.run(currency, user, credit, last_machine)
         
     def del_clicked(self, obj):
-
-        # Get Treeview
-
-        if self.selpage == 3:
-            pagenum = self.xml.get_object("open_debts_notebook").get_current_page()
-            
-            if pagenum == 0:
-                tree = self.xml.get_object("open_debts_machine_treeview")
-            elif pagenum == 1:
-                tree = self.xml.get_object("open_debts_other_treeview")
-
-        else:
-            tree = self.seltree
+        
+        tree = self.get_selected_treeview()
         
         if not tree:
             return
@@ -736,7 +711,7 @@ class Manager:
                                Parent=self.mainwindow)
             
             if d.response:
-                #Remove Avatar File
+                # Remove Avatar File
                 if user_has_avatar(user.id):
                     try:
                         os_remove(get_user_avatar_path(user.id))
@@ -815,9 +790,8 @@ class Manager:
         
         if block:
             self.instmachine_manager.block(machine_inst,
-                                       after,
-                                       action
-                                      )
+                                           after,
+                                           action)
     
     def unblock_machine_clicked(self, obj):
         model, iteration = self.get_selects(self.machine_tree)
@@ -842,7 +816,7 @@ class Manager:
                             ICON=gtk.MESSAGE_ERROR)
             return
         
-        #Get Price per hour :-)
+        # Get Price per hour :-)
         price_per_hour = self.instmachine_manager.get_price_per_hour(machine_inst)
         
         currency = self.conf_client.get_string(
@@ -861,8 +835,7 @@ class Manager:
                                              data['user_id'],
                                              data['time'],
                                              data['price_per_hour'],
-                                             data['pre_paid']
-                                        )
+                                             data['pre_paid'])
     
     def on_view_history_machine(self, obj):
         model, iteration = self.get_selects(self.machine_tree)
@@ -892,7 +865,7 @@ class Manager:
                                    Parent=self.mainwindow)
         dlg.run(user_id, user_name)
     
-    #Add/Remove Time
+    # Add/Remove Time
     def on_add_time_clicked(self, obj):
         model, iteration = self.get_selects(self.machine_tree)
         
@@ -1484,16 +1457,15 @@ class Manager:
                  self.busy_icon: 2}
         
         # transform pixbuf in int
+        type_a = None
+        type_b = None
+
         if pix_a in types:
             type_a = types[pix_a]
-        else:
-            type_a = 3
-        
+                
         if pix_b in types:
             type_b = types[pix_b]
-        else:
-            type_b = 3
-        
+                
         return cmp(type_a, type_b)
     
     def on_user_treeview_credit_sort(self, model, iter1, iter2, column_id):
