@@ -22,6 +22,25 @@ def get_background(request, machine_hash):
     """
     Get Background
     """
+    machine_manager = request.daemon.machine_manager
+    machine_category_manager = request.daemon.machine_category_manager
+    
+    cmd = machine_manager.get_all().filter_by(hash_id=machine_hash)
+    result = cmd.all()
+    
+    if result:
+        machine = result[0]
+        
+        if machine.category:
+            cat = machine.category
+            
+            if cat.custom_background:
+                value = cat.background_path
+                
+                if value and os.path.exists(value):
+                    request.send_file(value)
+                    return
+    
     value = request.daemon.conf_client.get_string('background_path')
 
     if value and os.path.exists(value):
@@ -29,8 +48,27 @@ def get_background(request, machine_hash):
 
 def get_logo(request, machine_hash):
     """
-    Get machine logo
+    Get Background
     """
+    machine_manager = request.daemon.machine_manager
+    machine_category_manager = request.daemon.machine_category_manager
+    
+    cmd = machine_manager.get_all().filter_by(hash_id=machine_hash)
+    result = cmd.all()
+    
+    if result:
+        machine = result[0]
+        
+        if machine.category:
+            cat = machine.category
+            
+            if cat.custom_logo:
+                value = cat.logo_path
+                
+                if value and os.path.exists(value):
+                    request.send_file(value)
+                    return
+    
     value = request.daemon.conf_client.get_string('logo_path')
 
     if value and os.path.exists(value):

@@ -318,8 +318,12 @@ class OpenlhServer:
             
         except:
             appdaemon.netserver.serve_stop()
+
+        try:
+            gtk.main()
+        except KeyboardInterrupt:
+            pass
         
-        gtk.main()
         appdaemon.netserver.serve_stop()
 
 if __name__ == "__main__":
