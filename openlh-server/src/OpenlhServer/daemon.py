@@ -502,18 +502,6 @@ class InstManager(gobject.GObject):
             data['left_time'] = machine_inst.get_last_time()
         
         return data
-        
-    def send_background(self, machine_inst):
-        if self.server.common_background:
-            machine_inst.set_background(self.server.common_background)
-        
-        return True
-    
-    def send_logo(self, machine_inst):
-        if self.server.common_logo:
-            machine_inst.set_logo(self.server.common_logo)
-        
-        return True
     
     def dispatch_func(self, hash_id, method, params):
         
@@ -525,13 +513,7 @@ class InstManager(gobject.GObject):
         
         if method == "get_status":
             return self.get_status(machine_inst)
-        
-        elif method == "get_background":
-            return self.send_background(machine_inst)
-        
-        elif method == "get_logo":
-            return self.send_logo(machine_inst)
-        
+                
         elif method == "login":
             return self.machine_login(machine_inst, *params)
         
@@ -573,7 +555,17 @@ class InstManager(gobject.GObject):
         if session:
             if not session.disconnected:
                 machineinst.set_connected(session)
-                machineinst.send_information(self.server.information)
+
+                # send data
+                data = self.server.information.copy()
+
+                if machineinst.category_id == 0: # Common Machine background
+                    data['background_md5'] = self.server.common_background_md5
+                    data['logo_md5'] = self.server.common_logo_md5
+                else:
+                    pass # Get my hash id
+                
+                machineinst.send_information(data)
         
         self.emit("new", machineinst)
         
@@ -639,33 +631,21 @@ class InstManager(gobject.GObject):
             self.timer_manager.remove_timered_obj(machine.timer_obj)
             self.emit("status_changed", machine)
     
-    def update_backgroud(self, background_path):
-        """
-            Send background to all machines
-            @background_path:
-                is a path to background image
-        """
+    def update_common_backgroud(self, background_md5):
         
-        self.logger.debug('Sending background to all machines')
-        
-        self.common_background = background_path
+        data = {'background_md5': background_md5}
         
         for machine in self.machines_by_id.values():
-            machine.set_background(self.common_background)
+            if machine.category_id == 0:
+                machine.send_information(data)
     
-    def update_logo(self, logo_path):
-        """
-            Send logo to all machines
-            @logo_path:
-                is a path to logo image
-        """
+    def update_common_logo(self, logo_md5):
         
-        self.logger.debug('Sending logo to all machines')
-        
-        self.common_logo = logo_path
+        data = {'logo_md5': logo_md5}
         
         for machine in self.machines_by_id.values():
-            machine.set_logo(self.common_logo)
+            if machine.category_id == 0:
+                machine.send_information(data)
     
     def update_information(self, data):
         """
@@ -938,6 +918,8 @@ class Server(gobject.GObject):
     
     common_background = None
     common_logo = None
+    common_background_md5 = None
+    common_logo_md5 = None
     information = {}
     
     enabled_plugins = []
@@ -995,8 +977,6 @@ class Server(gobject.GObject):
             'login_suport': 'login_suport',
             'ticket_suport': 'ticket_suport',
             'default_welcome_msg': 'default_welcome_msg',
-            'use_background': 'background',
-            'use_logo': 'logo',
             'close_apps': 'close_apps'
         }
         
@@ -1025,6 +1005,17 @@ class Server(gobject.GObject):
         if not self.information['default_welcome_msg']:
             self.information['welcome_msg'] = self.conf_client.get_string(
                                            'welcome_msg')
+            
+        # Background and logo
+        self.common_background = self.conf_client.get_string('background_path')
+        
+        if os.path.exists(self.common_background):
+            self.common_background_md5 = md5_cripto(open(self.common_background).read())
+                    
+        self.common_logo = self.conf_client.get_string('logo_path')
+        
+        if os.path.exists(self.common_logo):
+            self.common_logo_md5 = md5_cripto(open(self.common_logo).read())
         
         #Connect into database
         sql_data = {}
@@ -1116,21 +1107,6 @@ class Server(gobject.GObject):
                                    
         self.common_logo = self.conf_client.get_string(
                                    'logo_path')
-        
-        #generate background md5s
-        if self.common_background and os.path.exists(self.common_background):
-            try:
-                self.information['background_md5'] = md5_cripto(open(
-                                        self.common_background).read())
-            except:
-                pass
-        
-        if self.common_logo and os.path.exists(self.common_logo):
-            try:
-                self.information['logo_md5'] = md5_cripto(open(
-                                        self.common_logo).read())
-            except:
-                pass
     
     def enable_plugin(self, plugin_name, main_window):
         """
@@ -1239,8 +1215,6 @@ class Server(gobject.GObject):
             'login_suport': 'login_suport',
             'ticket_suport': 'ticket_suport',
             'default_welcome_msg': 'default_welcome_msg',
-            'use_background': 'background',
-            'use_logo': 'logo',
             'close_apps': 'close_apps'
         }
         
@@ -1296,16 +1270,14 @@ class Server(gobject.GObject):
         value = self.conf_client.get_string('background_path')
         if self.common_background != value:
             self.common_background = value
-            value2 = md5_cripto(open(self.common_background).read())
-            self.information['background_md5'] = value2
-            #self.instmachine_manager.update_backgroud(value)
+            self.common_background_md5 = md5_cripto(open(self.common_background).read())
+            self.instmachine_manager.update_common_backgroud(self.background_md5)
             
         value = self.conf_client.get_string('logo_path')
         if self.common_logo != value:
             self.common_logo = value
-            value2 = md5_cripto(open(self.common_logo).read())
-            self.information['logo_md5'] = value2
-            #self.instmachine_manager.update_logo(value)
+            self.common_logo_md5 = md5_cripto(open(self.common_logo).read())
+            self.instmachine_manager.update_common_logo(self.logo_md5)
         
         if alterations:
             self.instmachine_manager.update_information(alterations)
