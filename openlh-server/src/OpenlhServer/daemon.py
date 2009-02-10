@@ -1298,14 +1298,14 @@ class Server(gobject.GObject):
             self.common_background = value
             value2 = md5_cripto(open(self.common_background).read())
             self.information['background_md5'] = value2
-            self.instmachine_manager.update_backgroud(value)
+            #self.instmachine_manager.update_backgroud(value)
             
         value = self.conf_client.get_string('logo_path')
         if self.common_logo != value:
             self.common_logo = value
             value2 = md5_cripto(open(self.common_logo).read())
             self.information['logo_md5'] = value2
-            self.instmachine_manager.update_logo(value)
+            #self.instmachine_manager.update_logo(value)
         
         if alterations:
             self.instmachine_manager.update_information(alterations)

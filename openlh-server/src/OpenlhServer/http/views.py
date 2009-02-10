@@ -16,12 +16,25 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-def get_background(request, machine_hash):
-    print request, machine_hash
-    return "/media/sda5/Wallpapers/Debian GNU.jpg"
+import os
 
-def get_logo(request):
-    request.send_file("/media/sda5/Wallpapers/Debian GNU.jpg")
+def get_background(request, machine_hash):
+    """
+    Get Background
+    """
+    value = request.daemon.conf_client.get_string('background_path')
+
+    if value and os.path.exists(value):
+        request.send_file(value)
+
+def get_logo(request, machine_hash):
+    """
+    Get machine logo
+    """
+    value = request.daemon.conf_client.get_string('logo_path')
+
+    if value and os.path.exists(value):
+        request.send_file(value)
 
 URLS = ((r'^/get_background/(?P<machine_id>\w{40})$', get_background),
-        (r'^/get_logo$', get_logo))
+        (r'^/get_logo/(?P<machine_id>\w{40})$', get_logo))

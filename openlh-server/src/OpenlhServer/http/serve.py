@@ -22,7 +22,9 @@ from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 
 from views import URLS
 
-class MyHandler(BaseHTTPRequestHandler):
+class HttpHandler(BaseHTTPRequestHandler):
+
+    daemon = None
 
     def do_GET(self):
         found = False
@@ -41,20 +43,8 @@ class MyHandler(BaseHTTPRequestHandler):
         
         f = open(fullpath)
         self.send_response(200)
-        self.send_header('Content-type',	mimetype)
+        self.send_header('Content-type', mimetype)
         self.end_headers()
         self.wfile.write(f.read())
         
         f.close()
-
-def main():
-    try:
-        server = HTTPServer(('', 8002), MyHandler)
-        print 'started httpserver...'
-        server.serve_forever()
-    except KeyboardInterrupt:
-        print '^C received, shutting down server'
-        server.socket.close()
-
-if __name__ == '__main__':
-    main()
