@@ -26,9 +26,6 @@ END_XMLRESPONSE_HEADER = '-----END XMLRESPONSE-----'
 BEGIN_XMLREQUEST_HEADER = "-----BEGIN XMLREQUEST ID=%d SIZE=%d-----"
 END_XMLREQUEST_HEADER = "-----END XMLREQUEST-----"
 
-BEGIN_SENDFILE_HEADER = "-----BEGIN SENDFILE ID=%d METHOD=%s SIZE=%d-----"
-END_SENDFILE_HEADER = "-----END SENDFILE-----"
-
 HASH_ID_HEADER = '-----HASH_ID=%s-----'
 
 HashIDRegex = re.compile(r'-----HASH_ID=(?P<hash_id>\w+)-----(?P<data>(.*))')
@@ -38,6 +35,3 @@ XMLResponseRegex = re.compile(r'-----BEGIN XMLRESPONSE ID=(?P<id>\d+)'
 
 XMLRequestRegex = re.compile(r'-----BEGIN XMLREQUEST'
                              r' ID=(?P<id>\d+) SIZE=(?P<size>\d+)-----(?P<data>(.*))')
-
-SendFileRegex = re.compile(r'-----BEGIN SENDFILE ID=(?P<id>\d+) METHOD=(?P<method>[\w._]+) '
-                           r'SIZE=(?P<size>\d+)-----(?P<data>(.*))')
