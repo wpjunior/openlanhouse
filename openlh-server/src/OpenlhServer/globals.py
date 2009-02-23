@@ -85,7 +85,7 @@ MACHINE_STATUS_AWAY = 3
 ##APP
 APP_NAME = 'OpenLanhouse'
 APP_SITE = 'http://openlanhouse.org'
-APP_COPYRIGHT = 'OpenLanhouse - Copyright (c) 2007-2008'
+APP_COPYRIGHT = 'OpenLanhouse - Copyright (c) 2007-2009'
 
 I18N_APP = 'openlh-server'
 
@@ -102,7 +102,7 @@ language = language[:end]
 ##End internacionalize
 
 ##APP Proprerties
-APP_COMMENTS = _('LAN House Manager for Gnome Desktop')
+APP_COMMENTS = _('a Free LAN House Manager')
 CLIENT_APP_NAME = _('OpenLanHouse - Client')
 MANAGER_APP_NAME = _('OpenLanHouse - Administration')
 
@@ -129,9 +129,6 @@ APP_ARTISTS = ('Wilson Pinto Júnior <wilson@openlanhouse.org>',)
 APP_CONTRIB = ('Bruno Gonçalves <bigbruno@gmail.com>',
                'Gabriel Falcão <gabriel@guake-terminal.org>',
                'Lincoln de Sousa <lincoln@guake-terminal.org>',
-               'Laudeci Oliveira <laudeci@gmail.com>',
-               'Vladimir Melo <vladimirmelo.psi@gmail.com>',
-               'Walter Cruz <walter.php@gmail.com>',
                'Gustavo Noronha Silva <gns@gnome.org>',
                'Og Maciel <ogmaciel@gnome.org>'
                )
@@ -147,3 +144,6 @@ APP_LICENCE = _('OpenLanhouse is free software: you can redistribute it and/or m
                 'You should have received a copy of the GNU General Public License\n'
                 'along with this program.  If not, see <http://www.gnu.org/licenses/>.'
                 )
+
+WIKI_URL = "http://trac.openlanhouse.org/wiki"
+DONATION_URL = "http://trac.openlanhouse.org/wiki/donation"

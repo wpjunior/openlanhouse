@@ -79,7 +79,7 @@ class Manager:
         
         self.icons = icons.Icons()
         self.status_icons = icons.Icons(icon_path=STATUS_ICON_PATH)
-		
+        
         notification.popup_init("openlh-server")
         
         self.halt_icon = self.status_icons.get_icon("halt")
@@ -594,13 +594,10 @@ class Manager:
         dlg = prefs.Prefs(Parent=self.mainwindow)
         dlg.prefs.run()
         dlg.prefs.destroy()
-        self.reload_configs()
+        self.daemon.reload_configs()
 
         self.set_sensitive(True)
         
-    def reload_configs(self):
-        self.daemon.reload_configs()
-    
     def edit_clicked(self, obj):
         tree = self.get_selected_treeview()
         
@@ -703,7 +700,30 @@ class Manager:
             id = int(model.get_value(iteration, 0))
             user = self.users_manager.get_all().filter_by(id=id).one()
             
-            #TODO: assert credit == 0
+            if user.credit > 0:
+                d = dialogs.yes_no(_("<b><big>This user has credits</big></b>\n\n"
+                                     "do you want to return the credits?"),
+                                   Parent=self.mainwindow)
+                
+                if d.response:
+                    current_credit = self.users_manager.get_credit(User.id, user.id)
+                    self.users_manager.update_credit(user.id, 0.0)
+                    
+                    #Insert Entry in Cash Flow
+                    lctime = localtime()
+                    current_hour = "%0.2d:%0.2d:%0.2d" % lctime[3:6]
+                    
+                    citem = CashFlowItem()
+                    citem.type = CASH_FLOW_TYPE_CREDIT_OUT
+                    citem.value = current_credit
+                    citem.user_id = user.id
+                    citem.year = lctime[0]
+                    citem.month = lctime[1]
+                    citem.day = lctime[2]
+                    citem.hour = current_hour
+                    
+                    self.cash_flow_manager.insert(citem)
+                    
             d = dialogs.delete(_("<b><big>Are you sure you want to "
                                  "permanently delete '%s'?</big></b>\n\n"
                                  "if you delete this user, "
@@ -819,8 +839,7 @@ class Manager:
         # Get Price per hour :-)
         price_per_hour = self.instmachine_manager.get_price_per_hour(machine_inst)
         
-        currency = self.conf_client.get_string(
-                    'currency')
+        currency = self.conf_client.get_string('currency')
         
         dlg = dialogs.unblock_machine(price_per_hour=price_per_hour,
                                       currency=currency,
@@ -899,7 +918,7 @@ class Manager:
             return
         
         if machine_inst.pre_paid:
-            print "add support for pre-paid mode"
+            print "TODO: add support for pre-paid mode"
             return
         
         price_per_hour = self.instmachine_manager.get_price_per_hour(machine_inst)
@@ -944,7 +963,7 @@ class Manager:
             return
 
         if machine_inst.pre_paid:
-            print "add support for pre-paid mode"
+            print "TODO: add support for pre-paid mode"
             return
         
         price_per_hour = self.instmachine_manager.get_price_per_hour(machine_inst)
@@ -970,7 +989,7 @@ class Manager:
         self.cash_flow_filtered.refilter()
     
     def on_open_debts_search(self, obj, text):
-        print obj, text
+        print "TODO: Add search for Debts", obj, text
     
     def on_machine_visible_cb(self, model, iter):
         
@@ -1024,9 +1043,11 @@ class Manager:
         return t
     
     def on_open_debts_machine_visible_cb(self, model, iter):
+        #TODO: Write me
         return True#Fix-me
         
     def on_open_debts_other_visible_cb(self, model, iter):
+        #TODO: Write me
         return True#Fix-me
     
     def add_credit_clicked(self, obj):
@@ -1125,9 +1146,6 @@ class Manager:
         
         if password:
             self.users_manager.change_password(user_id, md5_cripto(password))
-    
-    def new_ticket_by_mnu(self, obj):
-        print 'new_ticket_by_mnu'
     
     def on_bntaction1_clicked(self, obj):
         if self.selpage == 0:
@@ -1603,7 +1621,8 @@ class Manager:
                                Parent=self.mainwindow)
         else:
             dlg = dialogs.exit(_('<big><b>Are you sure you want to quit?'
-                                 '</b></big>'))
+                                 '</b></big>'),
+                               allow_miminize=False)
         
         if dlg.response == gtk.RESPONSE_YES:
             self.save_window_positions()
@@ -1633,6 +1652,7 @@ class Manager:
         
         self.xml.get_object('mainvbox').set_sensitive(status)
     
+    # Database user callback
     def on_new_user(self, obj, user):
         
         iter = self.users_list_store.append((user.id, user.nick,
@@ -1696,6 +1716,7 @@ class Manager:
         self.open_debts_machine_store.remove(iter)
         
     def on_update_opendebt_machine(self, obj, item):
+        #TODO: FIX_ME
         print obj, item
         
     #OpenDebts Machine
@@ -1721,6 +1742,7 @@ class Manager:
         self.open_debts_other_store.remove(iter)
         
     def on_update_opendebt_other(self, obj, item):
+        #TODO: FixMe
         print obj, item
     
     #Machine's Detect
@@ -1741,7 +1763,7 @@ class Manager:
         self.xml.get_object("new_machine_alert_button").set_active(False)
     
     def on_help_hash_id_clicked(self, obj):
-        print "Todo: Fill-me"
+        print "TODO: Fill-me"
     
     def on_cancel_registration_clicked(self, obj):
         model, iteration = self.get_selects(self.new_machines_tree)
@@ -1879,6 +1901,7 @@ class Manager:
                                         treeview.MACHINE_CEL_REMAING, "",
                                         treeview.MACHINE_CEL_PROGRESS, 0,
                                         treeview.MACHINE_CEL_PAY, "")
+    
     ## Cash Flow Callbacks
     def on_monthly_toggle_toggled(self, obj):
         status = obj.get_active()
@@ -3051,3 +3074,11 @@ class Manager:
             citem.user_id = data['user_id']
             
         self.cash_flow_manager.insert(citem)
+    
+    def make_donation_clicked(self, obj):
+        dialogs.open_link(None, DONATION_URL,
+                          dialogs.URL_TYPE_SITE)
+    
+    def contents_clicked(self, obj):
+        dialogs.open_link(None, WIKI_URL,
+                          dialogs.URL_TYPE_SITE)

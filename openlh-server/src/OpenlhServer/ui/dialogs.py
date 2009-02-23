@@ -59,18 +59,20 @@ def gnome_open_link(obj, link, url_type):
     
     execute_command(command)
 
-def open_link(obj, link, url_type):
+@threaded
+def common_open_link(obj, link, url_type):
     if url_type == URL_TYPE_SITE:
         webbrowser.open(link)
 
-
 if GNOME_OPEN_PATH:
-    gtk.about_dialog_set_email_hook(gnome_open_link, URL_TYPE_EMAIL)
-    gtk.about_dialog_set_url_hook(gnome_open_link, URL_TYPE_SITE)
-    gtk.link_button_set_uri_hook(gnome_open_link, URL_TYPE_SITE)
+    open_link = gnome_open_link
+    gtk.about_dialog_set_email_hook(open_link, URL_TYPE_EMAIL) #GNOME supports email
+    
 else:
-    gtk.about_dialog_set_url_hook(open_link, URL_TYPE_SITE)
-    gtk.link_button_set_uri_hook(open_link, URL_TYPE_SITE)
+    open_link = common_open_link
+
+gtk.about_dialog_set_url_hook(open_link, URL_TYPE_SITE)
+gtk.link_button_set_uri_hook(open_link, URL_TYPE_SITE)
 
 class about(gtk.AboutDialog):
     def __init__(self, logo, Parent=None):
@@ -155,7 +157,8 @@ class delete(gtk.MessageDialog):
         self.destroy()
         
 class exit(gtk.MessageDialog):
-    def __init__(self, text, Parent=None, ICON=gtk.MESSAGE_QUESTION):
+    def __init__(self, text, Parent=None, 
+                 allow_miminize=True, ICON=gtk.MESSAGE_QUESTION):
         """
             Create exit Dialog
         """
@@ -168,21 +171,29 @@ class exit(gtk.MessageDialog):
         self.response = None
         
         #Buttons
-        bnt1 = gtk.Button(label=_('Miminize to _Tray'), use_underline=True)
-        bnt2 = gtk.Button(stock=gtk.STOCK_CANCEL, use_underline=True)
+        if allow_miminize:
+            bnt1 = gtk.Button(label=_('Miminize to _Tray'), use_underline=True)
+        
+        bnt2 = gtk.Button(stock=gtk.STOCK_NO, use_underline=True)
         bnt3 = gtk.Button(stock=gtk.STOCK_YES, use_underline=True)
-        bnts = [bnt1, bnt2, bnt3]
+        bnts = [bnt2, bnt3]
+        
+        if allow_miminize:
+            bnts.insert(0, bnt1)
         
         for bnt in bnts:
             self.hbox.pack_start(bnt)
             bnt.show()
         
         #conect
-        bnt1.connect("clicked", self.callback, 2) #Minimize
+        if allow_miminize:
+            bnt1.connect("clicked", self.callback, 2) #Minimize
+        
         bnt2.connect("clicked", self.callback, gtk.RESPONSE_CANCEL)
         bnt3.connect("clicked", self.callback, gtk.RESPONSE_YES)
         
         self.run()
+        self.destroy()
         
     def callback(self, widget, response):
         """

@@ -436,6 +436,22 @@
           </object>
         </child>
         <child>
+          <object class="GtkAction" id="mnuContents">
+            <property name="label" translatable="yes">Contents</property>
+            <property name="name">mnuContents</property>
+            <property name="stock-id">gtk-help</property>
+            <signal handler="contents_clicked" name="activate"/>
+          </object>
+          <accelerator key="F1"/>
+        </child>
+        <child>
+          <object class="GtkAction" id="mnuDonation">
+            <property name="label" translatable="yes">Make a donation</property>
+            <property name="name">mnuDonation</property>
+            <signal handler="make_donation_clicked" name="activate"/>
+          </object>
+        </child>
+        <child>
           <object class="GtkAction" id="mnuAbout">
             <property name="stock_id">gtk-about</property>
             <property name="name">mnuAbout</property>
@@ -502,6 +518,9 @@
           </menu>
         </menu>
         <menu action="menuhelp">
+          <menuitem action="mnuContents"/>
+          <separator/>
+          <menuitem action="mnuDonation"/>
           <menuitem action="mnuAbout"/>
         </menu>
       </menubar>
@@ -513,7 +532,7 @@
         <child>
           <object class="GtkToggleAction" id="show_menu">
             <property name="name">show_menu</property>
-            <property name="label" translatable="yes">Show manager</property>
+            <property name="label" translatable="yes">Show main window</property>
             <signal handler="show_hide" name="activate"/>
           </object>
         </child>
@@ -532,9 +551,17 @@
           </object>
         </child>
         <child>
+          <object class="GtkAction" id="donation_menu">
+            <property name="label" translatable="yes">Make a donation</property>
+            <property name="name">mnuDonation</property>
+            <signal handler="make_donation_clicked" name="activate"/>
+          </object>
+        </child>
+        <child>
           <object class="GtkAction" id="menu_quit">
             <property name="stock_id">gtk-quit</property>
             <property name="name">menu_quit</property>
+            <signal handler="delete_event" name="activate"/>
           </object>
         </child>
       </object>
@@ -545,6 +572,7 @@
         <separator/>
         <menuitem action="prefs_menu"/>
         <menuitem action="about_menu"/>
+        <menuitem action="donation_menu"/>
         <separator/>
         <menuitem action="menu_quit"/>
       </popup>
