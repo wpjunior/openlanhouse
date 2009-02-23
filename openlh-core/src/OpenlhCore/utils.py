@@ -137,6 +137,9 @@ def mkdir(path, RemoveExisting=False):
 
     return path
 
+class DictFull(Exception):
+    pass
+
 class DictLimited:
     def __init__(self, limit):
         self._dict = dict()
@@ -144,7 +147,9 @@ class DictLimited:
     
     def __setitem__(self, key, value):
         if not key in self._dict:
-            assert len(self._dict) +1 <= self._limit, "this dict is full"
+            if not len(self._dict) +1 <= self._limit:
+                raise DictFull, "this dict is full. dict:(%s)" % str(self._dict)
+        
         self._dict[key] = value
     
     def __getitem__(self, key):
