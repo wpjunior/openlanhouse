@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  Copyright (C) 2008 Wilson Pinto Júnior <wilson@openlanhouse.org>
+#  Copyright (C) 2008-2009 Wilson Pinto Júnior <wilson@openlanhouse.org>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -331,7 +331,10 @@ class NetClient(gobject.GObject):
         self.session.send(xmlout)
         self.session.send(END_XMLREQUEST_HEADER)
         
-        self.send_lock.release()
+        try:
+            self.send_lock.release()
+        except:
+            pass
         
         response = Response(self.currid)
         self.open_responses[self.currid] = response
@@ -355,8 +358,11 @@ class NetClient(gobject.GObject):
         except Exception, error:
             self.logger.error(error)
         
-        self.send_lock.release()
-            
+        try:
+            self.send_lock.release()
+        except:
+            pass
+        
     def check_and_alert_size_remaining(self):
         if self.current_size_remaining != 0:
             self.logger.warning('size_remaining != 0, size_remaing = %d' % self.current_size_remaining)
