@@ -20,6 +20,7 @@ import sys
 import os
 import logging
 import getopt
+import threading
 
 from OpenlhServer.globals import *
 _ = gettext.gettext
@@ -97,6 +98,7 @@ from OpenlhServer import daemon
 from OpenlhCore.utils import rename_process, mkdir, md5_cripto, pid_alive, threaded, get_os
 from OpenlhServer.ui import dialogs, main
 from OpenlhCore.net import certgen
+from OpenlhServer.http.serve import HttpHandler, HTTPServer
 
 # Check ANSI colors, only available in POSIX
 if (debug_color == "auto" and os.name == 'posix') or debug_color=="on":
@@ -289,6 +291,14 @@ class OpenlhServer:
             
             sys.exit(0)
     
+    #@threaded
+    def start_http(self):
+        import gobject
+        gobject.threads_init()
+        http_server = HTTPServer(('', 4559), HttpHandler)
+        http_server.serve_forever()
+        http_server.socket.close()
+
     def run(self):
     
         if not(os.path.exists(SERVER_TLS_KEY)) or not(os.path.exists(SERVER_TLS_CERT)):
@@ -297,14 +307,25 @@ class OpenlhServer:
         self.send_registration() #Send Status to openlanhouse.org
         appdaemon = daemon.Server()
         appgui = main.Manager(appdaemon)
+        HttpHandler.daemon = appdaemon
+        
+        t = threading.Thread(target=self.start_http)
+        t.setDaemon(True)
+        t.start()
         
         try:
             appdaemon.netserver.serve_forever()
-            gtk.main()
             
         except:
             appdaemon.netserver.serve_stop()
+
+        try:
+            gtk.main()
+        except KeyboardInterrupt:
+            pass
         
+        appdaemon.netserver.serve_stop()
+
 if __name__ == "__main__":
     app = OpenlhServer()
     app.run()

@@ -61,7 +61,7 @@ class RequestHandler(gobject.GObject):
         self.server = server
         
         self.send_lock = RLock()
-        self.open_responses = DictLimited(limit=5)
+        self.open_responses = DictLimited(limit=10)
         
         self.logger = logging.getLogger('%s:%s' % client_address)
         
@@ -183,47 +183,7 @@ class RequestHandler(gobject.GObject):
         self.currid += 1
         
         return response
-    
-    def send_file(self, method, filepath):
-        """
-            Send file to peer
-            @method:
-                name of method to receive file
-            @filepath:
-                path of file to be send
-        """
-        
-        self.logger.info('Sending %s file' % filepath)
-        
-        assert ospath.exists(filepath), 'File not Found'
-        
-        f = open(filepath)
-        size = ospath.getsize(filepath)
-        
-        head = BEGIN_SENDFILE_HEADER % (self.currid, method, size)
-        
-        self.currid += 1
-        
-        self.send_lock.acquire() #acquire thread lock
-        
-        try:
-            self.session.send(head)
-        
-            while True:
-                data = f.read(1024)
-                if data != "":
-                    self.session.send(data)
-                else:
-                    break
-        
-            self.session.send(END_SENDFILE_HEADER)
-            self.logger.info('Done: File sent %s' % filepath)
             
-        except Exception, error:
-            self.logger.error(error)
-        
-        self.send_lock.release()
-        
     def handle_headers(self, data):
         """
             Handler header and return missing data
@@ -323,52 +283,6 @@ class RequestHandler(gobject.GObject):
             
             self.send_response(id, response)
             data = data[len(END_XMLREQUEST_HEADER):]
-            
-            return data
-        
-        #SendFile Begin
-        elif data.startswith('-----BEGIN SENDFILE'):
-            
-            try:
-                out = SendFileRegex.match(data)
-                
-                if out:
-                    self.current_method = out.group('method')
-                    self.current_size = int(out.group('size'))
-                    self.current_type = SENDFILE_TYPE
-                    self.current_size_remaining = self.current_size
-                    self.current_data = []
-                    data = out.group('data')
-                else:
-                    data = ""
-            
-            except Exception, error:
-                self.logger.error(error)
-                traceback.print_exc()
-                data = ""
-            
-            return data
-        
-        #SendFile End
-        elif (self.current_type == SENDFILE_TYPE and
-                            data.startswith(END_SENDFILE_HEADER)):
-            
-            data = ''.join(self.current_data)
-            method = self.current_method
-            self.current_data = []
-            self.current_type = None
-            
-            self.logger.debug('done sent file, method:%s, size:%d' % 
-                                (self.current_method, self.current_size))
-            
-            self.check_and_alert_size_remaining()
-            
-            if (self.server.recvfile_func and
-                            callable(self.server.recvfile_func)):
-                
-                self.server.recvfile_func(method, data)
-            
-            data = data[len(END_SENDFILE_HEADER):]
             
             return data
         

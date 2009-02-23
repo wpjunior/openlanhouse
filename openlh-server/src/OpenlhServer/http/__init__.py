@@ -16,22 +16,4 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import re
-
-XMLRESPONSE_TYPE, XMLREQUEST_TYPE, SENDFILE_TYPE = range(1, 4)
-
-BEGIN_XMLRESPONSE_HEADER = '-----BEGIN XMLRESPONSE ID=%d SIZE=%d-----'
-END_XMLRESPONSE_HEADER = '-----END XMLRESPONSE-----'
-
-BEGIN_XMLREQUEST_HEADER = "-----BEGIN XMLREQUEST ID=%d SIZE=%d-----"
-END_XMLREQUEST_HEADER = "-----END XMLREQUEST-----"
-
-HASH_ID_HEADER = '-----HASH_ID=%s-----'
-
-HashIDRegex = re.compile(r'-----HASH_ID=(?P<hash_id>\w+)-----(?P<data>(.*))')
-
-XMLResponseRegex = re.compile(r'-----BEGIN XMLRESPONSE ID=(?P<id>\d+)'
-                              r' SIZE=(?P<size>\d+)-----(?P<data>(.*))')
-
-XMLRequestRegex = re.compile(r'-----BEGIN XMLREQUEST'
-                             r' ID=(?P<id>\d+) SIZE=(?P<size>\d+)-----(?P<data>(.*))')
+__all__ = ('serve', 'views')

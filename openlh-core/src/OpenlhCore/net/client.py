@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  Copyright (C) 2008 Wilson Pinto Júnior <wilson@openlanhouse.org>
+#  Copyright (C) 2008-2009 Wilson Pinto Júnior <wilson@openlanhouse.org>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -185,48 +185,6 @@ class NetClient(gobject.GObject):
             data = data[len(END_XMLREQUEST_HEADER):]
             
             return data
-        
-        #Begin SENDFILE
-        elif data.startswith('-----BEGIN SENDFILE'):
-            
-            try:
-                out = SendFileRegex.match(data)
-                
-                if out:
-                    self.current_id = int(out.group('id'))
-                    self.current_method = out.group('method')
-                    self.current_size = int(out.group('size'))
-                    self.current_type = SENDFILE_TYPE
-                    self.current_size_remaining = self.current_size
-                    self.current_data = []
-                    
-                    data = out.group('data')
-                else:
-                    data = ""
-            
-            except:
-                traceback.print_exc()
-                data = ""
-            
-            return data
-        
-        #End SENDFILE
-        elif (self.current_type == SENDFILE_TYPE and
-                                data.startswith(END_SENDFILE_HEADER)):
-            
-            data = ''.join(self.current_data)
-            method = self.current_method
-            self.current_data = []
-            self.current_type = None
-            
-            self.check_and_alert_size_remaining()
-            
-            if self.recvfile_func and callable(self.recvfile_func):
-                self.recvfile_func(method, data)
-            
-            data = data[len(END_SENDFILE_HEADER):]
-            
-            return data
             
     def handle_data(self, data):
         """
@@ -373,7 +331,10 @@ class NetClient(gobject.GObject):
         self.session.send(xmlout)
         self.session.send(END_XMLREQUEST_HEADER)
         
-        self.send_lock.release()
+        try:
+            self.send_lock.release()
+        except:
+            pass
         
         response = Response(self.currid)
         self.open_responses[self.currid] = response
@@ -397,48 +358,11 @@ class NetClient(gobject.GObject):
         except Exception, error:
             self.logger.error(error)
         
-        self.send_lock.release()
-        
-    def send_file(self, method, filepath):
-        """
-            Send file to peer
-            @method:
-                name of method to receive file
-            @filepath:
-                path of file to be send
-        """
-        
-        self.logger.info('Sending %s file to server' % filepath)
-        
-        assert ospath.exists(filepath), 'File not Found'
-        
-        f = open(filepath)
-        size = ospath.getsize(filepath)
-        
-        head = BEGIN_SENDFILE_HEADER % (self.currid, method, size)
-        
-        self.currid += 1
-        self.send_lock.acquire()
-        
         try:
-            self.session.send(head)
-            
-            while True:
-                data = f.read(1024)
-                if data != "":
-                    self.session.send(data)
-                else:
-                    break
-            
-            self.session.send(END_SENDFILE_HEADER)
-            
-            self.logger.info('Done: File sent %s to server' % filepath)
-            
-        except Exception, error:
-            self.logger.error(error)
+            self.send_lock.release()
+        except:
+            pass
         
-        self.send_lock.release()
-    
     def check_and_alert_size_remaining(self):
         if self.current_size_remaining != 0:
             self.logger.warning('size_remaining != 0, size_remaing = %d' % self.current_size_remaining)

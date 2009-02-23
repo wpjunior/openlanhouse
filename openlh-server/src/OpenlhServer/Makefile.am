@@ -1,4 +1,4 @@
-SUBDIRS = ui db
+SUBDIRS = ui db http
 
 openlhdir = $(pythondir)/OpenlhServer
 openlh_PYTHON = \

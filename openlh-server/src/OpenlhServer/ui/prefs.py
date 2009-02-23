@@ -175,16 +175,15 @@ class Prefs:
         
         filename = self.background_chooser.get_filename()
         
-        if self.background_path != filename:
+        if filename and self.background_path != filename:
             self.background_path = filename
             self.conf_client.set_string('background_path',
                                          filename)
         
     def logo_chooser_focus(self, obj, event):
-        print "logo"
         filename = self.logo_chooser.get_filename()
         
-        if self.logo_path != filename:
+        if filename and self.logo_path != filename:
             self.logo_path = filename
             self.conf_client.set_string('logo_path',
                                          filename)

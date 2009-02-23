@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  Copyright (C) 2008 Wilson Pinto Júnior <wilson@openlanhouse.org>
+#  Copyright (C) 2008-2009 Wilson Pinto Júnior <wilson@openlanhouse.org>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -2578,8 +2578,11 @@ class Manager:
             
             try:
                 self.machine_category_manager.update(c)
+                self.instmachine_manager.send_md5_for_category(c.id)
             except:
                 pass #TODO: show dialog
+            
+            
     
     #Users Categories
     def get_user_category_selected(self, obj, path):
