@@ -17,9 +17,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: openlh-server\n"
-"Report-Msgid-Bugs-To: http://trac.openlanhouse.org\n"
-"POT-Creation-Date: 2009-01-05 11:04-0200\n"
-"PO-Revision-Date: 2009-01-05 11:25-0300\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-02-23 16:01-0300\n"
+"PO-Revision-Date: 2009-02-23 16:07-0300\n"
 "Last-Translator: Wilson Pinto Júnior <n3rd3x@guake-terminal.org>\n"
 "Language-Team: OpenLanhouse Developer <wilson@openlanhouse.org>\n"
 "MIME-Version: 1.0\n"
@@ -27,10 +27,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 
-#. #End internacionalize
-#. #APP Proprerties
 #: ../data/openlh-server.desktop.in.in.h:1
-#: ../src/OpenlhServer/globals.py:104
 msgid "LAN House Manager for Gnome Desktop"
 msgstr "Gerenciador de LAN House para o Ambiente Gnome"
 
@@ -517,7 +514,7 @@ msgid "_Responsible:"
 msgstr "_Responsável"
 
 #: ../data/glade/add_user.glade.h:20
-#: ../src/OpenlhServer/ui/dialogs.py:1049
+#: ../src/OpenlhServer/ui/dialogs.py:1069
 msgid "_Show password"
 msgstr "_Mostrar senha"
 
@@ -707,7 +704,7 @@ msgid "Change Password"
 msgstr "Mudar senha"
 
 #: ../data/glade/main.glade.h:8
-#: ../src/OpenlhServer/ui/dialogs.py:966
+#: ../src/OpenlhServer/ui/dialogs.py:986
 msgid "Change password"
 msgstr "Mudar senha"
 
@@ -760,7 +757,7 @@ msgid "M_onth:"
 msgstr "M_ês:"
 
 #: ../data/glade/main.glade.h:26
-#: ../src/OpenlhServer/ui/dialogs.py:2218
+#: ../src/OpenlhServer/ui/dialogs.py:2238
 #: ../src/OpenlhServer/ui/treeview.py:300
 msgid "Machine"
 msgstr "Máquina"
@@ -802,17 +799,17 @@ msgid "Window"
 msgstr "Janela"
 
 #: ../data/glade/main.glade.h:36
-#: ../src/OpenlhServer/ui/main.py:1169
+#: ../src/OpenlhServer/ui/main.py:1250
 msgid "_Add Credit"
 msgstr "_Adicionar Crédito"
 
 #: ../data/glade/main.glade.h:37
-#: ../src/OpenlhServer/ui/main.py:1140
+#: ../src/OpenlhServer/ui/main.py:1221
 msgid "_Add Time"
 msgstr "_Adicionar Tempo"
 
 #: ../data/glade/main.glade.h:38
-#: ../src/OpenlhServer/ui/main.py:1137
+#: ../src/OpenlhServer/ui/main.py:1218
 msgid "_Block"
 msgstr "_Bloquear"
 
@@ -870,7 +867,7 @@ msgid "_Open Debts"
 msgstr "_Dívidas Abertas"
 
 #: ../data/glade/main.glade.h:53
-#: ../src/OpenlhServer/ui/main.py:1233
+#: ../src/OpenlhServer/ui/main.py:1314
 msgid "_Paid"
 msgstr "_Pago"
 
@@ -879,12 +876,12 @@ msgid "_Register"
 msgstr "_Registrar"
 
 #: ../data/glade/main.glade.h:55
-#: ../src/OpenlhServer/ui/main.py:1172
+#: ../src/OpenlhServer/ui/main.py:1253
 msgid "_Remove Credit"
 msgstr "_Remover Crédito"
 
 #: ../data/glade/main.glade.h:56
-#: ../src/OpenlhServer/ui/main.py:1143
+#: ../src/OpenlhServer/ui/main.py:1224
 msgid "_Remove Time"
 msgstr "_Remover Tempo"
 
@@ -901,7 +898,7 @@ msgid "_Tools"
 msgstr "_Ferramentas"
 
 #: ../data/glade/main.glade.h:60
-#: ../src/OpenlhServer/ui/main.py:1134
+#: ../src/OpenlhServer/ui/main.py:1215
 msgid "_Unblock"
 msgstr "_Desbloquear"
 
@@ -1231,30 +1228,37 @@ msgstr "Todos tickets"
 
 #: ../src/OpenlhServer/daemon.py:144
 #: ../src/OpenlhServer/daemon.py:145
-#: ../src/OpenlhServer/daemon.py:296
-#: ../src/OpenlhServer/daemon.py:297
-#: ../src/OpenlhServer/daemon.py:310
-#: ../src/OpenlhServer/daemon.py:311
+#: ../src/OpenlhServer/daemon.py:290
+#: ../src/OpenlhServer/daemon.py:291
+#: ../src/OpenlhServer/daemon.py:304
+#: ../src/OpenlhServer/daemon.py:305
+#: ../src/OpenlhServer/ui/main.py:3030
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
-#: ../src/OpenlhServer/daemon.py:983
+#: ../src/OpenlhServer/daemon.py:1020
 msgid "Cannot listen OpenLanHouse Server"
 msgstr "Não é possível colocar o OpenLanhouse Server em escuta"
 
-#: ../src/OpenlhServer/daemon.py:1067
+#: ../src/OpenlhServer/daemon.py:1115
 msgid "<big><b>Cannot connect into database</b></big>"
 msgstr "<big><b>Não foi possível conectar no banco de dados</b></big>"
 
+#. #End internacionalize
+#. #APP Proprerties
 #: ../src/OpenlhServer/globals.py:105
+msgid "a Free LAN House Manager"
+msgstr "Um Gerenciador de LAN Houses livre"
+
+#: ../src/OpenlhServer/globals.py:106
 msgid "OpenLanHouse - Client"
 msgstr "OpenLanHouse - Cliente"
 
-#: ../src/OpenlhServer/globals.py:106
+#: ../src/OpenlhServer/globals.py:107
 msgid "OpenLanHouse - Administration"
 msgstr "OpenLanHouse - Administração"
 
-#: ../src/OpenlhServer/globals.py:138
+#: ../src/OpenlhServer/globals.py:136
 msgid ""
 "OpenLanhouse is free software: you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as published by\n"
@@ -1282,53 +1286,52 @@ msgstr ""
 "junto com este programa, se não, escreva para a Fundação do Software\n"
 "Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA"
 
-#: ../src/OpenlhServer/ui/dialogs.py:74
+#: ../src/OpenlhServer/ui/dialogs.py:85
 msgid "Developers:"
 msgstr "Desenvolvedores:"
 
-#: ../src/OpenlhServer/ui/dialogs.py:77
+#: ../src/OpenlhServer/ui/dialogs.py:88
 msgid "Contributors:"
 msgstr "Contribuidores:"
 
-#: ../src/OpenlhServer/ui/dialogs.py:82
+#: ../src/OpenlhServer/ui/dialogs.py:93
 msgid "OpenLanhouse"
 msgstr "OpenLanhouse"
 
-#: ../src/OpenlhServer/ui/dialogs.py:86
+#: ../src/OpenlhServer/ui/dialogs.py:97
 msgid "OpenLanhouse Website"
 msgstr "Site do OpenLanhouse"
 
-#. Buttons
-#: ../src/OpenlhServer/ui/dialogs.py:162
+#: ../src/OpenlhServer/ui/dialogs.py:175
 msgid "Miminize to _Tray"
 msgstr "Minimizar para a bandeja"
 
-#: ../src/OpenlhServer/ui/dialogs.py:210
-#: ../src/OpenlhServer/ui/dialogs.py:288
+#: ../src/OpenlhServer/ui/dialogs.py:230
+#: ../src/OpenlhServer/ui/dialogs.py:308
 msgid "All files"
 msgstr "Todos arquivos"
 
-#: ../src/OpenlhServer/ui/dialogs.py:215
-#: ../src/OpenlhServer/ui/dialogs.py:293
+#: ../src/OpenlhServer/ui/dialogs.py:235
+#: ../src/OpenlhServer/ui/dialogs.py:313
 msgid "Images"
 msgstr "Imagens"
 
-#: ../src/OpenlhServer/ui/dialogs.py:278
+#: ../src/OpenlhServer/ui/dialogs.py:298
 msgid "_No Image"
 msgstr "_Sem Imagem"
 
 #. Populate categories
-#: ../src/OpenlhServer/ui/dialogs.py:447
-#: ../src/OpenlhServer/ui/dialogs.py:1376
-#: ../src/OpenlhServer/ui/main.py:2122
+#: ../src/OpenlhServer/ui/dialogs.py:467
+#: ../src/OpenlhServer/ui/dialogs.py:1396
+#: ../src/OpenlhServer/ui/main.py:2253
 msgid "None"
 msgstr "Nenhum"
 
-#: ../src/OpenlhServer/ui/dialogs.py:978
+#: ../src/OpenlhServer/ui/dialogs.py:998
 msgid "C_hange password"
 msgstr "M_udar senha"
 
-#: ../src/OpenlhServer/ui/dialogs.py:1000
+#: ../src/OpenlhServer/ui/dialogs.py:1020
 msgid ""
 "<b><big>Change password</big></b>\n"
 "\n"
@@ -1338,29 +1341,29 @@ msgstr ""
 "\n"
 "Para mudar a senha, digite a nova senha, depois digite-a novamente para verificação e clique em <b>Mudar Senha</b>."
 
-#: ../src/OpenlhServer/ui/dialogs.py:1031
+#: ../src/OpenlhServer/ui/dialogs.py:1051
 msgid "_New password:"
 msgstr "_Nova senha:"
 
-#: ../src/OpenlhServer/ui/dialogs.py:1040
+#: ../src/OpenlhServer/ui/dialogs.py:1060
 msgid "_Retype new password:"
 msgstr "_Digite a nova senha novamente:"
 
-#: ../src/OpenlhServer/ui/dialogs.py:1249
-#: ../src/OpenlhServer/ui/dialogs.py:1898
+#: ../src/OpenlhServer/ui/dialogs.py:1269
+#: ../src/OpenlhServer/ui/dialogs.py:1918
 #, python-format
 msgid "%s Properties"
 msgstr "%s Propriedades"
 
-#: ../src/OpenlhServer/ui/dialogs.py:1292
+#: ../src/OpenlhServer/ui/dialogs.py:1312
 msgid "True"
 msgstr "Verdadeiro"
 
-#: ../src/OpenlhServer/ui/dialogs.py:1294
+#: ../src/OpenlhServer/ui/dialogs.py:1314
 msgid "False"
 msgstr "Falso"
 
-#: ../src/OpenlhServer/ui/dialogs.py:1493
+#: ../src/OpenlhServer/ui/dialogs.py:1513
 #, python-format
 msgid ""
 "<b><big>Are you sure you want to block \"%s\" Machine?</big></b>\n"
@@ -1371,21 +1374,22 @@ msgstr ""
 "\n"
 "Essa máquina está em uso e se você bloquea-la, o trabalho não salvo será perdido."
 
-#: ../src/OpenlhServer/ui/dialogs.py:1639
+#: ../src/OpenlhServer/ui/dialogs.py:1659
 msgid "The user does not have sufficient credits"
 msgstr "O usuário não possui créditos suficientes"
 
-#: ../src/OpenlhServer/ui/dialogs.py:1695
+#: ../src/OpenlhServer/ui/dialogs.py:1715
 #, python-format
 msgid "%s %0.2f of credit"
 msgstr "%s %0.2f de crédito"
 
-#: ../src/OpenlhServer/ui/dialogs.py:1707
+#: ../src/OpenlhServer/ui/dialogs.py:1727
+#: ../src/OpenlhServer/ui/dialogs.py:2934
 msgid "User not found"
 msgstr "Usuário não encontrado"
 
 #. ID
-#: ../src/OpenlhServer/ui/dialogs.py:2060
+#: ../src/OpenlhServer/ui/dialogs.py:2080
 #: ../src/OpenlhServer/ui/treeview.py:227
 #: ../src/OpenlhServer/ui/treeview.py:253
 #: ../src/OpenlhServer/ui/treeview.py:296
@@ -1394,23 +1398,23 @@ msgid "ID"
 msgstr "ID"
 
 #. Time
-#: ../src/OpenlhServer/ui/dialogs.py:2072
+#: ../src/OpenlhServer/ui/dialogs.py:2092
 #: ../src/OpenlhServer/ui/treeview.py:237
 #: ../src/OpenlhServer/ui/treeview.py:327
 msgid "Time"
 msgstr "Tempo"
 
 #. Start Time
-#: ../src/OpenlhServer/ui/dialogs.py:2083
+#: ../src/OpenlhServer/ui/dialogs.py:2103
 msgid "Start Time"
 msgstr "Tempo inicial"
 
 #. End Time
-#: ../src/OpenlhServer/ui/dialogs.py:2094
+#: ../src/OpenlhServer/ui/dialogs.py:2114
 msgid "End Time"
 msgstr "Tempo final"
 
-#: ../src/OpenlhServer/ui/dialogs.py:2157
+#: ../src/OpenlhServer/ui/dialogs.py:2177
 #: ../src/OpenlhServer/ui/treeview.py:235
 #: ../src/OpenlhServer/ui/treeview.py:279
 #: ../src/OpenlhServer/ui/treeview.py:306
@@ -1418,112 +1422,119 @@ msgstr "Tempo final"
 msgid "User"
 msgstr "Usuário"
 
-#: ../src/OpenlhServer/ui/dialogs.py:2163
-#: ../src/OpenlhServer/ui/dialogs.py:2224
-#: ../src/OpenlhServer/ui/main.py:338
-#: ../src/OpenlhServer/ui/main.py:1597
-#: ../src/OpenlhServer/ui/main.py:1862
+#: ../src/OpenlhServer/ui/dialogs.py:2183
+#: ../src/OpenlhServer/ui/dialogs.py:2244
+#: ../src/OpenlhServer/ui/main.py:361
+#: ../src/OpenlhServer/ui/main.py:397
+#: ../src/OpenlhServer/ui/main.py:1694
+#: ../src/OpenlhServer/ui/main.py:1727
+#: ../src/OpenlhServer/ui/main.py:1993
 msgid "Unknown user"
 msgstr "Usuário desconhecido"
 
-#: ../src/OpenlhServer/ui/dialogs.py:2206
-#: ../src/OpenlhServer/ui/dialogs.py:2267
+#: ../src/OpenlhServer/ui/dialogs.py:2226
+#: ../src/OpenlhServer/ui/dialogs.py:2287
 #, python-format
 msgid "History of %s"
 msgstr "Histórico de %s"
 
 #. Code
-#: ../src/OpenlhServer/ui/dialogs.py:2642
+#: ../src/OpenlhServer/ui/dialogs.py:2662
 msgid "Code"
 msgstr "Código"
 
 #. Price
-#: ../src/OpenlhServer/ui/dialogs.py:2650
+#: ../src/OpenlhServer/ui/dialogs.py:2670
 msgid "Price"
 msgstr "Preço"
 
 #. Hourly rate
-#: ../src/OpenlhServer/ui/dialogs.py:2658
+#: ../src/OpenlhServer/ui/dialogs.py:2678
 msgid "Hourly rate"
 msgstr "Taxa horária"
 
 #. Notes
-#: ../src/OpenlhServer/ui/dialogs.py:2666
+#: ../src/OpenlhServer/ui/dialogs.py:2686
 #: ../src/OpenlhServer/ui/treeview.py:282
 #: ../src/OpenlhServer/ui/treeview.py:309
 #: ../src/OpenlhServer/ui/treeview.py:332
 msgid "Notes"
 msgstr "Notas"
 
-#: ../src/OpenlhServer/ui/dialogs.py:2745
+#: ../src/OpenlhServer/ui/dialogs.py:2765
 msgid "Applications"
 msgstr "Aplicações"
 
 #. not accept spaces
-#: ../src/OpenlhServer/ui/dialogs.py:2766
-#: ../src/OpenlhServer/ui/dialogs.py:2774
-#: ../src/OpenlhServer/ui/dialogs.py:2784
+#: ../src/OpenlhServer/ui/dialogs.py:2786
+#: ../src/OpenlhServer/ui/dialogs.py:2794
 #: ../src/OpenlhServer/ui/dialogs.py:2804
+#: ../src/OpenlhServer/ui/dialogs.py:2824
 msgid "Application name"
 msgstr "Nome da Aplicação"
 
 #. Populate Machines treeview
-#: ../src/OpenlhServer/ui/main.py:269
+#: ../src/OpenlhServer/ui/main.py:292
 msgid "Loading machines"
 msgstr "Carregando máquinas"
 
 #. Start Loop to update times
 #. Populate Users treeview
-#: ../src/OpenlhServer/ui/main.py:282
+#: ../src/OpenlhServer/ui/main.py:305
 msgid "Loading users"
 msgstr "Carregando usuários"
 
 #. Populate OpenDebts Machine
-#: ../src/OpenlhServer/ui/main.py:325
+#: ../src/OpenlhServer/ui/main.py:348
 msgid "Loading OpenDebts"
 msgstr "Carregando Dividas abertas"
 
-#: ../src/OpenlhServer/ui/main.py:343
-#: ../src/OpenlhServer/ui/main.py:1602
+#: ../src/OpenlhServer/ui/main.py:366
+#: ../src/OpenlhServer/ui/main.py:1699
 msgid "Unknown machine"
 msgstr "Máquina desconhecida"
 
+#. Populate Other OpenDebts
+#: ../src/OpenlhServer/ui/main.py:384
+msgid "Loading Other OpenDebts"
+msgstr "Carregando outras dívidas abertas"
+
 #. Populate Categories machine
-#: ../src/OpenlhServer/ui/main.py:361
+#: ../src/OpenlhServer/ui/main.py:413
 msgid "Loading Machine Categories"
 msgstr "Carregando categorias de máquinas"
 
-#: ../src/OpenlhServer/ui/main.py:394
+#: ../src/OpenlhServer/ui/main.py:446
 msgid "All Machines"
 msgstr "Todas máquinas"
 
 #. Populate Users Categories
-#: ../src/OpenlhServer/ui/main.py:403
+#: ../src/OpenlhServer/ui/main.py:454
 msgid "Loading User Categories"
 msgstr "Carregando categorias de usuários"
 
-#: ../src/OpenlhServer/ui/main.py:427
+#: ../src/OpenlhServer/ui/main.py:478
 msgid "All Users"
 msgstr "_Todos usuários"
 
-#: ../src/OpenlhServer/ui/main.py:451
+#: ../src/OpenlhServer/ui/main.py:501
 msgid "<b>Machine usage</b>"
 msgstr "<b>Uso de Máquinas</b>"
 
-#: ../src/OpenlhServer/ui/main.py:451
-#: ../src/OpenlhServer/ui/main.py:452
+#: ../src/OpenlhServer/ui/main.py:501
+#: ../src/OpenlhServer/ui/main.py:502
 msgid "fill me"
 msgstr "Preencha-me"
 
-#: ../src/OpenlhServer/ui/main.py:452
+#: ../src/OpenlhServer/ui/main.py:502
 msgid "<b>Other</b>"
 msgstr "<b>Outro</b>"
 
-#: ../src/OpenlhServer/ui/main.py:604
-msgid "Edit Machine - OpenLanhouse"
-msgstr "Editar Máquina - OpenLanhouse"
+#: ../src/OpenlhServer/ui/main.py:615
+msgid "Edit Machine"
+msgstr "Editar Máquina"
 
-#: ../src/OpenlhServer/ui/main.py:662
+#: ../src/OpenlhServer/ui/main.py:684
 msgid ""
 "<b><big>Unable to delete machine</big></b>\n"
 "\n"
@@ -1533,7 +1544,7 @@ msgstr ""
 "\n"
 "Essa máquina está em uso"
 
-#: ../src/OpenlhServer/ui/main.py:668
+#: ../src/OpenlhServer/ui/main.py:690
 #, python-format
 msgid ""
 "<b><big>Are you sure you want to permanently delete '%s'?</big></b>\n"
@@ -1544,8 +1555,17 @@ msgstr ""
 "\n"
 "if you delete this machine, it will be permanently lost"
 
-#. TODO: assert credit == 0
-#: ../src/OpenlhServer/ui/main.py:682
+#: ../src/OpenlhServer/ui/main.py:704
+msgid ""
+"<b><big>This user has credits</big></b>\n"
+"\n"
+"do you want to return the credits?"
+msgstr ""
+"<b><big>Esse usuário possui créditos</big></b>\n"
+"\n"
+"você deseja devolve-los?"
+
+#: ../src/OpenlhServer/ui/main.py:727
 #, python-format
 msgid ""
 "<b><big>Are you sure you want to permanently delete '%s'?</big></b>\n"
@@ -1556,7 +1576,17 @@ msgstr ""
 "\n"
 "Se você deletar esse usuário, ele será permanentemente perdido"
 
-#: ../src/OpenlhServer/ui/main.py:709
+#: ../src/OpenlhServer/ui/main.py:746
+msgid ""
+"<b><big>Are you sure you want to permanently delete this debt?</big></b>\n"
+"\n"
+"if you delete this debt, it will be permanently lost"
+msgstr ""
+"<b><big>Você deseja mesmo deletar permanentemente essa dívida?</big></b>\n"
+"\n"
+"Se você deletar essa dívida, ela será permanentemente perdida"
+
+#: ../src/OpenlhServer/ui/main.py:794
 msgid ""
 "<b><big>Unable to block machine</big></b>\n"
 "\n"
@@ -1566,7 +1596,7 @@ msgstr ""
 "\n"
 "Essa máquina não está disponível"
 
-#: ../src/OpenlhServer/ui/main.py:716
+#: ../src/OpenlhServer/ui/main.py:801
 msgid ""
 "<b><big>Unable to block machine</big></b>\n"
 "\n"
@@ -1576,7 +1606,7 @@ msgstr ""
 "\n"
 "Essa máquina já está bloqueada"
 
-#: ../src/OpenlhServer/ui/main.py:743
+#: ../src/OpenlhServer/ui/main.py:827
 msgid ""
 "<b><big>Unable to unblock machine</big></b>\n"
 "\n"
@@ -1586,7 +1616,7 @@ msgstr ""
 "\n"
 "Essa máquina não está disponível"
 
-#: ../src/OpenlhServer/ui/main.py:749
+#: ../src/OpenlhServer/ui/main.py:833
 msgid ""
 "<b><big>Unable to unblock machine</big></b>\n"
 "\n"
@@ -1596,7 +1626,7 @@ msgstr ""
 "\n"
 "Essa máquina já está em uso"
 
-#: ../src/OpenlhServer/ui/main.py:817
+#: ../src/OpenlhServer/ui/main.py:899
 msgid ""
 "<b><big>Unable to add time</big></b>\n"
 "\n"
@@ -1606,7 +1636,7 @@ msgstr ""
 "\n"
 "Essa máquina não está em uso."
 
-#: ../src/OpenlhServer/ui/main.py:825
+#: ../src/OpenlhServer/ui/main.py:907
 msgid ""
 "<b><big>Unable to add time</big></b>\n"
 "\n"
@@ -1616,8 +1646,8 @@ msgstr ""
 "\n"
 "Essa máquina está em modo limitado"
 
-#: ../src/OpenlhServer/ui/main.py:832
-#: ../src/OpenlhServer/ui/main.py:877
+#: ../src/OpenlhServer/ui/main.py:914
+#: ../src/OpenlhServer/ui/main.py:959
 msgid ""
 "<b><big>Unable to add time</big></b>\n"
 "\n"
@@ -1627,7 +1657,7 @@ msgstr ""
 "\n"
 "Essa máquina esta sendo usada em modo ingresso"
 
-#: ../src/OpenlhServer/ui/main.py:863
+#: ../src/OpenlhServer/ui/main.py:945
 msgid ""
 "<b><big>Unable to remove time</big></b>\n"
 "\n"
@@ -1637,7 +1667,7 @@ msgstr ""
 "\n"
 "Essa máquina não está em uso"
 
-#: ../src/OpenlhServer/ui/main.py:870
+#: ../src/OpenlhServer/ui/main.py:952
 msgid ""
 "<b><big>Unable to remove time</big></b>\n"
 "\n"
@@ -1647,127 +1677,139 @@ msgstr ""
 "\n"
 "Essa máquina está em uso em modo limitado"
 
-#: ../src/OpenlhServer/ui/main.py:1462
-#: ../src/OpenlhServer/ui/main.py:1465
+#: ../src/OpenlhServer/ui/main.py:1557
+#: ../src/OpenlhServer/ui/main.py:1560
 msgid "Available"
 msgstr "Disponível"
 
-#: ../src/OpenlhServer/ui/main.py:1463
+#: ../src/OpenlhServer/ui/main.py:1558
 msgid "Available machines"
 msgstr "Máquinas disponíveis"
 
-#: ../src/OpenlhServer/ui/main.py:1469
-#: ../src/OpenlhServer/ui/main.py:1471
+#: ../src/OpenlhServer/ui/main.py:1564
+#: ../src/OpenlhServer/ui/main.py:1566
 msgid "Busy"
 msgstr "Ocupada"
 
-#: ../src/OpenlhServer/ui/main.py:1470
+#: ../src/OpenlhServer/ui/main.py:1565
 msgid "Busy machines"
 msgstr "Máquinas ocupadas"
 
-#: ../src/OpenlhServer/ui/main.py:1475
-#: ../src/OpenlhServer/ui/main.py:1477
+#: ../src/OpenlhServer/ui/main.py:1570
+#: ../src/OpenlhServer/ui/main.py:1572
 msgid "Unavailable"
 msgstr "Indisponível"
 
-#: ../src/OpenlhServer/ui/main.py:1476
+#: ../src/OpenlhServer/ui/main.py:1571
 msgid "Unavailable machines"
 msgstr "Máquinas indisponíveis"
 
-#: ../src/OpenlhServer/ui/main.py:1524
-#: ../src/OpenlhServer/ui/main.py:1528
+#: ../src/OpenlhServer/ui/main.py:1619
+#: ../src/OpenlhServer/ui/main.py:1623
 msgid "<big><b>Are you sure you want to quit?</b></big>"
 msgstr "<big><b>Você deseja mesmo sair?</b></big>"
 
-#: ../src/OpenlhServer/ui/main.py:1723
+#: ../src/OpenlhServer/ui/main.py:1847
 #, python-format
 msgid "%s Disconnected"
 msgstr "%s Desconectada"
 
-#: ../src/OpenlhServer/ui/main.py:1724
+#: ../src/OpenlhServer/ui/main.py:1848
 #, python-format
 msgid "%s is now Offline"
 msgstr "%s está agora desconectada"
 
-#: ../src/OpenlhServer/ui/main.py:1727
+#: ../src/OpenlhServer/ui/main.py:1851
 #, python-format
 msgid "%s Connected"
 msgstr "%s Connectada"
 
-#: ../src/OpenlhServer/ui/main.py:1728
-#: ../src/OpenlhServer/ui/main.py:1754
+#: ../src/OpenlhServer/ui/main.py:1852
+#: ../src/OpenlhServer/ui/main.py:1878
 #, python-format
 msgid "%s is now Available"
 msgstr "%s está agora disponível"
 
-#: ../src/OpenlhServer/ui/main.py:1750
+#: ../src/OpenlhServer/ui/main.py:1874
 #, python-format
 msgid "%s Unavailable"
 msgstr "%s Indisponível"
 
-#: ../src/OpenlhServer/ui/main.py:1751
+#: ../src/OpenlhServer/ui/main.py:1875
 #, python-format
 msgid "%s is now Unavailable"
 msgstr "%s está agora Indisponível"
 
-#: ../src/OpenlhServer/ui/main.py:1753
+#: ../src/OpenlhServer/ui/main.py:1877
 #, python-format
 msgid "%s Available"
 msgstr "%s Disponível"
 
-#: ../src/OpenlhServer/ui/main.py:1756
+#: ../src/OpenlhServer/ui/main.py:1880
 #, python-format
 msgid "%s Busy"
 msgstr "%s Ocupada"
 
-#: ../src/OpenlhServer/ui/main.py:1757
+#: ../src/OpenlhServer/ui/main.py:1881
 #, python-format
 msgid "%s is now Busy"
 msgstr "%s agora está Ocupada"
 
-#: ../src/OpenlhServer/ui/main.py:1839
+#: ../src/OpenlhServer/ui/main.py:1964
+msgid "Unknown type"
+msgstr "Tipo desconhecido"
+
+#: ../src/OpenlhServer/ui/main.py:1967
 msgid "Credit In"
 msgstr "Entrada de Crédito"
 
-#: ../src/OpenlhServer/ui/main.py:1841
+#: ../src/OpenlhServer/ui/main.py:1969
 msgid "Credit Out"
 msgstr "Saída de Crédito"
 
-#: ../src/OpenlhServer/ui/main.py:1843
+#: ../src/OpenlhServer/ui/main.py:1971
 msgid "Machine Usage"
 msgstr "Uso de Máquina"
 
-#: ../src/OpenlhServer/ui/main.py:1845
+#: ../src/OpenlhServer/ui/main.py:1973
 msgid "Custom In"
 msgstr "Entrada personalizada"
 
-#: ../src/OpenlhServer/ui/main.py:1847
+#: ../src/OpenlhServer/ui/main.py:1975
 msgid "Custom Out"
 msgstr "Saída Personalizada"
 
-#: ../src/OpenlhServer/ui/main.py:1849
+#: ../src/OpenlhServer/ui/main.py:1977
 msgid "Ticket"
 msgstr "_Ingresso"
 
-#: ../src/OpenlhServer/ui/main.py:1851
+#: ../src/OpenlhServer/ui/main.py:1979
 msgid "Ticket return"
 msgstr "Retorno de Ticket"
 
-#: ../src/OpenlhServer/ui/main.py:1853
+#: ../src/OpenlhServer/ui/main.py:1981
 msgid "Machine Usage (Pre-Paid)"
 msgstr "Uso de máquina (pré-pago)"
 
-#: ../src/OpenlhServer/ui/main.py:1885
+#: ../src/OpenlhServer/ui/main.py:1983
+msgid "Debt Paid"
+msgstr "Débito pago"
+
+#: ../src/OpenlhServer/ui/main.py:2016
 #, python-format
 msgid "Cash in: %0.2f, Cash out: %0.2f"
 msgstr "Entrada: %0.2f, Saída: %0.2f"
 
-#: ../src/OpenlhServer/ui/main.py:2110
+#: ../src/OpenlhServer/ui/main.py:2241
 msgid "Unlimited"
 msgstr "Não limitado"
 
-#: ../src/OpenlhServer/ui/main.py:2382
-#: ../src/OpenlhServer/ui/main.py:2508
+#: ../src/OpenlhServer/ui/main.py:2357
+msgid "This user has enough credit to pay the debt, want you to use the credits to pay the bill?"
+msgstr "Esse usuário possui creditos suficientes para pagar a conta, você deseja usar os créditos para pagar a dívida?"
+
+#: ../src/OpenlhServer/ui/main.py:2562
+#: ../src/OpenlhServer/ui/main.py:2691
 #, python-format
 msgid ""
 "<b><big>Are you sure you want to permanently delete '%s' Category?</big></b>\n"
@@ -1779,7 +1821,7 @@ msgstr ""
 "Se você deletar essa categoria, ela será permanentemente perdida"
 
 #. offline
-#: ../src/OpenlhServer/ui/main.py:2592
+#: ../src/OpenlhServer/ui/main.py:2775
 msgid ""
 "<b><big>Unable to shutdown machine</big></b>\n"
 "\n"
@@ -1790,7 +1832,7 @@ msgstr ""
 "Essa máquina não está disponível"
 
 #. offline
-#: ../src/OpenlhServer/ui/main.py:2616
+#: ../src/OpenlhServer/ui/main.py:2799
 msgid ""
 "<b><big>Unable to reboot machine</big></b>\n"
 "\n"
@@ -1801,7 +1843,7 @@ msgstr ""
 "Essa máquina não está disponível"
 
 #. offline
-#: ../src/OpenlhServer/ui/main.py:2640
+#: ../src/OpenlhServer/ui/main.py:2823
 msgid ""
 "<b><big>Unable to logout machine</big></b>\n"
 "\n"
@@ -1811,7 +1853,7 @@ msgstr ""
 "\n"
 "Essa máquina não está disponível"
 
-#: ../src/OpenlhServer/ui/main.py:2664
+#: ../src/OpenlhServer/ui/main.py:2847
 msgid ""
 "<b><big>Unable to quit openlanhouse</big></b>\n"
 "\n"
@@ -1885,6 +1927,8 @@ msgstr "Tempo inicial"
 msgid "End time"
 msgstr "Tempo final"
 
+#~ msgid "Edit Machine - OpenLanhouse"
+#~ msgstr "Editar Máquina - OpenLanhouse"
 #~ msgid "<b>New machines were found</b>"
 #~ msgstr "<b>Novas máquinas foram encontradas</b>"
 #~ msgid "<b>_Find Machines</b>"
