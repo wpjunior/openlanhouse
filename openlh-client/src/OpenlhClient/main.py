@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  Copyright (C) 2008 Wilson Pinto Júnior <wilson@openlanhouse.org>
+#  Copyright (C) 2008-2009 Wilson Pinto Júnior <wilson@openlanhouse.org>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -32,8 +32,9 @@ from OpenlhCore.utils import get_os, humanize_time
 from OpenlhClient.ui import dialogs, login
 from OpenlhClient.ui.utils import get_gtk_builder
 from OpenlhClient.logout_actions import ActionManager
+from OpenlhClient.utils import HttpDownload
 
-
+# Check DBus
 try:
     from OpenlhClient.dbus_manager import DbusManager
 except ImportError:
@@ -51,6 +52,7 @@ except ImportError:
         
         def __setattr__(self, *args):
             pass
+
 
 from os import remove
 from os import path as ospath
@@ -114,9 +116,6 @@ class Client:
                 self.logger.error(error)
                 self.logo_md5 = None
         
-        if self.logo_md5:
-            self.logger.info("Logo Md5sum is %s" % self.logo_md5)
-        
         self.hash_id = self.conf_client.get_string('hash_id')
         self.server = self.conf_client.get_string('server')
         self.port = self.conf_client.get_int('port')
@@ -130,7 +129,6 @@ class Client:
         self.netclient.connect('connected', self.connected)
         self.netclient.connect('disconnected', self.disconnected)
         self.netclient.dispatch_func = self.dispatch
-        self.netclient.recvfile_func = self.recvfile_func
         
         #icons
         self.icons = icons.Icons()
@@ -233,56 +231,6 @@ class Client:
             self.dbus_manager.description_changed(self.description)
             self.logger.debug('My host description is "%s"' % data['description'])
     
-    def set_background(self, string_buffer):
-        self.logger.debug('Setting up new background')
-        
-        if ospath.exists(BACKGROUND_CACHE):
-            remove(BACKGROUND_CACHE)
-            
-        open(BACKGROUND_CACHE, 'w').write(string_buffer)
-        
-        try:
-            assert ospath.getsize(BACKGROUND_CACHE) < 2500000L, "Large Background"
-            self.background_md5 = md5_cripto(open(BACKGROUND_CACHE).read())
-        except Exception, error:
-            self.logger.error(error)
-            self.background_md5 = None
-            return
-        
-        if self.background_md5:
-            self.logger.info("Background Md5sum is %s" % self.background_md5)
-        
-        if ('use_background' in self.informations 
-                    and self.informations['use_background']):
-            self.login_window.set_background(BACKGROUND_CACHE)
-        else:
-            self.login_window.set_background(None)
-        
-    def set_logo(self, string_buffer):
-        self.logger.debug('Setting up new logo')
-        
-        if ospath.exists(LOGO_CACHE):
-            remove(LOGO_CACHE)
-        
-        open(LOGO_CACHE, 'w').write(string_buffer)
-        
-        try:
-            assert ospath.getsize(LOGO_CACHE) < 2500000L, "Large Background"
-            self.logo_md5 = md5_cripto(open(LOGO_CACHE).read())
-        except Exception, error:
-            self.logger.error(error)
-            self.logo_md5 = None
-            return
-        
-        if self.logo_md5:
-            self.logger.info("Logo Md5sum is %s" % self.logo_md5)
-        
-        if ('use_logo' in self.informations 
-                    and self.informations['use_logo']):
-            self.login_window.set_logo(LOGO_CACHE)
-        else:
-            self.login_window.set_logo(None)
-    
     def set_information(self, data):
         assert isinstance(data, dict)
         
@@ -318,27 +266,14 @@ class Client:
             self.currency = data['currency']
             self.dbus_manager.currency_changed(self.currency)
         
-        background_requested = False
-        if 'background_md5' in data:
-            if (data['background_md5'] != self.background_md5 
-                                    or not(self.background_md5)):
-                self.netclient.request('get_background')
-                background_requested = True
-        
-        logo_requested = False
-        if 'logo_md5' in data:
-            if (data['logo_md5'] != self.logo_md5 or not(self.logo_md5)):
-                self.netclient.request('get_logo')
-                logo_requested = True
-        
         if 'use_background' in data:
-            if data['use_background'] and not(background_requested):
+            if data['use_background']:
                 self.login_window.set_background(BACKGROUND_CACHE)
             else:
                 self.login_window.set_background(None)
         
         if 'use_logo' in data:
-            if data['use_logo'] and not(logo_requested):
+            if data['use_logo']:
                 self.login_window.set_logo(LOGO_CACHE)
             else:
                 self.login_window.set_logo(None)
@@ -497,16 +432,15 @@ class Client:
             self.app_quit()
             return True
         
+        elif method == 'main.set_background_md5':
+            self.set_background_md5(*params)
+        
+        elif method == 'main.set_logo_md5':
+            self.set_logo_md5(*params)
+        
         else:
             print method, params
             return True
-    
-    def recvfile_func(self, method, data):
-        if method == 'main.set_background':
-            self.set_background(data)
-            
-        elif method == 'main.set_logo':
-            self.set_logo(data)
     
     def reload_network(self):
         self.netclient = NetClient(self.server, self.port,
@@ -515,7 +449,6 @@ class Client:
         self.netclient.connect('connected', self.connected)
         self.netclient.connect('disconnected', self.disconnected)
         self.netclient.dispatch_func = self.dispatch
-        self.netclient.recvfile_func = self.recvfile_func
         
     def update_time_status(self):
         if not self.update_time:
@@ -753,4 +686,78 @@ class Client:
         ActionManager.logout()
 
     def app_quit(self):
-        gtk.main_quit()                
+        gtk.main_quit()
+    
+    def set_background_md5(self, hash_md5):
+        
+        if self.background_md5 != hash_md5:
+            e = self.get_background()
+            
+            if e:
+                print e
+                return
+            
+            try:
+                assert ospath.getsize(BACKGROUND_CACHE) < 2500000L, "Large Background"
+                self.background_md5 = md5_cripto(open(BACKGROUND_CACHE).read())
+            except Exception, error:
+                print error
+                self.background_md5 = None
+                return
+        
+        if ('use_background' in self.informations 
+                    and self.informations['use_background']):
+                self.login_window.set_background(BACKGROUND_CACHE)
+        else:
+            self.login_window.set_background(None)
+        
+    def set_logo_md5(self, hash_md5):
+        if self.logo_md5 != hash_md5:
+            e = self.get_logo()
+            
+            if e:
+                print e
+                return
+            
+            try:
+                assert ospath.getsize(LOGO_CACHE) < 2500000L, "Large Logo"
+                self.logo_md5 = md5_cripto(open(LOGO_CACHE).read())
+            except Exception, error:
+                print error
+                self.logo_md5 = None
+                return
+        
+        if ('use_logo' in self.informations 
+                    and self.informations['use_logo']):
+                self.login_window.set_logo(LOGO_CACHE)
+        else:
+            self.login_window.set_logo(None)
+        
+    def get_background(self):
+        data = {'server': self.server, 
+                'port': 4559,
+                'hash_id': self.hash_id}
+        
+        url = "http://%(server)s:%(port)d/get_background/%(hash_id)s" % data
+        
+        downloader = HttpDownload()
+        e = downloader.run(url,
+                           directory=CACHE_PATH,
+                           fn="wallpaper")
+        
+        return e
+    
+    def get_logo(self):
+        data = {'server': self.server, 
+                'port': 4559,
+                'hash_id': self.hash_id}
+        
+        url = "http://%(server)s:%(port)d/get_logo/%(hash_id)s" % data
+        
+        downloader = HttpDownload()
+        e = downloader.run(url,
+                           directory=CACHE_PATH,
+                           fn="logo")
+        
+        return e
+        

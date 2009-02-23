@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  Copyright (C) 2008 Wilson Pinto Júnior <wilson@openlanhouse.org>
+#  Copyright (C) 2008-2009 Wilson Pinto Júnior <wilson@openlanhouse.org>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -480,7 +480,6 @@ class InstManager(gobject.GObject):
         self.netserver.connect('disconnected', self.disconnected_machine)
         
         self.netserver.dispatch_func = self.dispatch_func
-        self.netserver.recvfile_func = self.recvfile_func
         
     def get_status(self, machine_inst):
         """
@@ -525,9 +524,6 @@ class InstManager(gobject.GObject):
 
         return True
         
-    def recvfile_func(self, method, data):
-        print method
-        
     def allow_machine(self, hash_id, data, session):
         
         m = Machine()
@@ -554,12 +550,9 @@ class InstManager(gobject.GObject):
 
                 # Send background md5sum
                 if machineinst.category_id == 0:
-                    if self.server.common_background_md5:
-                        machine.set_background_md5(self.server.common_background_md5)
-            
-                    if self.server.common_logo_md5:
-                        machine.set_logo_md5(self.server.common_logo_md5)
-                # TODO: ADD CATEGORY HASH
+                    self.send_common_md5(machineinst)
+                else:
+                    self.send_category_md5(machineinst)
 
                 machineinst.send_information(self.server.information)
         
@@ -576,15 +569,11 @@ class InstManager(gobject.GObject):
             machine.send_information(self.server.information)
 
             # Send background md5sum
-            if machineinst.category_id == 0:
-                if self.server.common_background_md5:
-                    machine.set_background_md5(self.server.common_background_md5)
+            if machine.category_id == 0:
+                self.send_common_md5(machine)
+            else:
+                self.send_category_md5(machine)
             
-                if self.server.common_logo_md5:
-                    machine.set_logo_md5(self.server.common_logo_md5)
-
-            # TODO: ADD CATEGORY HASH
-
             self.emit("status_changed", machine)
             
         else:
@@ -622,6 +611,12 @@ class InstManager(gobject.GObject):
         
         if 'category_id' in data:
             machine_inst.category_id = data['category_id']
+            
+            #send new background and logo
+            if machine_inst.category_id == 0:
+                self.send_common_md5(machine_inst)
+            else:
+                self.send_category_md5(machine_inst)
         
         machine_inst.send_myinfo()
         
@@ -916,6 +911,63 @@ class InstManager(gobject.GObject):
                }
         
         machine_inst.session.request('set_status', data)
+    
+    def send_common_md5(self, machine):
+        
+        if self.server.common_logo_md5:
+            machine.set_logo_md5(self.server.common_logo_md5)
+        
+        if self.server.common_background_md5:
+            machine.set_background_md5(self.server.common_background_md5)
+        
+    def send_category_md5(self, machine):
+        machine_category_manager = self.server.machine_category_manager
+        
+        cmd = machine_category_manager.get_all().filter_by(id=machine.category_id)
+        result = cmd.all()
+        
+        if not result:
+            return
+        
+        category = result[0]
+        
+        #logo
+        if category.custom_logo and os.path.exists(category.logo_path):
+            try:
+                hash_md5 = md5_cripto(open(category.logo_path).read())
+            except:
+                hash_md5 = None
+        else:
+            hash_md5 = self.server.common_logo_md5
+        
+        if hash_md5:
+            machine.set_logo_md5(hash_md5)
+        
+        #background
+        if category.custom_background and os.path.exists(category.background_path):
+            try:
+                hash_md5 = md5_cripto(open(category.background_path).read())
+            except:
+                hash_md5 = None
+        else:
+            hash_md5 = self.server.common_background_md5
+        
+        if hash_md5:
+            machine.set_background_md5(hash_md5)
+    
+    def send_md5_for_category(self, id):
+        machine_manager = self.server.machine_manager
+        
+        cmd = machine_manager.get_all().filter_by(category_id=id)
+        result = cmd.all()
+        
+        for i in result:
+            
+            if not i.id in self.machines_by_id:
+                continue
+            
+            machineinst = self.machines_by_id[i.id]
+            self.send_category_md5(machineinst)
         
 class Server(gobject.GObject):
     

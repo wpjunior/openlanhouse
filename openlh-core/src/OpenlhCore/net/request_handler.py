@@ -61,7 +61,7 @@ class RequestHandler(gobject.GObject):
         self.server = server
         
         self.send_lock = RLock()
-        self.open_responses = DictLimited(limit=5)
+        self.open_responses = DictLimited(limit=10)
         
         self.logger = logging.getLogger('%s:%s' % client_address)
         
