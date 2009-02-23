@@ -158,24 +158,18 @@ class MachineInst(gobject.GObject):
         self.pre_paid_time = None
         self.ticket_mode = False
     
-    @threaded
-    def set_background(self, background_path):
-        """
-            Set machine background
-        """
+    def set_background_md5(self, md5_hash):
+
         if self.session:
-            self.session.send_file('main.set_background', background_path)
+            self.session.request('main.set_background_md5', md5_hash)
             return True
         else:
             return False
     
-    @threaded
-    def set_logo(self, logo_path):
-        """
-            Set machine logo
-        """
+    def set_logo_md5(self, md5_hash):
+
         if self.session:
-            self.session.send_file('main.set_logo', logo_path)
+            self.session.request('main.set_logo_md5', md5_hash)
             return True
         else:
             return False
@@ -511,6 +505,8 @@ class InstManager(gobject.GObject):
         
         machine_inst = self.machines_by_hash_id[hash_id]
         
+        print method, params
+        
         if method == "get_status":
             return self.get_status(machine_inst)
                 
@@ -556,16 +552,16 @@ class InstManager(gobject.GObject):
             if not session.disconnected:
                 machineinst.set_connected(session)
 
-                # send data
-                data = self.server.information.copy()
+                # Send background md5sum
+                if machineinst.category_id == 0:
+                    if self.server.common_background_md5:
+                        machine.set_background_md5(self.server.common_background_md5)
+            
+                    if self.server.common_logo_md5:
+                        machine.set_logo_md5(self.server.common_logo_md5)
+                # TODO: ADD CATEGORY HASH
 
-                if machineinst.category_id == 0: # Common Machine background
-                    data['background_md5'] = self.server.common_background_md5
-                    data['logo_md5'] = self.server.common_logo_md5
-                else:
-                    pass # Get my hash id
-                
-                machineinst.send_information(data)
+                machineinst.send_information(self.server.information)
         
         self.emit("new", machineinst)
         
@@ -578,6 +574,17 @@ class InstManager(gobject.GObject):
             machine = self.machines_by_hash_id[hash_id]
             machine.set_connected(session)
             machine.send_information(self.server.information)
+
+            # Send background md5sum
+            if machineinst.category_id == 0:
+                if self.server.common_background_md5:
+                    machine.set_background_md5(self.server.common_background_md5)
+            
+                if self.server.common_logo_md5:
+                    machine.set_logo_md5(self.server.common_logo_md5)
+
+            # TODO: ADD CATEGORY HASH
+
             self.emit("status_changed", machine)
             
         else:
@@ -632,20 +639,16 @@ class InstManager(gobject.GObject):
             self.emit("status_changed", machine)
     
     def update_common_backgroud(self, background_md5):
-        
-        data = {'background_md5': background_md5}
-        
+                
         for machine in self.machines_by_id.values():
             if machine.category_id == 0:
-                machine.send_information(data)
+                machine.set_background_md5(background_md5)
     
     def update_common_logo(self, logo_md5):
         
-        data = {'logo_md5': logo_md5}
-        
         for machine in self.machines_by_id.values():
             if machine.category_id == 0:
-                machine.send_information(data)
+                machine.set_logo_md5(logo_md5)
     
     def update_information(self, data):
         """
@@ -977,7 +980,9 @@ class Server(gobject.GObject):
             'login_suport': 'login_suport',
             'ticket_suport': 'ticket_suport',
             'default_welcome_msg': 'default_welcome_msg',
-            'close_apps': 'close_apps'
+            'close_apps': 'close_apps',
+            'use_background': 'background',
+            'use_logo': 'logo',
         }
         
         for name in string_keys.keys():
@@ -1187,7 +1192,7 @@ class Server(gobject.GObject):
         for plugin_name in plugins:
             plugin = get_plugin(plugin_name)
             if not plugin:
-                return
+                continue
         
             if hasattr(plugin, "enable"):
                 plugin.enable(self, main_window)
@@ -1215,7 +1220,9 @@ class Server(gobject.GObject):
             'login_suport': 'login_suport',
             'ticket_suport': 'ticket_suport',
             'default_welcome_msg': 'default_welcome_msg',
-            'close_apps': 'close_apps'
+            'close_apps': 'close_apps',
+            'use_logo': 'logo',
+            'use_background': 'background'
         }
         
         for name in string_keys.keys():
@@ -1271,13 +1278,13 @@ class Server(gobject.GObject):
         if self.common_background != value:
             self.common_background = value
             self.common_background_md5 = md5_cripto(open(self.common_background).read())
-            self.instmachine_manager.update_common_backgroud(self.background_md5)
+            self.instmachine_manager.update_common_backgroud(self.common_background_md5)
             
         value = self.conf_client.get_string('logo_path')
         if self.common_logo != value:
             self.common_logo = value
             self.common_logo_md5 = md5_cripto(open(self.common_logo).read())
-            self.instmachine_manager.update_common_logo(self.logo_md5)
+            self.instmachine_manager.update_common_logo(self.common_logo_md5)
         
         if alterations:
             self.instmachine_manager.update_information(alterations)

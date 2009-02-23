@@ -456,7 +456,8 @@ class Client:
         self.login_window.unlock(None)
     
     def dispatch(self, method, params):
-        
+        print method, params
+
         if method == 'core.get_hash_id':
             return self.hash_id
             
