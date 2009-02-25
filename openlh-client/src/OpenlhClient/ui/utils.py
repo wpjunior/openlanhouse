@@ -52,5 +52,6 @@ def get_gtk_builder(name):
     filename = "%s/%s.ui" % (UI_PATH, name)
     assert ospath.exists(filename)
     b = Builder()
+    b.set_property("translation-domain", I18N_APP)
     b.add_from_file(filename)
     return b

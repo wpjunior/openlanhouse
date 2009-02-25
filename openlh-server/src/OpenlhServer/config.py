@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-INSTALLED = False
+INSTALLED = True
 PREFIX = "/usr"
-APP_VERSION = "0.2git"
+APP_VERSION = "0.2"
 

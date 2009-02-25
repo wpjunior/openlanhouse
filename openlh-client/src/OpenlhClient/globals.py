@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  Copyright (C) 2008 Wilson Pinto Júnior <wilson@openlanhouse.org>
+#  Copyright (C) 2008-2009 Wilson Pinto Júnior <wilson@openlanhouse.org>
 #
 #This program is free software: you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
@@ -71,9 +71,9 @@ CLIENT_ICON_NAME = 'openlh-client'
 ##APP
 APP_NAME = 'OpenLanhouse'
 APP_SITE = 'http://openlanhouse.org'
-APP_COPYRIGHT = 'OpenLanhouse - Copyright (c) 2007-2008'
+APP_COPYRIGHT = 'OpenLanhouse - Copyright (c) 2007-2009'
 
-I18N_APP = 'OpenLH'
+I18N_APP = 'openlh-client'
 
 ##Internacionalize
 locale.setlocale(locale.LC_ALL, '')
@@ -88,7 +88,7 @@ language = language[:end]
 ##End internacionalize
 
 ##APP Proprerties
-APP_COMMENTS = _('LAN House Client for Gnome Desktop')
+APP_COMMENTS = _('a Free LAN House Client')
 CLIENT_APP_NAME = _('OpenLanHouse - Client')
 
 MIN_NICK = 4
@@ -114,9 +114,6 @@ APP_ARTISTS = ('Wilson Pinto Júnior <wilson@openlanhouse.org>',)
 APP_CONTRIB = ('Bruno Gonçalves <bigbruno@gmail.com>',
                'Gabriel Falcão <gabriel@guake-terminal.org>',
                'Lincoln de Sousa <lincoln@guake-terminal.org>',
-               'Laudeci Oliveira <laudeci@gmail.com>',
-               'Vladimir Melo <vladimirmelo.psi@gmail.com>',
-               'Walter Cruz <walter.php@gmail.com>',
                'Gustavo Noronha Silva <gns@gnome.org>',
                'Og Maciel <ogmaciel@gnome.org>'
                )
