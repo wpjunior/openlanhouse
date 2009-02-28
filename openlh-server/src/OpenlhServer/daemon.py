@@ -1066,12 +1066,12 @@ class Server(gobject.GObject):
         # Background and logo
         self.common_background = self.conf_client.get_string('background_path')
         
-        if os.path.exists(self.common_background):
+        if self.common_background and os.path.exists(self.common_background):
             self.common_background_md5 = md5_cripto(open(self.common_background).read())
                     
         self.common_logo = self.conf_client.get_string('logo_path')
         
-        if os.path.exists(self.common_logo):
+        if self.common_logo and os.path.exists(self.common_logo):
             self.common_logo_md5 = md5_cripto(open(self.common_logo).read())
         
         #Connect into database

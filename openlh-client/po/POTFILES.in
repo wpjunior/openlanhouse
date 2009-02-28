@@ -9,10 +9,10 @@ data/glade/connect_server.glade
 data/glade/login.glade
 data/glade/main.glade
 data/glade/prefs.glade
-data/glade/serverinfo.glade
 src/openlh-client
 src/OpenlhClient/globals.py
-src/OpenlhClient/login.py
+src/OpenlhClient/ui/login.py
 src/OpenlhClient/main.py
-src/OpenlhClient/prefs.py
+src/OpenlhClient/ui/prefs.py
 src/OpenlhClient/ui/dialogs.py
+src/OpenlhClient/utils.py
