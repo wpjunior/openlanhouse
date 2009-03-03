@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-02-25 12:51-0300\n"
-"PO-Revision-Date: 2008-09-12 11:25-0300\n"
+"PO-Revision-Date: 2009-02-25 12:57-0300\n"
 "Last-Translator: Wilson Pinto Júnior <n3rd3x@guake-terminal.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -56,7 +56,8 @@ msgstr ""
 msgid "LAN House Client for Gnome Desktop"
 msgstr ""
 
-#: ../data/openlh-client.desktop.in.in.h:2 ../src/openlh-client:179
+#: ../data/openlh-client.desktop.in.in.h:2
+#: ../src/openlh-client:179
 msgid "OpenLanhouse Client"
 msgstr ""
 
@@ -141,8 +142,7 @@ msgid "Show Username."
 msgstr ""
 
 #: ../data/openlh-client.schemas.in.h:21
-msgid ""
-"When set to false, causes start only as a tray icon with the window hidden."
+msgid "When set to false, causes start only as a tray icon with the window hidden."
 msgstr ""
 
 #: ../data/openlh-client.schemas.in.h:22
@@ -188,7 +188,8 @@ msgstr ""
 msgid "_Ticket"
 msgstr ""
 
-#: ../data/glade/login.glade.h:5 ../src/OpenlhClient/ui/login.py:188
+#: ../data/glade/login.glade.h:5
+#: ../src/OpenlhClient/ui/login.py:188
 msgid "_Username:"
 msgstr "_Usuário:"
 
@@ -356,9 +357,7 @@ msgstr ""
 
 #: ../src/OpenlhClient/ui/login.py:289
 #, python-format
-msgid ""
-"Please wait %0.2d seconds for a new login, Number of attempts has been "
-"exceeded"
+msgid "Please wait %0.2d seconds for a new login, Number of attempts has been exceeded"
 msgstr ""
 
 #: ../src/OpenlhClient/ui/login.py:319
@@ -373,7 +372,8 @@ msgstr ""
 msgid "OpenLanhouse - Client"
 msgstr "Cliente - OpenLanhouse"
 
-#: ../src/OpenlhClient/main.py:257 ../src/OpenlhClient/main.py:258
+#: ../src/OpenlhClient/main.py:257
+#: ../src/OpenlhClient/main.py:258
 msgid "Welcome"
 msgstr ""
 
@@ -415,32 +415,34 @@ msgstr ""
 
 #: ../src/OpenlhClient/ui/dialogs.py:63
 msgid "Developers:"
-msgstr ""
+msgstr "Desenvolvedores"
 
 #: ../src/OpenlhClient/ui/dialogs.py:66
 msgid "Contributors:"
-msgstr ""
+msgstr "Contribuidores"
 
 #: ../src/OpenlhClient/ui/dialogs.py:71
-#, fuzzy
 msgid "OpenLanhouse"
-msgstr "Cliente - OpenLanhouse"
+msgstr "OpenLanhouse"
 
 #: ../src/OpenlhClient/ui/dialogs.py:75
 msgid "OpenLanhouse Website"
-msgstr ""
+msgstr "Site do OpenLanhouse"
 
 #: ../src/OpenlhClient/ui/dialogs.py:285
 msgid "Choose Image"
-msgstr ""
+msgstr "Escolha a imagem"
 
-#: ../src/OpenlhClient/ui/dialogs.py:295 ../src/OpenlhClient/ui/dialogs.py:349
+#: ../src/OpenlhClient/ui/dialogs.py:295
+#: ../src/OpenlhClient/ui/dialogs.py:349
 msgid "All files"
-msgstr ""
+msgstr "Todos arquivos"
 
-#: ../src/OpenlhClient/ui/dialogs.py:300 ../src/OpenlhClient/ui/dialogs.py:354
+#: ../src/OpenlhClient/ui/dialogs.py:300
+#: ../src/OpenlhClient/ui/dialogs.py:354
 msgid "Images"
-msgstr ""
+msgstr "Imagens"
 
 #~ msgid "Show Informations"
 #~ msgstr "Mostrar Informações"
+
