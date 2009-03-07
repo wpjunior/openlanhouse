@@ -123,6 +123,7 @@ AC_CONFIG_FILES([
 Makefile
 data/Makefile
 data/openlh-client.desktop.in
+data/openlh-client-config.desktop.in
 data/glade/Makefile
 data/ui/Makefile
 data/icons/Makefile
