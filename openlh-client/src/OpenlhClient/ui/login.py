@@ -252,7 +252,7 @@ class Login:
     def set_lock_all(self, status):
         self.entry.set_sensitive(not(status))
         self.label.set_sensitive(not(status))
-        #self.xml.get_object("mode_menuitem").set_sensitive(not(status))
+        self.xml.get_object("hbuttonbox1").set_sensitive(not(status))
         
         if status:
             self.label.set_text("")
