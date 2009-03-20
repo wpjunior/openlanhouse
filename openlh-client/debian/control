@@ -8,5 +8,5 @@ Homepage: http://openlanhouse.org
 
 Package: openlh-client
 Architecture: i386
-Depends: ${shlibs:Depends}, ${misc:Depends}, python-gnome2, python-gtk2, python-certtool, python-gnutls, python-dbus
+Depends: ${shlibs:Depends}, ${misc:Depends}, openlh-core, python-gtk2, python-dbus
 Description: a LAN House and Cyber Caffe Client for GNOME Desktop.
