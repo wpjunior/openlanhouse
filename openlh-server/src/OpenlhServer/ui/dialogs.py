@@ -1499,6 +1499,10 @@ class AddMachine:
             gobject.source_remove(self.insert_connect_id)
         
         self.dialog.destroy()
+    
+    def on_help_hash_id_clicked(self, obj):
+        open_link(None, HELP_HASHID_URL,
+                  URL_TYPE_SITE)
 
 class block_machine:
     def __init__(self, machine_name, Parent=None):

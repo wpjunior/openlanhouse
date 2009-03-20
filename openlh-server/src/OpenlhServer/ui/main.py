@@ -1789,9 +1789,6 @@ class Manager:
     def on_close_detect_machines_clicked(self, obj):
         self.xml.get_object("new_machine_alert_button").set_active(False)
     
-    def on_help_hash_id_clicked(self, obj):
-        print "TODO: Fill-me"
-    
     def on_cancel_registration_clicked(self, obj):
         model, iteration = self.get_selects(self.new_machines_tree)
         

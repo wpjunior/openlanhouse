@@ -147,3 +147,4 @@ APP_LICENCE = _('OpenLanhouse is free software: you can redistribute it and/or m
 
 WIKI_URL = "http://trac.openlanhouse.org/wiki"
 DONATION_URL = "http://trac.openlanhouse.org/wiki/donation"
+HELP_HASHID_URL = "http://trac.openlanhouse.org/wiki/hash_id"
