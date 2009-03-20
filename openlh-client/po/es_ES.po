@@ -337,11 +337,11 @@ msgstr ""
 "bajo los términos de la GNU General Public License publicada por\n"
 "la Free Software Foundation, bien de la versión 3 de la Licencia, o\n"
 "(según su elección) cualquier versión posterior.\n"
-"\ nEste programa se distribuye con la esperanza de que sea útil,\n"
+"Este programa se distribuye con la esperanza de que sea útil,\n"
 "pero SIN NINGUNA GARANTÍA, incluso sin la garantía implícita de\n"
 "COMERCIABILIDAD o IDONEIDAD PARA UN PROPÓSITO PARTICULAR. Véase la\n"
 "Licencia Pública General de GNU para más detalles.\n"
-"\ nUsted debería haber recibido una copia de la Licencia Pública General de GNU\n"
+"Usted debería haber recibido una copia de la Licencia Pública General de GNU\n"
 "junto con este programa. Si no, véase <http://www.gnu.org/licenses/>."
 
 #: ../src/OpenlhClient/ui/login.py:111
