@@ -66,6 +66,7 @@ class Manager:
     machine_search_text = ""
     user_search_text = ""
     cash_flow_search_text = ""
+    opendebt_search_text = ""
     
     machine_filter_category = 0
     machine_filter_status = None
@@ -989,7 +990,15 @@ class Manager:
         self.cash_flow_filtered.refilter()
     
     def on_open_debts_search(self, obj, text):
-        print "TODO: Add search for Debts", obj, text
+        self.opendebt_search_text = text
+        
+        pagenum = self.xml.get_object("open_debts_notebook").get_current_page()
+        
+        if pagenum == 0:
+            self.open_debts_machine_filtered.refilter()
+            
+        elif pagenum == 1:
+            self.open_debts_other_filtered.refilter()
     
     def on_machine_visible_cb(self, model, iter):
         
@@ -1043,12 +1052,30 @@ class Manager:
         return t
     
     def on_open_debts_machine_visible_cb(self, model, iter):
-        #TODO: Write me
-        return True#Fix-me
+        if self.opendebt_search_text == "":
+            return True
+        
+        t = False
+        for col in treeview.OPEN_DEBTS_SEARCHABLE_COLS:
+            x = model.get_value(iter, col)
+            if x and self.opendebt_search_text in x:
+                t = True
+                break
+        
+        return t
         
     def on_open_debts_other_visible_cb(self, model, iter):
-        #TODO: Write me
-        return True#Fix-me
+        if self.opendebt_search_text == "":
+            return True
+        
+        t = False
+        for col in treeview.OPEN_DEBTS_OTHER_SEARCHABLE_COLS:
+            x = model.get_value(iter, col)
+            if x and self.opendebt_search_text in x:
+                t = True
+                break
+        
+        return t
     
     def add_credit_clicked(self, obj):
         model, iteration = self.get_selects(self.seltree)
@@ -2275,6 +2302,8 @@ class Manager:
     #Open Debts
     def set_open_debts_selected_page(self, page_num=0):
         self.notebook_interative = False
+        self.open_debts_search_entry.set_text("")
+        self.opendebt_search_text = ""
         
         self.xml.get_object(
             "open_debts_notebook").set_current_page(page_num)
@@ -2285,9 +2314,11 @@ class Manager:
         
             if page_num == 0:
                 seltreemnu = self.open_debts_machine_treemnu
+                self.open_debts_machine_filtered.refilter()
             elif page_num == 1:
                 seltreemnu = self.open_debts_other_treemnu
-        
+                self.open_debts_other_filtered.refilter()
+                
             self.columns_mnu.remove_submenu()
             self.columns_mnu.set_submenu(seltreemnu)
             seltreemnu.show()
