@@ -171,27 +171,6 @@ class ok_only:
         dlg.run()
         dlg.destroy()
 
-class calendar: #TODO: REMOVE-ME
-    def __init__(self, Parent=None, title=None):
-        """
-            Calendar dialog
-            @example:
-            @app = calendar(Parent=window, title='Openlh Calendar')
-            @date = app.get_date()
-        """
-        
-        self.dlg = gtk.Dialog(title, Parent,
-                    gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT, BUTTONS)
-        
-        self.calendar = gtk.Calendar()
-        self.dlg.vbox.pack_start(self.calendar)
-        self.calendar.show_all()
-        
-        self.response = self.dlg.run()
-        self.date = self.calendar.get_date()
-        self.get_date = lambda : self.date
-        self.dlg.destroy()
-
 class FileChooserDialog(gtk.FileChooserDialog):
     """
         Non-blocking FileChooser Dialog around gtk.FileChooserDialog
