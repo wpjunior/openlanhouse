@@ -6,10 +6,11 @@ SUBDIRS = data gnomeapplet src po
 #	intltool-merge \
 #	intltool-update
 
-#EXTRA_DIST = \
-#	intltool-extract.in \
-#	intltool-merge.in \
-#	intltool-update.in
+EXTRA_DIST = \
+	debian \
+	build_deb_package.sh \
+	glade2gtkbuilder \
+	setup_win32.py
 
 CLEANFILES = \
 	src/OpenlhClient/*.pyc \
