@@ -118,6 +118,9 @@ APP_CONTRIB = ('Bruno Gonçalves <bigbruno@gmail.com>',
                'Og Maciel <ogmaciel@gnome.org>'
                )
 
+APP_TRANSLATORS = {'pt_BR': "Wilson Pinto Júnior <wilson@openlanhouse.org>",
+                   'es_ES': "Pier Jose Gotta Perez <piegope@fslcol.org>"}
+
 APP_LICENCE = _('OpenLanhouse is free software: you can redistribute it and/or modify\n'
                 'it under the terms of the GNU General Public License as published by\n'
                 'the Free Software Foundation, either version 3 of the License, or\n'

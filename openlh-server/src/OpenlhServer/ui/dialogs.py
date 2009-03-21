@@ -29,6 +29,7 @@ _ = gettext.gettext
 from os import name as osname
 from os import path as ospath
 from os import remove as os_remove
+from os import getenv as os_getenv
 from time import localtime
 from threading import Lock
 
@@ -102,6 +103,14 @@ class about(gtk.AboutDialog):
         self.set_documenters(APP_DOCS)
         self.set_artists(APP_ARTISTS)
         self.set_license(APP_LICENCE)
+        
+        # TRANSLATORS
+        lang = os_getenv('LANG', 'en_US').split('.')[0]
+        if lang in APP_TRANSLATORS:
+            translator = APP_TRANSLATORS[lang]
+            self.set_translator_credits(translator)
+        else:
+            self.set_translator_credits(_("translator-credits"))
         
         self.run()
         self.destroy()

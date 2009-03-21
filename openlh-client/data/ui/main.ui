@@ -92,6 +92,7 @@
         <child>
           <object class="GtkAction" id="menuitem8">
             <property name="stock_id" translatable="yes">gtk-about</property>
+            <signal handler="on_about_menuitem_activate" name="activate"/>
             <property name="name">menuitem8</property>
           </object>
         </child>
