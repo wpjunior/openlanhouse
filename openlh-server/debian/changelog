@@ -1,4 +1,4 @@
-openlh-client (0.2-1) unstable; urgency=low
+openlh-server (0.2-1) unstable; urgency=low
   * updated to upstream release
     
  -- Wilson Pinto Júnior <wilson@openlanhouse.org> Tue, 24 Mar 2009 13:40:00 -0200
