@@ -1032,11 +1032,15 @@ class Server(gobject.GObject):
             'login_suport': 'login_suport',
             'ticket_suport': 'ticket_suport',
             'default_welcome_msg': 'default_welcome_msg',
-            'close_apps': 'close_apps',
             'use_background': 'background',
             'use_logo': 'logo',
         }
-        
+
+        int_keys = {
+            'finish_action': 'finish_action',
+            'finish_action_time': 'finish_action_time',
+            }
+
         for name in string_keys.keys():
             value = self.conf_client.get_string(string_keys[name])
             
@@ -1046,6 +1050,11 @@ class Server(gobject.GObject):
         for name in bool_keys.keys():
             value = self.conf_client.get_bool(bool_keys[name])
             self.information[name] = value
+
+        for name in int_keys.keys():
+            value = self.conf_client.get_int(int_keys[name])
+            if value != None: #FIX BUG: XMLPICKLER not allow None
+                self.information[name] = value
 
         # Close apps lists
         
@@ -1272,10 +1281,14 @@ class Server(gobject.GObject):
             'login_suport': 'login_suport',
             'ticket_suport': 'ticket_suport',
             'default_welcome_msg': 'default_welcome_msg',
-            'close_apps': 'close_apps',
             'use_logo': 'logo',
             'use_background': 'background'
         }
+
+        int_keys = {
+            'finish_action': 'finish_action',
+            'finish_action_time': 'finish_action_time',
+            }
         
         for name in string_keys.keys():
             value = self.conf_client.get_string(string_keys[name])
@@ -1288,6 +1301,12 @@ class Server(gobject.GObject):
             value = self.conf_client.get_bool(bool_keys[name])
             
             if self.information[name] != value:
+                self.information[name] = value
+                alterations[name] = value
+
+        for name in int_keys.keys():
+            value = self.conf_client.get_int(int_keys[name])
+            if (self.information[name] != value) and (value != None): #FIX BUG: XMLPICKLER not allow None
                 self.information[name] = value
                 alterations[name] = value
         

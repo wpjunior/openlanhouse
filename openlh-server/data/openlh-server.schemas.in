@@ -15,7 +15,7 @@
       
     </schema>
     
-    <schema>
+    <schema> 
       <key>/schemas/apps/openlh-server/admin_email</key>
       <applyto>/apps/openlh-server/admin_email</applyto>
       <owner>openlh-server</owner>
@@ -494,15 +494,15 @@
     </schema>
     
     <schema>
-      <key>/schemas/apps/openlh-server/close_apps</key>
-      <applyto>/apps/openlh-server/close_apps</applyto>
+      <key>/schemas/apps/openlh-server/finish_action</key>
+      <applyto>/apps/openlh-server/finish_action</applyto>
       <owner>openlh-server</owner>
-      <type>bool</type>
-      <default>false</default>
+      <type>int</type>
+      <default>0</default>
       
       <locale name="C">
-        <short>If true, applications will closed after finishing the session</short>
-        <long>If true, applications will closed after finishing the session.</long>
+        <short>Action for after finish session</short>
+        <long>Action for after finish session, 0 for no action, 1 for close applications, 2 for finish desktop session</long>
       </locale>
     </schema>
     
@@ -519,6 +519,17 @@
       </locale>
     </schema>
     
-    
+    <schema>
+      <key>/schemas/apps/openlh-server/finish_action_time</key>
+      <applyto>/apps/openlh-server/finish_action_time</applyto>
+      <owner>openlh-server</owner>
+      <type>int</type>
+      <default>30</default>
+      
+      <locale name="C">
+        <short>Timeout to perform a finish action</short>
+        <long>Timeout to perform a finish action.</long>
+      </locale>
+    </schema>
     
 </schemalist></gconfschemafile>

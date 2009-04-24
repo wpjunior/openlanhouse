@@ -86,33 +86,44 @@ class Prefs:
         
         if self.conf_client.get_bool('login_suport'):
             self.xml.get_object('machine_login_suport').set_active(True)
-        
+
         if self.conf_client.get_bool('ticket_suport'):
             self.xml.get_object('ticket_suport').set_active(True)
-        
+
         if self.conf_client.get_bool('default_welcome_msg'):
             self.xml.get_object('default_welcome_msg').set_active(True)
         else:
             self.xml.get_object('custom_welcome_msg').set_active(True)
             self.xml.get_object('custom_msg_entry').set_sensitive(True)
-        
+
         if data['custom_welcome_msg']:
             self.xml.get_object('custom_msg_entry').set_text(data['custom_welcome_msg'])
-        
+
         if self.conf_client.get_bool('background'):
             self.xml.get_object('background_bnt').set_active(True)
         else:
             self.background_chooser.set_sensitive(False)
-        
+
         if self.conf_client.get_bool('logo'):
             self.xml.get_object('logo_bnt').set_active(True)
         else:
             self.logo_chooser.set_sensitive(False)
-            
-        if self.conf_client.get_bool('close_apps'):
-            self.xml.get_object('close_apps_bnt').set_active(True)
-            self.xml.get_object('edit_apps').set_sensitive(True)
-        
+
+        # Finish action
+        finish_action = self.conf_client.get_int("finish_action")
+
+        if finish_action == 0:
+            self.xml.get_object("finish_no_action").set_active(True)
+        elif finish_action == 1:
+            self.xml.get_object("close_apps").set_active(True)
+            self.xml.get_object("edit_apps").set_sensitive(True)
+        elif finish_action == 2:
+            self.xml.get_object("end_desktop").set_active(True)
+
+        # Timeout for perform a action
+        value = self.conf_client.get_int("finish_action_time")
+        self.xml.get_object("after_seconds").set_value(value)
+
         self.background_path = self.conf_client.get_string('background_path')
         self.logo_path = self.conf_client.get_string('logo_path')
         
@@ -191,9 +202,33 @@ class Prefs:
     def on_edit_apps_clicked(self, obj):
         dlg = EditCloseApplications()
         dlg.run()
-        
-    def on_close_apps_bnt_toggled(self, obj):
+
+    def on_finish_no_action_toggled(self, obj):
+        if not obj.get_active():
+            return
+
+        print "No action"
+        self.conf_client.set_int('finish_action', 0)
+
+    def on_close_apps_toggled(self, obj):
         widget = self.xml.get_object("edit_apps")
         widget.set_sensitive(obj.get_active())
-        self.conf_client.set_bool('close_apps',
-                                  obj.get_active())
+
+        if not obj.get_active():
+            return
+
+        print "Close apps"
+
+        self.conf_client.set_int('finish_action', 1)
+
+    def on_end_desktop_toggled(self, obj):
+        if not obj.get_active():
+            return
+
+        print "End Desktop Session"
+        self.conf_client.set_int('finish_action', 2)
+
+    def on_after_seconds_focus_out_event(self, obj, event):
+        self.conf_client.set_int("finish_action_time",
+                                 int(obj.get_value()))
+

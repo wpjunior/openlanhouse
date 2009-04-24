@@ -277,6 +277,8 @@ class Client:
                 self.login_window.set_logo(LOGO_CACHE)
             else:
                 self.login_window.set_logo(None)
+
+        print self.informations
         
     def reset_widgets(self):
         self.credit.set_text("")
