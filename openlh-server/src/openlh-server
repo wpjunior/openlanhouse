@@ -39,12 +39,12 @@ except getopt.error, msg:
     sys.exit(2)
 
 for o, a in opts:
-    
+
     if o in ('-h', '--help'):
         print sys.argv[0], '[--help] [--verbose] [--debugcolor] [--version]'
-        
+
         sys.exit()
-        
+
     elif o == '--verbose':
         
         verbose = False

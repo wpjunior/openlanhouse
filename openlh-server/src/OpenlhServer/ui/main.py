@@ -197,15 +197,15 @@ class Manager:
         self.user_search_entry.show()
         self.cash_flow_search_entry.show()
         self.open_debts_search_entry.show()
-        
+
         self.config_trees()
-        
+
         # Construct tray icon
         self.tray_icon = gtk.status_icon_new_from_icon_name("openlh-server")
         self.tray_icon.set_tooltip("openlh-server")
         self.tray_icon.connect('popup-menu', self.tray_menu_show)
         self.tray_icon.connect('activate', self.show_hide)
-        
+
         # Get widget configurations
         sel = self.conf_client.get_int('ui/page_selected')
         self.set_page_selected(sel)
