@@ -74,11 +74,26 @@ class GdmActionManager:
             
             cmd = [p, "--logout"]
             a = execute_command(cmd)
+
+        if "xfce" in session.lower():
+            p = is_in_path("xfce4-session-logout")
+
+            if not p:
+                return False
+
+            cmd = [p, "--logout"]
+            execute_command(cmd)
+            
+            return True
             
         elif (("fluxbox" in session.lower()) or 
               ("blackbox" in session.lower())):
             out = get_output_of_command ("xprop -root _BLACKBOX_PID")
-            m = re.search(r'\d+')
+
+            if not out:
+                return False
+
+            m = re.search(r'\d+', out)
             
             if not m:
                 return False
@@ -86,7 +101,30 @@ class GdmActionManager:
             pid = int(m.group())
             oskill(pid)
             
-        
+        elif ("kde" in session.lower()):
+            # KDE4
+            if (("KDE_SESSION_VERSION" in env) and (env['KDE_SESSION_VERSION'] == '4')):
+                executable = is_in_path("qdbus")
+                if not executable:
+                    return False
+
+                cmd = [executable, "org.kde.ksmserver", "/KSMServer",
+                       "logout", "0", "0", "0"]
+
+                execute_command(cmd)
+                return True
+
+            # KDE3
+            executable = is_in_path('dcop')
+            if not executable:
+                return False
+
+            cmd = [executable, "ksmserver", "ksmserver",
+                   "logout", "0", "0", "0"]
+            execute_command(cmd)
+            return True
+
+
         #TODO: write for kde, xfce4, and LXDE
         return True
 
@@ -115,32 +153,61 @@ class PosixActionManager:
         print a
     
     def logout(self):
+        # IF IS KDE
         if (("KDE_FULL_SESSION" in env) and (env["KDE_FULL_SESSION"] == "true")):
-            print "kde-logout is not implemented"
-            return False
-            
+            # KDE4
+            if (("KDE_SESSION_VERSION" in env) and (env['KDE_SESSION_VERSION'] == '4')):
+                executable = is_in_path("qdbus")
+                if not executable:
+                    return False
+
+                cmd = [executable, "org.kde.ksmserver", "/KSMServer",
+                       "logout", "0", "0", "0"]
+
+                execute_command(cmd)
+                return True
+
+            # KDE3
+            executable = is_in_path('dcop')
+            if not executable:
+                return False
+
+            cmd = [executable, "ksmserver", "ksmserver",
+                   "logout", "0", "0", "0"]
+            execute_command(cmd)
+            return True
+
         elif "GNOME_DESKTOP_SESSION_ID" in env:
             p = is_in_path("gnome-session-save")
-            
+
             if not p:
                 return False
-            
+
+            cmd = [p, "--logout"]
+            execute_command(cmd)
+
+        # FIND XFCE4
+        if "xfce4" in get_output_of_command("xprop -root _DT_SAVE_MODE"):
+            p = is_in_path("xfce4-session-logout")
+
+            if not p:
+                return False
+
             cmd = [p, "--logout"]
             execute_command(cmd)
             
-        # FIND XFCE4
-        if "xfce4" in get_output_of_command("xprop -root _DT_SAVE_MODE"):
-            print "xfce4 found, logout is not supported"
-            return False
+            return True
             
         # BlackBox and fluxbox
         out = get_output_of_command ("xprop -root _BLACKBOX_PID")
-        m = re.search(r'\d+')
+        if out:
+            print out
+            m = re.search(r'\d+', out)
 
-        if m:
-            pid = int(m.group())
-            oskill(pid)
-            return True
+            if m:
+                pid = int(m.group())
+                oskill(pid)
+                return True
             
         #TODO: find session and send logout signal
         pass
@@ -172,7 +239,7 @@ class Win32ActionManager:
 if osname == "nt":              # if is running Windows NT
     ActionManager = Win32ActionManager()
 
-elif (HAS_GDM_CLIENT 
+elif (HAS_GDM_CLIENT
     and (ospath.exists(GDM_PROTOCOL_PATH))
     and ("GDMSESSION" in env)):
     

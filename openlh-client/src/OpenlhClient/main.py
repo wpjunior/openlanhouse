@@ -292,22 +292,37 @@ class Client:
     
     def do_cleanup_timeout(self):
         self.cleanup_apps_timeout -= 1
-        
+
+        if 'finish_action' in self.informations:
+            action = self.informations['finish_action']
+        else:
+            action = 0
+
         if self.cleanup_apps_timeout == 0:
             if self.login_window.iterable_timeout_id == 0: #check
                 self.login_window.set_warn_message("")
-            
-            if 'close_apps_list' in self.informations:
+
+            if ((action == 1) and ('close_apps_list' in self.informations)):
                 for a in self.informations['close_apps_list']:
                     kill_process(a) # Kill process
-                    
+            
+            if ((action == 2) and (ActionManager)):
+                ActionManager.logout()
+
             self.cleanup_apps_id = 0
             return
         
         if self.login_window.iterable_timeout_id == 0: #check
-            self.login_window.set_warn_message(
-                _("Closing applications in %0.2d seconds") % (self.cleanup_apps_timeout + 1))
-        
+            if (action == 1):
+                msg = (_("Closing applications in %0.2d seconds") % (self.cleanup_apps_timeout + 1))
+            elif (action == 2):
+                msg = (_("Closing desktop session in %0.2d seconds") % (self.cleanup_apps_timeout + 1))
+            else:
+                msg = None
+
+            if msg:
+                self.login_window.set_warn_message(msg)
+
         self.cleanup_apps_id = gobject.timeout_add_seconds(1,
                                                            self.do_cleanup_timeout)
 
@@ -325,9 +340,9 @@ class Client:
         self.stop_monitory_status()
         self.dbus_manager.block()
         
-        if 'close_apps' in self.informations:
-            if self.informations['close_apps'] and cleanup_apps:
-                self.cleanup_apps_timeout = 30
+        if 'finish_action' in self.informations and 'finish_action_time' in self.informations:
+            if self.informations['finish_action'] and cleanup_apps:
+                self.cleanup_apps_timeout = self.informations['finish_action_time']
                 self.do_cleanup_timeout()
         
         if not ActionManager:

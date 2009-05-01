@@ -355,7 +355,7 @@ def get_output_of_command(command):
     except ValueError:
         return None
 
-    output = child_stdout.readlines()
+    output = child_stdout.read()
     child_stdout.close()
     child_stdin.close()
 
@@ -462,7 +462,7 @@ def get_os():
                     if os.access(path_to_file, os.X_OK):
                         # the file is executable (f.e. CRUX)
                         # yes, then run it and get the first line of output.
-                        text = get_output_of_command(path_to_file)[0]
+                        text = get_output_of_command(path_to_file).splitlines()[0]
                     else:
                         fd = open(path_to_file)
                         text = fd.readline().strip() # get only first line
