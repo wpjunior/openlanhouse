@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenLanHouse 0.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-13 06:59-0300\n"
+"POT-Creation-Date: 2009-05-13 07:10-0300\n"
 "PO-Revision-Date: 2009-03-15 14:58-0500\n"
 "Last-Translator: Pier Jose Gotta Perez <piegope@fslcol.org>\n"
 "Language-Team: Spanish <es@li.org>\n"
@@ -61,12 +61,14 @@ msgid ">Server host name"
 msgstr "Nombre de host del servidor"
 
 #: ../data/openlh-client.schemas.in.h:2
-msgid "Hash code used for identification machine in server"
+#, fuzzy
+msgid "Hash code used for machine identification in server"
 msgstr ""
 "Código Hash utilizado para la identificación de la máquina en el servidor"
 
 #: ../data/openlh-client.schemas.in.h:3
-msgid "Hash code used for identification machine in server."
+#, fuzzy
+msgid "Hash code used for machine identification in server."
 msgstr ""
 "Código Hash utilizado para la identificación de la máquina en el servidor."
 
@@ -95,12 +97,14 @@ msgid "Show Time Elapsed."
 msgstr "Mostrar Tiempo Transcurrido."
 
 #: ../data/openlh-client.schemas.in.h:10
-msgid "Show Time Left"
-msgstr "Mostrar Tiempo restante:"
+#, fuzzy
+msgid "Show Time Remaining"
+msgstr "_Tiempo Restante"
 
 #: ../data/openlh-client.schemas.in.h:11
-msgid "Show Time Left."
-msgstr "Mostrar Tiempo Restante."
+#, fuzzy
+msgid "Show Time Remaining."
+msgstr "_Tiempo Restante"
 
 #: ../data/openlh-client.schemas.in.h:12
 msgid "Show Time."
@@ -139,8 +143,8 @@ msgid "Show Username."
 msgstr "Mostrar Nombre del usuario."
 
 #: ../data/openlh-client.schemas.in.h:21
-msgid ""
-"When set to false, causes start only as a tray icon with the window hidden."
+#, fuzzy
+msgid "When set to false, starts only as tray icon with hidden window."
 msgstr ""
 "Cuando se fija a falso, ocasiona que solo se inicie como icono en la bandeja "
 "de entrada cuando la ventana se oculta."
@@ -532,6 +536,12 @@ msgstr ""
 #: ../src/OpenlhClient/utils.py:117
 msgid "Download already in progress"
 msgstr ""
+
+#~ msgid "Show Time Left"
+#~ msgstr "Mostrar Tiempo restante:"
+
+#~ msgid "Show Time Left."
+#~ msgstr "Mostrar Tiempo Restante."
 
 #~ msgid "Show Informations"
 #~ msgstr "Mostrar Informaciones"

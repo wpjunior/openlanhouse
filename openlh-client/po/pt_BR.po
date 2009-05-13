@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openlh-client\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-13 06:59-0300\n"
+"POT-Creation-Date: 2009-05-13 07:10-0300\n"
 "PO-Revision-Date: 2009-05-12 20:59-0300\n"
 "Last-Translator: Vladimir Melo <vmelo@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
@@ -67,11 +67,11 @@ msgid ">Server host name"
 msgstr ">Nome da máquina do servidor"
 
 #: ../data/openlh-client.schemas.in.h:2
-msgid "Hash code used for identification machine in server"
+msgid "Hash code used for machine identification in server"
 msgstr "Código hash para identificação de máquina no servidor"
 
 #: ../data/openlh-client.schemas.in.h:3
-msgid "Hash code used for identification machine in server."
+msgid "Hash code used for machine identification in server."
 msgstr "Código hash para identificação de máquina no servidor."
 
 #: ../data/openlh-client.schemas.in.h:4
@@ -99,11 +99,11 @@ msgid "Show Time Elapsed."
 msgstr "Mostra tempo decorrido."
 
 #: ../data/openlh-client.schemas.in.h:10
-msgid "Show Time Left"
+msgid "Show Time Remaining"
 msgstr "Mostrar tempo restante"
 
 #: ../data/openlh-client.schemas.in.h:11
-msgid "Show Time Left."
+msgid "Show Time Remaining."
 msgstr "Mostra tempo restante."
 
 #: ../data/openlh-client.schemas.in.h:12
@@ -143,8 +143,7 @@ msgid "Show Username."
 msgstr "Mostra nome de usuário."
 
 #: ../data/openlh-client.schemas.in.h:21
-msgid ""
-"When set to false, causes start only as a tray icon with the window hidden."
+msgid "When set to false, starts only as tray icon with hidden window."
 msgstr ""
 "Quando definido como falso, inicia apenas como ícone de bandeja com a janela "
 "oculta."

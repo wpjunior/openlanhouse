@@ -10,7 +10,7 @@
       
       <locale name="C">
         <short>Whether the window is visible</short>
-        <long>When set to false, causes start only as a tray icon with the window hidden.</long>
+        <long>When set to false, starts only as tray icon with hidden window.</long>
       </locale>
       
     </schema>
@@ -49,8 +49,8 @@
       <type>string</type>
       
       <locale name="C">
-        <short>Hash code used for identification machine in server</short>
-        <long>Hash code used for identification machine in server.</long>
+        <short>Hash code used for machine identification in server</short>
+        <long>Hash code used for machine identification in server.</long>
       </locale>
       
     </schema>
@@ -105,8 +105,8 @@
       <type>bool</type>
       <default>True</default>
       <locale name="C">
-        <short>Show Time Left</short>
-        <long>Show Time Left.</long>
+        <short>Show Time Remaining</short>
+        <long>Show Time Remaining.</long>
       </locale>
     </schema>
     
