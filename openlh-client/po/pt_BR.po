@@ -1,40 +1,42 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Brazilian Portuguese translation of Cliente OpenLanHouse
+# Copyright (C) 2007-2009 OpenLanHouse's COPYRIGHT HOLDER
+# This file is distributed under the same license as the OpenLanHouse package.
+# Wilson Pinto Júnior <n3rd3x@guake-terminal.org>, 2009.
+# Vladimir Melo <vmelo@gnome.org>, 2009.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: openlh-client\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-25 12:51-0300\n"
-"PO-Revision-Date: 2009-03-07 09:33-0300\n"
-"Last-Translator: Wilson Pinto Júnior <n3rd3x@guake-terminal.org>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2009-05-13 06:59-0300\n"
+"PO-Revision-Date: 2009-05-12 20:59-0300\n"
+"Last-Translator: Vladimir Melo <vmelo@gnome.org>\n"
+"Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
 
 #: ../gnomeapplet/GNOME_OpenlhClientApplet.server.in.in.h:1
 msgid "Applet to show OpenLanhouse Client status."
-msgstr "Applet para exibir informações sobre o OpenLanhouse"
+msgstr "Miniaplicativo para mostrar o status do OpenLanhouse."
 
 #: ../gnomeapplet/GNOME_OpenlhClientApplet.server.in.in.h:2
 msgid "Get informations from OpenLanhouse Client"
-msgstr "Ter informações do OpenLanhouse"
+msgstr "Obter informações do OpenLanhouse"
 
 #: ../gnomeapplet/GNOME_OpenlhClientApplet.server.in.in.h:3
 msgid "OpenLanhouse Client Applet"
-msgstr ""
+msgstr "Miniaplicativo do Cliente OpenLanhouse"
 
 #: ../gnomeapplet/GNOME_OpenlhClientApplet.server.in.in.h:4
 msgid "OpenLanhouse Client Factory"
-msgstr ""
+msgstr "Fábrica do Cliente OpenLanHouse"
 
 #: ../gnomeapplet/applet.c:744
 #, c-format
 msgid "Failed to open connection to bus: %s\n"
-msgstr "Falha ao abrir conexão: %s\n"
+msgstr "Falha ao abrir conexão com o bus: %s\n"
 
 #: ../gnomeapplet/applet.c:883
 msgid "OpenLanhouse Client is Unavailable"
@@ -42,48 +44,47 @@ msgstr "Cliente OpenLanhouse está indisponível"
 
 #: ../gnomeapplet/applet.c:928
 msgid "OpenLanhouse Applet"
-msgstr "Applet do OpenLanhouse"
+msgstr "Miniaplicativo do OpenLanhouse"
 
 #: ../gnomeapplet/applet.c:929
 msgid "Gnome Applet for OpenLanhouse Client"
-msgstr ""
+msgstr "Miniaplicativo do Gnome para o Cliente OpenLanHouse"
 
 #: ../gnomeapplet/applet.c:930
 msgid "OpenLanhouse - Copyright (c) 2007-2008"
-msgstr ""
+msgstr "OpenLanhouse - Copyright (c) 2007-2008"
 
 #: ../data/openlh-client.desktop.in.in.h:1
 msgid "LAN House Client for Gnome Desktop"
-msgstr ""
+msgstr "Cliente LAN House para o ambiente Gnome"
 
-#: ../data/openlh-client.desktop.in.in.h:2
-#: ../src/openlh-client:179
+#: ../data/openlh-client.desktop.in.in.h:2 ../src/openlh-client:179
 msgid "OpenLanhouse Client"
-msgstr ""
+msgstr "Cliente OpenLanhouse"
 
 #: ../data/openlh-client.schemas.in.h:1
 msgid ">Server host name"
-msgstr ""
+msgstr ">Nome da máquina do servidor"
 
 #: ../data/openlh-client.schemas.in.h:2
 msgid "Hash code used for identification machine in server"
-msgstr ""
+msgstr "Código hash para identificação de máquina no servidor"
 
 #: ../data/openlh-client.schemas.in.h:3
 msgid "Hash code used for identification machine in server."
-msgstr ""
+msgstr "Código hash para identificação de máquina no servidor."
 
 #: ../data/openlh-client.schemas.in.h:4
 msgid "Port number"
-msgstr ""
+msgstr "Número da porta"
 
 #: ../data/openlh-client.schemas.in.h:5
 msgid "Port number used to connect into server."
-msgstr ""
+msgstr "Número da posta usado para conectar no servidor."
 
 #: ../data/openlh-client.schemas.in.h:6
 msgid "Server host name."
-msgstr ""
+msgstr "Nome da máquina do servidor."
 
 #: ../data/openlh-client.schemas.in.h:7
 msgid "Show Time"
@@ -91,63 +92,66 @@ msgstr "Mostrar Tempo"
 
 #: ../data/openlh-client.schemas.in.h:8
 msgid "Show Time Elapsed"
-msgstr ""
+msgstr "Mostrar tempo decorrido"
 
 #: ../data/openlh-client.schemas.in.h:9
 msgid "Show Time Elapsed."
-msgstr ""
+msgstr "Mostra tempo decorrido."
 
 #: ../data/openlh-client.schemas.in.h:10
 msgid "Show Time Left"
-msgstr ""
+msgstr "Mostrar tempo restante"
 
 #: ../data/openlh-client.schemas.in.h:11
 msgid "Show Time Left."
-msgstr ""
+msgstr "Mostra tempo restante."
 
 #: ../data/openlh-client.schemas.in.h:12
 msgid "Show Time."
-msgstr ""
+msgstr "Mostra tempo."
 
 #: ../data/openlh-client.schemas.in.h:13
 msgid "Show Titles"
-msgstr ""
+msgstr "Mostrar títulos"
 
 #: ../data/openlh-client.schemas.in.h:14
 msgid "Show Titles."
-msgstr ""
+msgstr "Mostra títulos."
 
 #: ../data/openlh-client.schemas.in.h:15
 msgid "Show Total to pay"
-msgstr ""
+msgstr "Mostrar total a pagar"
 
 #: ../data/openlh-client.schemas.in.h:16
 msgid "Show Total to pay."
-msgstr ""
+msgstr "Mostra total a pagar."
 
 #: ../data/openlh-client.schemas.in.h:17
 msgid "Show User credit"
-msgstr ""
+msgstr "Mostrar crédito do usuário"
 
 #: ../data/openlh-client.schemas.in.h:18
 msgid "Show User credit."
-msgstr ""
+msgstr "Mostra crédito do usuário."
 
 #: ../data/openlh-client.schemas.in.h:19
 msgid "Show Username"
-msgstr ""
+msgstr "Mostrar nome de usuário"
 
 #: ../data/openlh-client.schemas.in.h:20
 msgid "Show Username."
-msgstr ""
+msgstr "Mostra nome de usuário."
 
 #: ../data/openlh-client.schemas.in.h:21
-msgid "When set to false, causes start only as a tray icon with the window hidden."
+msgid ""
+"When set to false, causes start only as a tray icon with the window hidden."
 msgstr ""
+"Quando definido como falso, inicia apenas como ícone de bandeja com a janela "
+"oculta."
 
 #: ../data/openlh-client.schemas.in.h:22
 msgid "Whether the window is visible"
-msgstr ""
+msgstr "Se a janela está visível"
 
 #: ../data/glade/connect_server.glade.h:1
 msgid ""
@@ -155,30 +159,33 @@ msgid ""
 " \n"
 "Please specify the address of the server that will manage this machine."
 msgstr ""
+"<b><big>Especifique o servidor para conexão</big></b>\n"
+" \n"
+"Por favor, especifique o endereço do servidor que gerenciará esta máquina."
 
 #: ../data/glade/connect_server.glade.h:4
 msgid "Connect to Server"
-msgstr ""
+msgstr "Conectar ao servidor"
 
 #: ../data/glade/connect_server.glade.h:5
 msgid "Host:"
-msgstr ""
+msgstr "Máquina:"
 
 #: ../data/glade/connect_server.glade.h:6
 msgid "gtk-cancel"
-msgstr ""
+msgstr "gtk-cancel"
 
 #: ../data/glade/connect_server.glade.h:7
 msgid "gtk-connect"
-msgstr ""
+msgstr "gtk-connect"
 
 #: ../data/glade/login.glade.h:1
 msgid "<big><big><big>Welcome</big></big></big>"
-msgstr ""
+msgstr "<big><big><big>Bem-vindo</big></big></big>"
 
 #: ../data/glade/login.glade.h:2
 msgid "OpenLanhouse Client: Disconnected"
-msgstr ""
+msgstr "Cliente OpenLanhouse: Desconectado"
 
 #: ../data/glade/login.glade.h:3
 msgid "_Start Again"
@@ -188,14 +195,13 @@ msgstr "_Iniciar novamente"
 msgid "_Ticket"
 msgstr "_Ingresso"
 
-#: ../data/glade/login.glade.h:5
-#: ../src/OpenlhClient/ui/login.py:188
+#: ../data/glade/login.glade.h:5 ../src/OpenlhClient/ui/login.py:188
 msgid "_Username:"
 msgstr "_Usuário:"
 
 #: ../data/glade/login.glade.h:6
 msgid "gtk-ok"
-msgstr ""
+msgstr "gtk-ok"
 
 #: ../data/glade/main.glade.h:1
 msgid "<b>Information</b>"
@@ -215,7 +221,7 @@ msgstr "Crédito:"
 
 #: ../data/glade/main.glade.h:5
 msgid "Elapsed:"
-msgstr ""
+msgstr "Decorrido:"
 
 #: ../data/glade/main.glade.h:6
 msgid "Name:"
@@ -223,7 +229,7 @@ msgstr "Nome:"
 
 #: ../data/glade/main.glade.h:7
 msgid "Remaining:"
-msgstr ""
+msgstr "Restante:"
 
 #: ../data/glade/main.glade.h:8
 msgid "Time:"
@@ -231,7 +237,7 @@ msgstr "Tempo:"
 
 #: ../data/glade/main.glade.h:9
 msgid "Total to pay:"
-msgstr "Total à pagar:"
+msgstr "Total a pagar:"
 
 #: ../data/glade/main.glade.h:10
 msgid "_File"
@@ -239,7 +245,7 @@ msgstr "_Arquivo"
 
 #: ../data/glade/main.glade.h:11
 msgid "_Help"
-msgstr "_Ajuda"
+msgstr "Aj_uda"
 
 #: ../data/glade/main.glade.h:12
 msgid "_Information"
@@ -247,35 +253,35 @@ msgstr "_Informação"
 
 #: ../data/glade/main.glade.h:13
 msgid "_Logout"
-msgstr ""
+msgstr "_Sair"
 
 #: ../data/glade/main.glade.h:14
 msgid "_Show Main Window"
-msgstr ""
+msgstr "_Mostrar janela principal"
 
 #: ../data/glade/main.glade.h:15
 msgid "_Time Elapsed"
-msgstr ""
+msgstr "_Tempo decorrido"
 
 #: ../data/glade/main.glade.h:16
 msgid "_Time Remaining"
-msgstr ""
+msgstr "_Tempo restante"
 
 #: ../data/glade/main.glade.h:17
 msgid "_View"
-msgstr ""
+msgstr "_Ver"
 
 #: ../data/glade/main.glade.h:18
 msgid "gtk-about"
-msgstr ""
+msgstr "gtk-about"
 
 #: ../data/glade/main.glade.h:19
 msgid "menuitem8"
-msgstr ""
+msgstr "menuitem8"
 
 #: ../data/glade/main.glade.h:20
 msgid "menuitem9"
-msgstr ""
+msgstr "menuitem9"
 
 #: ../data/glade/prefs.glade.h:1
 msgid "<b>General</b>"
@@ -283,43 +289,43 @@ msgstr "<b>Geral</b>"
 
 #: ../data/glade/prefs.glade.h:2
 msgid "<b>Login</b>"
-msgstr ""
+msgstr "<b>Fazer login</b>"
 
 #: ../data/glade/prefs.glade.h:3
 msgid "Local user (Recommended)"
-msgstr ""
+msgstr "Usuário local (recomendado)"
 
 #: ../data/glade/prefs.glade.h:4
 msgid "Open LanHouse - Preferences"
-msgstr ""
+msgstr "Open LanHouse - Preferências"
 
 #: ../data/glade/prefs.glade.h:5
 msgid "Wallpaper default (server)"
-msgstr ""
+msgstr "Papel de parede padrão (servidor)"
 
 #: ../data/glade/prefs.glade.h:6
 msgid "Wallpaper local"
-msgstr ""
+msgstr "Papel de parede local"
 
 #: ../data/glade/prefs.glade.h:7
 msgid "_Server:"
-msgstr ""
+msgstr "_Servidor:"
 
 #: ../data/glade/prefs.glade.h:8
 msgid "gtk-close"
-msgstr ""
+msgstr "gtk-close"
 
 #. #End internacionalize
 #. #APP Proprerties
 #: ../src/OpenlhClient/globals.py:91
 msgid "a Free LAN House Client"
-msgstr "Um cliente de Lanhouse livre"
+msgstr "Um cliente livre de LAN House"
 
 #: ../src/OpenlhClient/globals.py:92
 msgid "OpenLanHouse - Client"
-msgstr ""
+msgstr "Cliente - OpenLanHouse"
 
-#: ../src/OpenlhClient/globals.py:121
+#: ../src/OpenlhClient/globals.py:124
 msgid ""
 "OpenLanhouse is free software: you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as published by\n"
@@ -334,14 +340,26 @@ msgid ""
 "You should have received a copy of the GNU General Public License\n"
 "along with this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
+"OpenLanHouse é um software livre; você pode redistribuí-lo e/ou modificá-lo\n"
+"sob os termos da Licença Pública Geral GNU publicada pela\n"
+"Free Software Foundation; qualquer versão 3 da Licença, ou\n"
+"(a seu critério) outra versão posterior.\n"
+"\n"
+"Este programa é distribuído na esperança de que seja útil,\n"
+"mas SEM NENHUMA GARANTIA; sem mesmo implicar garantias de\n"
+" COMERCIABILIDADE ou ADAPTAÇÃO A UM PROPÓSITO PARTICULAR.  Veja a\n"
+"Licença Pública Geral GNU (GPL) para mais detalhes.\n"
+"\n"
+"Você deve ter recebido uma cópia da Licença Pública Geral GNU\n"
+"junto com este programa. Caso contrário, veja <http://www.gnu.org/licenses/>."
 
 #: ../src/OpenlhClient/ui/login.py:111
 msgid "%a %b %d, %H:%M"
-msgstr ""
+msgstr "%a %d %b, %H:%M"
 
 #: ../src/OpenlhClient/ui/login.py:113
 msgid "%a %b %d, %l:%M %p"
-msgstr ""
+msgstr "%a %b %d, %l:%M %p"
 
 #: ../src/OpenlhClient/ui/login.py:194
 msgid "_Password:"
@@ -352,100 +370,172 @@ msgid "_Ticket:"
 msgstr "_Ingresso:"
 
 #: ../src/OpenlhClient/ui/login.py:266
-msgid "The connection to the server was "
-msgstr ""
+#, fuzzy, python-format
+msgid ""
+"The connection to the server was lost, trying to connect in %0.2d seconds."
+msgstr "A conexão com o servidor foi "
 
 #: ../src/OpenlhClient/ui/login.py:289
 #, python-format
-msgid "Please wait %0.2d seconds for a new login, Number of attempts has been exceeded"
+msgid ""
+"Please wait %0.2d seconds for a new login, Number of attempts has been "
+"exceeded"
 msgstr ""
+"Por favor, aguarde %0.2d segundos para fazer um novo login, o número de "
+"tentativas foi excedido"
 
 #: ../src/OpenlhClient/ui/login.py:319
 msgid "OpenLanhouse Client - Disconnected"
-msgstr "OpenLanhouse Cliente - Desconectado"
+msgstr "Cliente OpenLanhouse - Desconectado"
 
 #: ../src/OpenlhClient/ui/login.py:326
 msgid "OpenLanhouse Client - Connected"
-msgstr "OpenLanhouse Cliente - Conectado"
+msgstr "Cliente OpenLanhouse - Conectado"
 
 #: ../src/OpenlhClient/main.py:161
 msgid "OpenLanhouse - Client"
 msgstr "Cliente - OpenLanhouse"
 
-#: ../src/OpenlhClient/main.py:257
-#: ../src/OpenlhClient/main.py:258
+#: ../src/OpenlhClient/main.py:257 ../src/OpenlhClient/main.py:258
 msgid "Welcome"
-msgstr "Bem Vindo"
+msgstr "Bem-vindo"
 
-#: ../src/OpenlhClient/main.py:307
+#: ../src/OpenlhClient/main.py:317
 #, python-format
 msgid "Closing applications in %0.2d seconds"
-msgstr ""
+msgstr "Fechando os aplicativos em %0.2d segundos"
 
-#: ../src/OpenlhClient/main.py:471
+#: ../src/OpenlhClient/main.py:319
+#, fuzzy, python-format
+msgid "Closing desktop session in %0.2d seconds"
+msgstr "Fechando os aplicativos em %0.2d segundos"
+
+#: ../src/OpenlhClient/main.py:488
 msgid "None"
-msgstr ""
+msgstr "Nenhum"
 
-#: ../src/OpenlhClient/main.py:555
+#: ../src/OpenlhClient/main.py:572
 msgid "Unlimited"
 msgstr "Não limitado"
 
-#: ../src/OpenlhClient/main.py:599
+#: ../src/OpenlhClient/main.py:616
 msgid "Incorrect username or password."
-msgstr "Usuário ou senha incorretos"
+msgstr "Usuário ou senha incorreto(a)."
 
-#: ../src/OpenlhClient/main.py:603
+#: ../src/OpenlhClient/main.py:620
 msgid "Insufficient Credits."
-msgstr "Créditos insuficientes"
+msgstr "Créditos insuficientes."
 
-#: ../src/OpenlhClient/main.py:608
+#: ../src/OpenlhClient/main.py:625
 msgid "Permission Denied"
-msgstr "Permissão Negada"
+msgstr "Permissão negada"
 
-#: ../src/OpenlhClient/main.py:630
+#: ../src/OpenlhClient/main.py:647
 msgid "Ticket Invalid."
-msgstr "Ingresso Inválido"
+msgstr "Ingresso Inválido."
 
-#: ../src/OpenlhClient/main.py:659
+#: ../src/OpenlhClient/main.py:676
 msgid ""
 "<big><b>Are you sure you want to Log out of this system now?</b></big>\n"
 "\n"
 "If you Log out, unsaved work will be lost."
 msgstr ""
-"<big><b>Você deseja sair do sistema agora?</b></big>\n"
+"<big><b>Você tem certeza que deseja sair do sistema agora?</b></big>\n"
 "\n"
 "Se você sair, todo trabalho não salvo será perdido."
 
-#: ../src/OpenlhClient/ui/dialogs.py:63
+#: ../src/OpenlhClient/ui/dialogs.py:64
 msgid "Developers:"
-msgstr "Desenvolvedores"
+msgstr "Desenvolvedores:"
 
-#: ../src/OpenlhClient/ui/dialogs.py:66
+#: ../src/OpenlhClient/ui/dialogs.py:67
 msgid "Contributors:"
-msgstr "Contribuidores"
+msgstr "Colaboradores:"
 
-#: ../src/OpenlhClient/ui/dialogs.py:71
+#: ../src/OpenlhClient/ui/dialogs.py:72
 msgid "OpenLanhouse"
 msgstr "OpenLanhouse"
 
-#: ../src/OpenlhClient/ui/dialogs.py:75
+#: ../src/OpenlhClient/ui/dialogs.py:76
 msgid "OpenLanhouse Website"
 msgstr "Site do OpenLanhouse"
 
-#: ../src/OpenlhClient/ui/dialogs.py:285
+#: ../src/OpenlhClient/ui/dialogs.py:91
+msgid "translator-credits"
+msgstr ""
+
+#: ../src/OpenlhClient/ui/dialogs.py:273
 msgid "Choose Image"
 msgstr "Escolha a imagem"
 
-#: ../src/OpenlhClient/ui/dialogs.py:295
-#: ../src/OpenlhClient/ui/dialogs.py:349
+#: ../src/OpenlhClient/ui/dialogs.py:283 ../src/OpenlhClient/ui/dialogs.py:337
 msgid "All files"
-msgstr "Todos arquivos"
+msgstr "Todos os arquivos"
 
-#: ../src/OpenlhClient/ui/dialogs.py:300
-#: ../src/OpenlhClient/ui/dialogs.py:354
+#: ../src/OpenlhClient/ui/dialogs.py:288 ../src/OpenlhClient/ui/dialogs.py:342
 msgid "Images"
 msgstr "Imagens"
 
+#: ../src/OpenlhClient/utils.py:67
+#, python-format
+msgid "Unexpected error of type %s"
+msgstr ""
+
+#: ../src/OpenlhClient/utils.py:73
+msgid "Access to this file is forbidden"
+msgstr ""
+
+#: ../src/OpenlhClient/utils.py:76
+msgid "File not found on server"
+msgstr ""
+
+#: ../src/OpenlhClient/utils.py:79
+msgid "Internal server error, try again later"
+msgstr ""
+
+#: ../src/OpenlhClient/utils.py:82
+msgid ""
+"The server could not process the request due to high server load, try again "
+"later"
+msgstr ""
+
+#: ../src/OpenlhClient/utils.py:89
+msgid "Unknown Error"
+msgstr ""
+
+#: ../src/OpenlhClient/utils.py:90
+#, python-format
+msgid "Server error %u: %s"
+msgstr ""
+
+#: ../src/OpenlhClient/utils.py:93
+#, fuzzy, python-format
+msgid "Failed to connect to server: %s"
+msgstr "Falha ao abrir conexão com o bus: %s\n"
+
+#: ../src/OpenlhClient/utils.py:97
+#, python-format
+msgid "File error for '%s': %s"
+msgstr ""
+
+#: ../src/OpenlhClient/utils.py:100
+#, python-format
+msgid "File error: %s"
+msgstr ""
+
+#: ../src/OpenlhClient/utils.py:103
+#, python-format
+msgid "File error for '%s'"
+msgstr ""
+
+#: ../src/OpenlhClient/utils.py:106 ../src/OpenlhClient/utils.py:109
+#, python-format
+msgid "Unknown file error %d"
+msgstr ""
+
+#: ../src/OpenlhClient/utils.py:117
+msgid "Download already in progress"
+msgstr ""
+
 #~ msgid "Show Informations"
 #~ msgstr "Mostrar Informações"
-

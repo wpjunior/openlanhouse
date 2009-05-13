@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-25 12:51-0300\n"
+"POT-Creation-Date: 2009-05-13 06:59-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -319,7 +319,7 @@ msgstr ""
 msgid "OpenLanHouse - Client"
 msgstr ""
 
-#: ../src/OpenlhClient/globals.py:121
+#: ../src/OpenlhClient/globals.py:124
 msgid ""
 "OpenLanhouse is free software: you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as published by\n"
@@ -352,7 +352,9 @@ msgid "_Ticket:"
 msgstr ""
 
 #: ../src/OpenlhClient/ui/login.py:266
-msgid "The connection to the server was "
+#, python-format
+msgid ""
+"The connection to the server was lost, trying to connect in %0.2d seconds."
 msgstr ""
 
 #: ../src/OpenlhClient/ui/login.py:289
@@ -378,66 +380,136 @@ msgstr ""
 msgid "Welcome"
 msgstr ""
 
-#: ../src/OpenlhClient/main.py:307
+#: ../src/OpenlhClient/main.py:317
 #, python-format
 msgid "Closing applications in %0.2d seconds"
 msgstr ""
 
-#: ../src/OpenlhClient/main.py:471
+#: ../src/OpenlhClient/main.py:319
+#, python-format
+msgid "Closing desktop session in %0.2d seconds"
+msgstr ""
+
+#: ../src/OpenlhClient/main.py:488
 msgid "None"
 msgstr ""
 
-#: ../src/OpenlhClient/main.py:555
+#: ../src/OpenlhClient/main.py:572
 msgid "Unlimited"
 msgstr ""
 
-#: ../src/OpenlhClient/main.py:599
+#: ../src/OpenlhClient/main.py:616
 msgid "Incorrect username or password."
 msgstr ""
 
-#: ../src/OpenlhClient/main.py:603
+#: ../src/OpenlhClient/main.py:620
 msgid "Insufficient Credits."
 msgstr ""
 
-#: ../src/OpenlhClient/main.py:608
+#: ../src/OpenlhClient/main.py:625
 msgid "Permission Denied"
 msgstr ""
 
-#: ../src/OpenlhClient/main.py:630
+#: ../src/OpenlhClient/main.py:647
 msgid "Ticket Invalid."
 msgstr ""
 
-#: ../src/OpenlhClient/main.py:659
+#: ../src/OpenlhClient/main.py:676
 msgid ""
 "<big><b>Are you sure you want to Log out of this system now?</b></big>\n"
 "\n"
 "If you Log out, unsaved work will be lost."
 msgstr ""
 
-#: ../src/OpenlhClient/ui/dialogs.py:63
+#: ../src/OpenlhClient/ui/dialogs.py:64
 msgid "Developers:"
 msgstr ""
 
-#: ../src/OpenlhClient/ui/dialogs.py:66
+#: ../src/OpenlhClient/ui/dialogs.py:67
 msgid "Contributors:"
 msgstr ""
 
-#: ../src/OpenlhClient/ui/dialogs.py:71
+#: ../src/OpenlhClient/ui/dialogs.py:72
 msgid "OpenLanhouse"
 msgstr ""
 
-#: ../src/OpenlhClient/ui/dialogs.py:75
+#: ../src/OpenlhClient/ui/dialogs.py:76
 msgid "OpenLanhouse Website"
 msgstr ""
 
-#: ../src/OpenlhClient/ui/dialogs.py:285
+#: ../src/OpenlhClient/ui/dialogs.py:91
+msgid "translator-credits"
+msgstr ""
+
+#: ../src/OpenlhClient/ui/dialogs.py:273
 msgid "Choose Image"
 msgstr ""
 
-#: ../src/OpenlhClient/ui/dialogs.py:295 ../src/OpenlhClient/ui/dialogs.py:349
+#: ../src/OpenlhClient/ui/dialogs.py:283 ../src/OpenlhClient/ui/dialogs.py:337
 msgid "All files"
 msgstr ""
 
-#: ../src/OpenlhClient/ui/dialogs.py:300 ../src/OpenlhClient/ui/dialogs.py:354
+#: ../src/OpenlhClient/ui/dialogs.py:288 ../src/OpenlhClient/ui/dialogs.py:342
 msgid "Images"
+msgstr ""
+
+#: ../src/OpenlhClient/utils.py:67
+#, python-format
+msgid "Unexpected error of type %s"
+msgstr ""
+
+#: ../src/OpenlhClient/utils.py:73
+msgid "Access to this file is forbidden"
+msgstr ""
+
+#: ../src/OpenlhClient/utils.py:76
+msgid "File not found on server"
+msgstr ""
+
+#: ../src/OpenlhClient/utils.py:79
+msgid "Internal server error, try again later"
+msgstr ""
+
+#: ../src/OpenlhClient/utils.py:82
+msgid ""
+"The server could not process the request due to high server load, try again "
+"later"
+msgstr ""
+
+#: ../src/OpenlhClient/utils.py:89
+msgid "Unknown Error"
+msgstr ""
+
+#: ../src/OpenlhClient/utils.py:90
+#, python-format
+msgid "Server error %u: %s"
+msgstr ""
+
+#: ../src/OpenlhClient/utils.py:93
+#, python-format
+msgid "Failed to connect to server: %s"
+msgstr ""
+
+#: ../src/OpenlhClient/utils.py:97
+#, python-format
+msgid "File error for '%s': %s"
+msgstr ""
+
+#: ../src/OpenlhClient/utils.py:100
+#, python-format
+msgid "File error: %s"
+msgstr ""
+
+#: ../src/OpenlhClient/utils.py:103
+#, python-format
+msgid "File error for '%s'"
+msgstr ""
+
+#: ../src/OpenlhClient/utils.py:106 ../src/OpenlhClient/utils.py:109
+#, python-format
+msgid "Unknown file error %d"
+msgstr ""
+
+#: ../src/OpenlhClient/utils.py:117
+msgid "Download already in progress"
 msgstr ""

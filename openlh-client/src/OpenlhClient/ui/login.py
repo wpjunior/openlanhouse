@@ -263,8 +263,8 @@ class Login:
         if self.timeout_connect != 0:
             if self.run_interable:
                 self.timeout_connect -= 1
-                self.warn_msg.set_text(_('The connection to the server was ' + 
-                                         'lost, trying to connect in %0.2d ' +
+                self.warn_msg.set_text(_('The connection to the server was ' 
+                                         'lost, trying to connect in %0.2d '
                                          'seconds.') % 
                                          (self.timeout_connect + 1))
                 
