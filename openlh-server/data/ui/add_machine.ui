@@ -172,7 +172,7 @@
                 <property name="relief">GTK_RELIEF_NONE</property>
                 <signal handler="on_help_hash_id_clicked" name="clicked"/>
                 <child>
-                  <object class="GtkImage" id="image1">
+                  <object class="GtkImage" id="image12">
                     <property name="visible">True</property>
                     <property name="stock">gtk-help</property>
                     <property name="icon_size">1</property>

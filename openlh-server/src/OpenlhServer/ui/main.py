@@ -299,7 +299,7 @@ class Manager:
             iter = self.machine_list_store.append(lst)
             self.machines_iters[key] = iter
         
-        self.statusbar.remove(0, message_id)
+        self.statusbar.remove_message(0, message_id)
         self.on_update_machines_time() # Start Loop to update times
         
         # Populate Users treeview
@@ -319,7 +319,7 @@ class Manager:
             
             self.users_iters[user.id] = iter
             
-        self.statusbar.remove(0, message_id)
+        self.statusbar.remove_message(0, message_id)
         
         # Populate Cash Flow
         cal = self.daily_calendar
@@ -379,7 +379,7 @@ class Manager:
             
             self.open_debts_machine_iters[item.id] = iter
             
-        self.statusbar.remove(0, message_id)
+        self.statusbar.remove_message(0, message_id)
 
         # Populate Other OpenDebts
         message_id = self.statusbar.push(0, _('Loading Other OpenDebts'))
@@ -408,7 +408,7 @@ class Manager:
             
             self.open_debts_other_iters[item.id] = iter
             
-        self.statusbar.remove(0, message_id)
+        self.statusbar.remove_message(0, message_id)
         
         # Populate Categories machine
         message_id = self.statusbar.push(0, _('Loading Machine Categories'))
@@ -449,7 +449,7 @@ class Manager:
         for i in self.machine_category_manager.get_all():
             self.populate_category_machine(i.id, i.name)
         
-        self.statusbar.remove(0, message_id)
+        self.statusbar.remove_message(0, message_id)
         
         # Populate Users Categories
         message_id = self.statusbar.push(0, _('Loading User Categories'))
@@ -481,7 +481,7 @@ class Manager:
         for i in self.user_category_manager.get_all():
             self.populate_user_category(i.id, i.name)
         
-        self.statusbar.remove(0, message_id)
+        self.statusbar.remove_message(0, message_id)
         
         # Populate Categories Open Debts
         tree = self.xml.get_object('open_debts_types_tree')
@@ -1257,7 +1257,7 @@ class Manager:
                 tgbnt.set_active(True)
             
             if self.cash_flow_status_msg_id:
-                self.statusbar.remove(0, self.cash_flow_status_msg_id)
+                self.statusbar.remove_message(0, self.cash_flow_status_msg_id)
             
         elif num == 1:
             t = (self.users_tree, self.users_treemnu)
@@ -1294,7 +1294,7 @@ class Manager:
                 tgbnt.set_active(True)
             
             if self.cash_flow_status_msg_id:
-                self.statusbar.remove(0, self.cash_flow_status_msg_id)
+                self.statusbar.remove_message(0, self.cash_flow_status_msg_id)
         
         elif num == 2:
             t = (self.cash_flow_tree, self.cash_flow_treemnu)
@@ -1360,7 +1360,7 @@ class Manager:
                 tgbnt.set_active(True)
             
             if self.cash_flow_status_msg_id:
-                self.statusbar.remove(0, self.cash_flow_status_msg_id)
+                self.statusbar.remove_message(0, self.cash_flow_status_msg_id)
             
             open_debts_sel_page = self.xml.get_object(
                     "open_debts_notebook").get_current_page()
@@ -1875,7 +1875,7 @@ class Manager:
                 title = _('%s Connected') % inst.name
                 msg = _('%s is now Available') % inst.name
             
-            notification.Popup(title, msg, self.popup_icon)
+            notification.Popup(title=title, text=msg, path_to_image=self.popup_icon)
     
     def on_machine_status_changed(self, obj, machine_instance):
         
@@ -1904,7 +1904,7 @@ class Manager:
                 title = _('%s Busy') % machine_instance.name
                 msg = _('%s is now Busy') % machine_instance.name
             
-            notification.Popup(title, msg, self.popup_icon)
+            notification.Popup(title=title, text=msg, path_to_image=self.popup_icon)
         
         if machine_instance.status == 2 and machine_instance.user_id:
             full_name = self.users_manager.get_full_name(
@@ -2035,7 +2035,7 @@ class Manager:
     def update_status_label_for_cash_flow(self):
         if self.selpage == 2:
             if self.cash_flow_status_msg_id:
-                self.statusbar.remove(0, self.cash_flow_status_msg_id)
+                self.statusbar.remove_message(0, self.cash_flow_status_msg_id)
             
             message = (_("Cash in: %0.2f, Cash out: %0.2f") % 
                                                 (self.cash_flow_total_in,

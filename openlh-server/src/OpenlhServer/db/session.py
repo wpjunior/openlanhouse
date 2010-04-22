@@ -85,7 +85,7 @@ class DBSession(gobject.GObject):
         self.metadata.create_all(self.engine)
     
     def save(self, obj):
-        self.session.save(obj)
+        self.session.add(obj)
         
     def __repr__(self):
         return "<DBSession(%s)>" % self.engine_str
