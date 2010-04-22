@@ -32,6 +32,7 @@ from OpenlhCore.utils import get_os, humanize_time
 from OpenlhClient.ui import dialogs, login
 from OpenlhClient.ui.utils import get_gtk_builder
 from OpenlhClient.logout_actions import ActionManager
+from OpenlhClient.script_actions import ScriptManager
 from OpenlhClient.utils import HttpDownload
 
 # Check DBus
@@ -52,7 +53,6 @@ except ImportError:
         
         def __setattr__(self, *args):
             pass
-
 
 from os import remove
 from os import path as ospath
@@ -87,6 +87,7 @@ class Client:
         self.logger = logging.getLogger('client.main')
         self.conf_client = get_default_client()
         self.dbus_manager = DbusManager(self)
+        self.script_manager = ScriptManager()
         
         # Get operating system version
         o = get_os()
@@ -327,6 +328,9 @@ class Client:
                                                            self.do_cleanup_timeout)
 
     def block(self, after, action, cleanup_apps=True):
+
+        self.script_manager.pre_block()
+
         self.blocked = True
         self.elapsed_time = 0
         self.left_time = 0
@@ -345,6 +349,8 @@ class Client:
                 self.cleanup_apps_timeout = self.informations['finish_action_time']
                 self.do_cleanup_timeout()
         
+        self.script_manager.pos_block()
+
         if not ActionManager:
             return
 
@@ -363,6 +369,8 @@ class Client:
     def unblock(self, data):
         assert isinstance(data, dict)
         
+        # Execute a pre unblock script
+        self.script_manager.pre_unblock()
         self.blocked = False
         self.reset_widgets()
         self.elapsed_time = 0
@@ -406,6 +414,9 @@ class Client:
         
         self.start_monitory_status()
         self.login_window.unlock(None)
+
+        # execute a pos unblock script
+        self.script_manager.pos_unblock()
     
     def dispatch(self, method, params):
         

@@ -9,4 +9,5 @@ openlh_PYTHON = \
 			dbus_manager.py \
 			main.py \
 			defaults.py \
-			logout_actions.py
+			logout_actions.py \
+			script_actions.py
