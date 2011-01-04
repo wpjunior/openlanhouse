@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  Copyright (C) 2008-2009 Wilson Pinto Júnior <wilson@openlanhouse.org>
+#  Copyright (C) 2008-2011 Wilson Pinto Júnior <wilson@openlanhouse.org>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -74,6 +74,10 @@ class DBSession(gobject.GObject):
             self.engine_str = "".join(args)
         
         self.engine = create_engine(self.engine_str, **engine_kwargs)
+
+        if self.db_type == DB_TYPE_SQLITE: #hack :-) text_factory is unicode cause serious problems
+            self.engine.connect().connection.connection.text_factory = str
+
         self.session_maker = sessionmaker(bind=self.engine, autoflush=True)
         self.metadata = MetaData()
         self.session = self.session_maker()

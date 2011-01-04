@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  Copyright (C) 2008-2009 Wilson Pinto Júnior <wilson@openlanhouse.org>
+#  Copyright (C) 2008-2010 Wilson Pinto Júnior <wilson@openlanhouse.org>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

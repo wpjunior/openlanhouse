@@ -28,8 +28,8 @@
 DB_NAMES = [
     "sqlite",
     "mysql",
-    "postgres",
+    "postgresql",
     "oracle",
     "mssql",
-    "firebird"
+    "firebird",
 ]

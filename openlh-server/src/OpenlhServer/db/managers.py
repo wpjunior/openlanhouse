@@ -27,82 +27,20 @@ from sqlalchemy.orm import mapper, relation
 from sqlalchemy.sql import select, and_, delete, update
 
 class VersionManager(BaseManager):
-    __table_name__ = "openlh_versions"
-    
     def __init__(self, db_session):
-        
         BaseManager.__init__(self, db_session, Version)
-        
-        self.table = Table(self.__table_name__,
-                      self.db_session.metadata,
-                      Column('id', Integer, primary_key=True),
-                      Column('name', String(25), nullable=False, unique=True),
-                      Column('value', String(40), nullable=False)
-                      )
-        
-        self.mapper = mapper(Version, self.table)
 
 class MachineCategoryManager(BaseManager):
-    __table_name__ = "openlh_machine_category"
-    
     def __init__(self, db_session):
-        
         BaseManager.__init__(self, db_session, MachineCategory)
-        
-        self.table = Table(self.__table_name__,
-                          self.db_session.metadata,
-                          Column('id', Integer, primary_key=True),
-                          Column('name', String(25), nullable=False, unique=True),
-                          Column('custom_logo', Boolean, default=False),
-                          Column('custom_background', Boolean, default=False),
-                          Column('logo_path', String(100), nullable=True),
-                          Column('background_path', String(100), nullable=True),
-                          Column('custom_price_hour', Boolean, default=False),
-                          Column('price_hour', Float, default=0)
-                          )
-        
-        self.mapper = mapper(MachineCategory, self.table)
 
 class UserCategoryManager(BaseManager):
-    __table_name__ = "openlh_user_category"
-    
     def __init__(self, db_session):
-        
         BaseManager.__init__(self, db_session, UserCategory)
-        
-        self.table = Table(self.__table_name__,
-                          self.db_session.metadata,
-                          Column('id', Integer, primary_key=True),
-                          Column('name', String(25), nullable=False, unique=True),
-                          Column('allow_login', Boolean, default=True),
-                          Column('custom_price_hour', Boolean, default=False),
-                          Column('price_hour', Float, default=0)
-                          )
-        
-        self.mapper = mapper(UserCategory, self.table)
 
 class MachineManager(BaseManager):
-
-    __table_name__ = "openlh_machines"
-    
     def __init__(self, db_session):
-        
         BaseManager.__init__(self, db_session, Machine)
-        
-        self.table = Table(self.__table_name__,
-                      self.db_session.metadata,
-                      Column('id', Integer, primary_key=True),
-                      Column('name', String(25), nullable=False, unique=True),
-                      Column('hash_id', String(40), nullable=False),
-                      Column('description', Text),
-                      Column('last_user_id', Integer, ForeignKey('openlh_users.id')),
-                      Column('category_id', Integer, ForeignKey('openlh_machine_category.id')),
-                      )
-        
-        self.mapper = mapper(Machine, self.table,
-                      properties={'last_user':relation(User),
-                                  'category':relation(MachineCategory),
-                                 })
     
     def delete_by_id(self, id):
         s = delete(self.table, Machine.id==id)
@@ -133,39 +71,8 @@ class MachineManager(BaseManager):
         return out
 
 class UserManager(BaseManager):
-    
-    __table_name__ = "openlh_users"
-    
     def __init__(self, db_session):
         BaseManager.__init__(self, db_session, User)
-        
-        self.table = Table(self.__table_name__,
-                      self.db_session.metadata,
-                      Column('id', Integer, primary_key=True),
-                      Column('nick', String(20), nullable=False, unique=True),
-                      Column('full_name', String(50), nullable=False),
-                      Column('email', String(50)),
-                      Column('responsible', String(50)),
-                      Column('identity', String(50)),
-                      Column('birth', String(10)), #CHANGE TO DATE FORMAT
-                      Column('city', String(50)),
-                      Column('state', String(50)),
-                      Column('phone', String(50)),
-                      Column('notes', Text),
-                      Column('address', Text),
-                      Column('last_login', DateTime),
-                      Column('last_machine_id', Integer), #ForeignKey('openlh_machines.id')),
-                      Column('active', Boolean, default=True),
-                      Column('reg_date', DateTime),
-                      Column('login_count', Integer, default=0),
-                      Column('credit', Float, default=0),
-                      Column('password', String(32), nullable=False),
-                      Column('category_id', Integer, ForeignKey('openlh_user_category.id')),
-                      )
-
-        self.db_session = db_session
-        self.mapper = mapper(User, self.table,
-                             properties={'category':relation(UserCategory)})
     
     def get_full_name(self, user_id):
         
@@ -216,77 +123,16 @@ class UserManager(BaseManager):
         return self.db_session.session.execute(s).fetchone()
 
 class CashFlowManager(BaseFlow):
-    
-    __table_name__ = "openlh_cash_flow"
-     
     def __init__(self, db_session):
         BaseFlow.__init__(self, db_session, CashFlowItem)
-
-        self.table = Table(self.__table_name__,
-                           self.db_session.metadata,
-                           Column('id', Integer, primary_key=True),
-                           Column('type', Integer, nullable=False),
-                           Column('user_id', Integer, ForeignKey('openlh_users.id')),
-                           Column('value', Float, nullable=False), #TODO: Change to real Type
-                           Column('day', Integer, nullable=False),
-                           Column('month', Integer, nullable=False),
-                           Column('year', Integer, nullable=False),
-                           Column('hour', String(8), nullable=False),
-                           Column('notes', Text)
-                          )
-        
-        self.mapper = mapper(CashFlowItem, self.table, 
-                      properties={'user':relation(User)
-                      })
     
 class OpenDebtsMachineManager(BaseFlow):
-    
-    __table_name__ = "openlh_opendebts_machine"
-     
     def __init__(self, db_session):
         BaseFlow.__init__(self, db_session, OpenDebtMachineItem)
 
-        self.table = Table(self.__table_name__,
-                           self.db_session.metadata,
-                           Column('id', Integer, primary_key=True),
-                           Column('day', Integer, nullable=False),
-                           Column('month', Integer, nullable=False),
-                           Column('year', Integer, nullable=False),
-                           Column('machine_id', Integer, ForeignKey('openlh_machines.id')),
-                           Column('start_time', String(8), nullable=False),
-                           Column('end_time', String(8), nullable=False),
-                           Column('user_id', Integer, ForeignKey('openlh_users.id')),
-                           Column('value', Float, nullable=False), #TODO: Change to real Type
-                           Column('notes', Text)
-                          )
-        
-        self.mapper = mapper(OpenDebtMachineItem, self.table, 
-                        properties={'user':relation(User),
-                                    'machine':relation(Machine)})
-
 class OpenDebtsOtherManager(BaseFlow):
-    
-    __table_name__ = "openlh_opendebts_other"
-     
     def __init__(self, db_session):
         BaseFlow.__init__(self, db_session, OpenDebtOtherItem)
-
-        self.table = Table(self.__table_name__,
-                           self.db_session.metadata,
-                           Column('id', Integer, primary_key=True),
-                           Column('day', Integer, nullable=False),
-                           Column('month', Integer, nullable=False),
-                           Column('year', Integer, nullable=False),
-                           Column('time', String(8), nullable=False),
-                           Column('start_time', String(8), nullable=False),
-                           Column('end_time', String(8), nullable=False),
-                           Column('user_id', Integer, ForeignKey('openlh_users.id')),
-                           Column('value', Float, nullable=False), #TODO: Change to real Type
-                           Column('notes', Text)
-                          )
-        
-        self.mapper = mapper(OpenDebtOtherItem, self.table, 
-                        properties={'user':relation(User)})
 
 
 class HistoryManager(BaseFlow):
@@ -294,23 +140,6 @@ class HistoryManager(BaseFlow):
      
     def __init__(self, db_session):
         BaseFlow.__init__(self, db_session, HistoryItem)
-
-        self.table = Table(self.__table_name__,
-                           self.db_session.metadata,
-                           Column('id', Integer, primary_key=True),
-                           Column('day', Integer, nullable=False),
-                           Column('month', Integer, nullable=False),
-                           Column('year', Integer, nullable=False),
-                           Column('machine_id', Integer, ForeignKey('openlh_machines.id')),
-                           Column('time', String(8), nullable=False),
-                           Column('start_time', String(8), nullable=False),
-                           Column('end_time', String(8), nullable=False),
-                           Column('user_id', Integer, ForeignKey('openlh_users.id')),
-                          )
-        
-        self.mapper = mapper(HistoryItem, self.table, 
-                        properties={'user':relation(User),
-                                    'machine':relation(Machine)})
     
     def get_days_for_machine_id(self, year, month, machine_id):
         s = select([HistoryItem.day], 
@@ -343,22 +172,8 @@ class HistoryManager(BaseFlow):
         self.commit()
 
 class OpenTicketManager(BaseManager):
-    __table_name__ = "openlh_open_tickets"
-    
     def __init__(self, db_session):
-        
         BaseManager.__init__(self, db_session, OpenTicket)
-        
-        self.table = Table(self.__table_name__,
-                      self.db_session.metadata,
-                      Column('id', Integer, primary_key=True),
-                      Column('code', String(25), nullable=False, unique=True),
-                      Column('price', Float, nullable=False),
-                      Column('hourly_rate', Float, nullable=False),
-                      Column('notes', Text)
-                      )
-        
-        self.mapper = mapper(OpenTicket, self.table)
         
     def ticket_exists(self, code):
         s = select([OpenTicket.id], OpenTicket.code==code)
