@@ -43,7 +43,7 @@ class BaseManager(gobject.GObject):
         self.__gobject_init__()
         self.db_session = db_session
         self.object_type = object_type
-    
+        
     def get_all(self):
         return self.db_session.session.query(self.object_type)
     

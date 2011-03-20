@@ -259,7 +259,7 @@ class OpenlhServer:
             logging.debug("Generating Template")
             
             template = certgen.Template(SERVER_TLS_TEMPLATE)
-            template.organization = self.name
+            template.organization = self.name if self.name else "OpenLanhouse"
             template.expiration_days = 1825
             
             if self.admin_email:

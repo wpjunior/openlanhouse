@@ -21,6 +21,12 @@ from OpenlhServer.db.globals import *
 
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.interfaces import PoolListener
+from OpenlhServer.db.models import Base
+
+class SetTextFactory(PoolListener):
+     def connect(self, dbapi_con, con_record):
+         dbapi_con.text_factory = str 
 
 class DBSession(gobject.GObject):
     def __init__(self, db_type, db_file=None, host=None,
@@ -46,6 +52,8 @@ class DBSession(gobject.GObject):
                 self.engine_str = "sqlite:///" + self.db_file + "?check_same_thread=False"
             else:
                 self.engine_str = "sqlite://:memory:"
+
+            engine_kwargs['listeners']=[SetTextFactory()]
         
         else:
             assert self.host, "host cannot be None"
@@ -75,8 +83,8 @@ class DBSession(gobject.GObject):
         
         self.engine = create_engine(self.engine_str, **engine_kwargs)
 
-        if self.db_type == DB_TYPE_SQLITE: #hack :-) text_factory is unicode cause serious problems
-            self.engine.connect().connection.connection.text_factory = str
+        #if self.db_type == DB_TYPE_SQLITE: #hack :-) text_factory is unicode cause serious problems
+        #    self.engine.connect().connection.connection.text_factory = str
 
         self.session_maker = sessionmaker(bind=self.engine, autoflush=True)
         self.metadata = MetaData()
@@ -86,6 +94,7 @@ class DBSession(gobject.GObject):
         self.session.commit()
 
     def create_all(self):
+        Base.metadata.create_all(self.engine)
         self.metadata.create_all(self.engine)
     
     def save(self, obj):
