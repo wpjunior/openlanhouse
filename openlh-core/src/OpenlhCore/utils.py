@@ -606,8 +606,6 @@ def pid_alive(app, path):
         try:
             f = open('/proc/%d/cmdline'% pid) 
         except IOError, e:
-            if e.errno == errno.ENOENT:
-                return False # file/pid does not exist
             raise 
 
         n = f.read().lower()
