@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  Copyright (C) 2008 Wilson Pinto Júnior <wilson@openlanhouse.org>
+#  Copyright (C) 2008 Wilson Pinto Júnior <wilsonpjunior@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -85,7 +85,7 @@ MACHINE_STATUS_AWAY = 3
 ##APP
 APP_NAME = 'OpenLanhouse'
 APP_SITE = 'http://openlanhouse.org'
-APP_COPYRIGHT = 'OpenLanhouse - Copyright (c) 2007-2009'
+APP_COPYRIGHT = 'OpenLanhouse - Copyright (c) 2007-2011'
 
 I18N_APP = 'openlh-server'
 
@@ -122,8 +122,8 @@ COLOR_RED = '#EF2929'
 
 APP_DOCS = ""
 
-APP_AUTHORS = ('Wilson Pinto Júnior <wilson@openlanhouse.org>',)
-APP_ARTISTS = ('Wilson Pinto Júnior <wilson@openlanhouse.org>',)
+APP_AUTHORS = ('Wilson Pinto Júnior <wilsonpjunior@gmail.com>',)
+APP_ARTISTS = ('Wilson Pinto Júnior <wilsonpjunior@gmail.com>',)
 
 
 APP_CONTRIB = ('Bruno Gonçalves <bigbruno@gmail.com>',
@@ -133,7 +133,7 @@ APP_CONTRIB = ('Bruno Gonçalves <bigbruno@gmail.com>',
                'Og Maciel <ogmaciel@gnome.org>'
                )
 
-APP_TRANSLATORS = {'pt_BR': "Wilson Pinto Júnior <wilson@openlanhouse.org>",
+APP_TRANSLATORS = {'pt_BR': "Wilson Pinto Júnior <wilsonpjunior@gmail.com>",
                    'es_ES': "Pier Jose Gotta Perez <piegope@fslcol.org>"}
 
 APP_LICENCE = _('OpenLanhouse is free software: you can redistribute it and/or modify\n'

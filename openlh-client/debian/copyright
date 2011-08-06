@@ -1,15 +1,15 @@
 This package was debianized by Wilson Pinto Júnior
-<wilson@openlanhouse.org> on Tue, 03 Jun 2008 04:09:48 -0300.
+<wilsonpjunior@gmail.com> on Tue, 03 Jun 2008 04:09:48 -0300.
 
 It was downloaded from http://openlanhouse.org/releases/
 
 Upstream Authors
 
-    Wilson Pinto Júnior <wilson@openlanhouse.org>
+    Wilson Pinto Júnior <wilsonpjunior@gmail.com>
 
 Copyright: 
 
-    Wilson Pinto Júnior <wilson@openlanhouse.org>
+    Wilson Pinto Júnior <wilsonpjunior@gmail.com>
 
 License:
 
@@ -31,4 +31,4 @@ On Debian systems, the complete text of the GNU General
 Public License can be found in `/usr/share/common-licenses/GPL'.
 
 The Debian packaging is (C) 2008, Wilson Pinto Júnior
-<wilson@openlanhouse.org> and is licensed under the GPL, see above.
+<wilsonpjunior@gmail.com> and is licensed under the GPL, see above.

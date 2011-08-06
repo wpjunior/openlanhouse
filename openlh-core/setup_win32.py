@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-#  Copyright (C) 2008 Wilson Pinto Júnior <wilson@openlanhouse.org>
+#  Copyright (C) 2008 Wilson Pinto Júnior <wilsonpjunior@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ open("src/OpenlhCore/config.py", "wb").write(config_in)
 setup(name = "openlh-core",
       version = APP_VERSION,
       author = "Wilson Pinto Júnior",
-      author_email = "wilson@openlanhouse.org",
+      author_email = "wilsonpjunior@gmail.com",
       url = "http://openlanhouse.org",
       download_url = "http://trac.openlanhouse.org/downloads",
       description = "Core lib for OpenLanhouse Server and Client",
