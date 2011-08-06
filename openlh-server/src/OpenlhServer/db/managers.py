@@ -43,7 +43,7 @@ class MachineManager(BaseManager):
         BaseManager.__init__(self, db_session, Machine)
     
     def delete_by_id(self, id):
-        s = delete(self.table, Machine.id==id)
+        s = delete(self.object_type.__table__, Machine.id==id)
         self.db_session.session.execute(s)
         self.commit()
         self.emit("delete", id)
@@ -105,13 +105,13 @@ class UserManager(BaseManager):
         return self.db_session.session.execute(s).fetchone()
     
     def update_credit(self, user_id, value):
-        s = update(self.table, User.id==user_id, {'credit': value})
+        s = update(self.object_type.__table__, User.id==user_id, {'credit': value})
         self.db_session.session.execute(s)
         self.commit()
         self.emit('credit_update', user_id, value)
     
     def change_password(self, user_id, password):
-        s = update(self.table, User.id==user_id, {'password': password})
+        s = update(self.object_type.__table__, User.id==user_id, {'password': password})
         self.db_session.session.execute(s)
         self.commit()
         
@@ -156,17 +156,17 @@ class HistoryManager(BaseFlow):
         return days
     
     def clear_all(self):
-        s = delete(self.table)
+        s = delete(self.object_type.__table__)
         self.db_session.session.execute(s)
         self.commit()
     
     def clear_by_year(self, year):
-        s = delete(self.table, HistoryItem.year==year)
+        s = delete(self.object_type.__table__, HistoryItem.year==year)
         self.db_session.session.execute(s)
         self.commit()
     
     def clear_by_year_and_month(self, year, month):
-        s = delete(self.table, 
+        s = delete(self.object_type.__table__, 
                    and_(HistoryItem.year==year, HistoryItem.month==month))
         self.db_session.session.execute(s)
         self.commit()
