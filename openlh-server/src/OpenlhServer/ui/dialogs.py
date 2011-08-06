@@ -139,7 +139,12 @@ class delete(gtk.MessageDialog):
                         ICON, gtk.BUTTONS_NONE, text)
         
         self.set_markup(text)
-        self.hbox = self.vbox.get_children()[2]
+        childrens = self.vbox.get_children()
+        if childrens == 3:
+            self.hbox = childrens[2]
+	else:
+            self.hbox = childrens[0]
+
         self.response = None
         
         #Buttons
