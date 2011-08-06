@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  Copyright (C) 2008 Wilson Pinto Júnior <wilson@openlanhouse.org>
+#  Copyright (C) 2008 Wilson Pinto Júnior <wilsonpjunior@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 
 PLUGIN_NAME = "Example"
 PLUGIN_DESCRIPTION = "Plugin Example"
-PLUGIN_AUTHOR = "Wilson Pinto Júnior <wilson@openlanhouse.org>"
+PLUGIN_AUTHOR = "Wilson Pinto Júnior <wilsonpjunior@gmail.com>"
 PLUGIN_COPYRIGHT = "Copyright 2008 Wilson Pinto Júnior"
 PLUGIN_SITE = "http://openlanhouse.org"
 
