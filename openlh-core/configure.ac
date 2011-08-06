@@ -20,7 +20,7 @@ AM_INIT_AUTOMAKE([1.7])
 AM_MAINTAINER_MODE
 
 dnl python checks
-AM_PATH_PYTHON2(2.5)
+AM_PATH_PYTHON(2.5)
 
 PY_PREFIX=`$PYTHON -c 'import sys ; print sys.prefix'`
 PYTHON_LIBS="-lpython$PYTHON_VERSION"
