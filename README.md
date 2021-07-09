@@ -1,7 +1,7 @@
 # OpenLanhouse
 GNOME CyberCafé/Lanhouse Manager
 
-This project was written when I was a teenager, nowadays many of project dependencies may be incompatible.
+This project was written when I was a teenager, nowadays many of project dependencies may be incompatible. It's a project that used to acquire my first python and linux skills, cause that I started my carrer in compute field. 
 
 ## Old Videos
 ### OpenLanhouse server
