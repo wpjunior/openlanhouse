@@ -1,7 +1,7 @@
 # OpenLanhouse
 GNOME CyberCafé/Lanhouse Manager
 
-This project was written until 2011, many of dependencies may be incompatible for these days.
+This project was written when I was a teenager, nowadays many of project dependencies may be incompatible.
 
 ## Old Videos
 ### OpenLanhouse server
